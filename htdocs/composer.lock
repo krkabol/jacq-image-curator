@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d19b9165a56bbe26f44d77ee0d79852b",
+    "content-hash": "e95f503150f46c47f9137817f27ae008",
     "packages": [
         {
             "name": "aws/aws-crt-php",
-            "version": "v1.2.5",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "0ea1f04ec5aa9f049f97e012d1ed63b76834a31b"
+                "reference": "a63485b65b6b3367039306496d49737cf1995408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/0ea1f04ec5aa9f049f97e012d1ed63b76834a31b",
-                "reference": "0ea1f04ec5aa9f049f97e012d1ed63b76834a31b",
+                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/a63485b65b6b3367039306496d49737cf1995408",
+                "reference": "a63485b65b6b3367039306496d49737cf1995408",
                 "shasum": ""
             },
             "require": {
@@ -56,22 +56,22 @@
             ],
             "support": {
                 "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.5"
+                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.6"
             },
-            "time": "2024-04-19T21:30:56+00:00"
+            "time": "2024-06-13T17:21:28+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.314.5",
+            "version": "3.314.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0c1adaa22c3d333ac20dcc87dd355e9a013a05fd"
+                "reference": "d04da330b0201edab71edd33a03b8d5ad6e4a313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0c1adaa22c3d333ac20dcc87dd355e9a013a05fd",
-                "reference": "0c1adaa22c3d333ac20dcc87dd355e9a013a05fd",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d04da330b0201edab71edd33a03b8d5ad6e4a313",
+                "reference": "d04da330b0201edab71edd33a03b8d5ad6e4a313",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.314.5"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.314.6"
             },
-            "time": "2024-06-19T18:11:48+00:00"
+            "time": "2024-06-20T18:09:51+00:00"
         },
         {
             "name": "contributte/console",
@@ -1434,16 +1434,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.3.2",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "477da35bd0255e032826f440b94b3e37f2d56f42"
+                "reference": "b337726451f5d530df338fc7f68dee8781b49779"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/477da35bd0255e032826f440b94b3e37f2d56f42",
-                "reference": "477da35bd0255e032826f440b94b3e37f2d56f42",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/b337726451f5d530df338fc7f68dee8781b49779",
+                "reference": "b337726451f5d530df338fc7f68dee8781b49779",
                 "shasum": ""
             },
             "require": {
@@ -1455,15 +1455,14 @@
                 "doctrine/common": "<2.10"
             },
             "require-dev": {
-                "composer/package-versions-deprecated": "^1.11",
-                "doctrine/coding-standard": "^11",
+                "doctrine/coding-standard": "^12",
                 "doctrine/common": "^3.0",
-                "phpstan/phpstan": "1.9.4",
+                "phpstan/phpstan": "1.11.1",
                 "phpstan/phpstan-phpunit": "^1",
                 "phpstan/phpstan-strict-rules": "^1.1",
                 "phpunit/phpunit": "^8.5 || ^9.5",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
-                "vimeo/psalm": "4.30.0 || 5.3.0"
+                "vimeo/psalm": "4.30.0 || 5.24.0"
             },
             "type": "library",
             "autoload": {
@@ -1512,7 +1511,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.3.2"
+                "source": "https://github.com/doctrine/persistence/tree/3.3.3"
             },
             "funding": [
                 {
@@ -1528,7 +1527,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-12T14:54:36+00:00"
+            "time": "2024-06-20T10:14:30+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4997,16 +4996,16 @@
         },
         {
             "name": "ublaboo/aws-sdk-nette-extension",
-            "version": "v1.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ublaboo/aws-sdk-nette-extension.git",
-                "reference": "7510bc55fe34867417f803ef7251019d3e8f0034"
+                "reference": "0c2dfd5451ac3d9a9656fd632d30c858b6ce5467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ublaboo/aws-sdk-nette-extension/zipball/7510bc55fe34867417f803ef7251019d3e8f0034",
-                "reference": "7510bc55fe34867417f803ef7251019d3e8f0034",
+                "url": "https://api.github.com/repos/ublaboo/aws-sdk-nette-extension/zipball/0c2dfd5451ac3d9a9656fd632d30c858b6ce5467",
+                "reference": "0c2dfd5451ac3d9a9656fd632d30c858b6ce5467",
                 "shasum": ""
             },
             "require": {
@@ -5017,6 +5016,7 @@
                 "mockery/mockery": "~0.9",
                 "nette/tester": "~1.6.1"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5046,9 +5046,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ublaboo/aws-sdk-nette-extension/issues",
-                "source": "https://github.com/ublaboo/aws-sdk-nette-extension/tree/v1.1.0"
+                "source": "https://github.com/ublaboo/aws-sdk-nette-extension/tree/master"
             },
-            "time": "2023-01-31T15:04:20+00:00"
+            "time": "2024-06-20T05:55:17+00:00"
         }
     ],
     "packages-dev": [
@@ -5191,7 +5191,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ublaboo/aws-sdk-nette-extension": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
