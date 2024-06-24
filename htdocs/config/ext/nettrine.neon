@@ -1,0 +1,40 @@
+extensions:
+	nettrine.cache: Nettrine\Cache\DI\CacheExtension
+	nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
+
+	# Dbal
+	nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
+	nettrine.dbal.console: Nettrine\DBAL\DI\DbalConsoleExtension
+
+	# Orm
+	nettrine.orm: Nettrine\ORM\DI\OrmExtension
+	nettrine.orm.attributes: Nettrine\ORM\DI\OrmAttributesExtension
+	nettrine.orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+	nettrine.orm.console: Nettrine\ORM\DI\OrmConsoleExtension
+
+nettrine.dbal:
+	debug:
+		panel: false
+	connection:
+		driver: %database.driver%
+		host: %database.host%
+		user: %database.user%
+		password: %database.password%
+		dbname: %database.dbname%
+		port: %database.port%
+
+nettrine.orm.attributes:
+  mapping:
+   app\Model\Database: %appDir%/Model/Database
+
+nettrine.orm:
+	entityManagerDecoratorClass: App\Model\Database\EntityManager
+	configuration:
+		autoGenerateProxyClasses: %debugMode%
+
+nettrine.migrations:
+	table: doctrine_migrations
+	column: version
+	directory: %rootDir%/db/Migrations
+	namespace: Database\Migrations
+	versionsOrganization: null

@@ -1,0 +1,30 @@
+{*layout "../@layoutSignIn.latte"*}
+{block #content}
+
+
+<form n:name="loginForm">
+
+	<div n:foreach="$form->errors as $error" class="alert alert-danger" role="alert">
+		{$error}
+	</div>
+
+	<div class="form-label-group">
+		<input type="text" n:name="username" class="form-control" placeholder="Username" required autofocus>
+	</div>
+
+	<div class="form-label-group">
+		<input type="password" n:name="password" class="form-control" placeholder="Password" required>
+	</div>
+
+	<div class="checkbox mb-3">
+		<label>
+			<input n:name="remember" type="checkbox"> Remember me
+		</label>
+	</div>
+	<button n:name="submit" class="btn btn-primary btn-block">Sign in</button>
+
+</form>
+
+<hr>
+<a n:href="Home:">back</a> to homepage
+

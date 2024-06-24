@@ -1,0 +1,23 @@
+parameters:
+    environment: 'development'
+    database:
+        host: curator-db
+        dbname: curator
+        user: curator
+        password: curator
+
+services:
+    cacheStorage:
+        factory: Nette\Caching\Storages\DevNullStorage
+
+aws:
+    endpoint: http://minio:9000
+    use_path_style_endpoint: true
+    credentials:
+        key: minio
+        secret: password
+
+security:
+    users:
+        prc: prc
+        admin: admin

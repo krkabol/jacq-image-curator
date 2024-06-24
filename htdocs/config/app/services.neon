@@ -1,0 +1,19 @@
+services:
+	- App\Core\RouterFactory::createRouter
+	- App\Services\S3Service
+	- App\Services\TestService
+	- App\Services\ImageService
+	- App\Services\ReportService
+	- App\Services\DatabaseService
+	- App\Services\WebDir(%wwwDir%)
+	- App\Services\TempDir(%tempDir%)
+	- App\Services\StorageConfiguration(%storage%)
+	- App\Model\PhotoOfSpecimenFactory
+	- App\Model\Stages\StageFactory
+
+
+search:
+	-	in: %appDir%
+		classes:
+			- *Factory
+			- *Facade

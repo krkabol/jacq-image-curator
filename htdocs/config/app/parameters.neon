@@ -1,0 +1,10 @@
+parameters:
+    database:
+        driver: pdo_mysql
+        port: 3306
+    storage:
+        archiveBucket: archive
+        jp2Bucket: iiif
+        newBucket: new
+        jp2Quality: 46
+        regex: '/^(?P<herbarium>[a-zA-Z]+)_(?P<specimenId>\d+)$/'

@@ -1,0 +1,39 @@
+# Core Config
+includes:
+	# Application
+	- ../app/parameters.neon
+	- ../app/services.neon
+
+	# Extensions
+	- ../ext/contributte.neon
+	- ../ext/ublaboo.neon
+	- ../ext/nettrine.neon
+
+php:
+	date.timezone: Europe/Prague
+
+# Nette section
+session:
+	expiration: 14 days
+	autoStart: true
+
+latte:
+	strictTypes: yes
+	strictParsing: yes
+	extensions:
+		- App\UI\Accessory\LatteExtension
+
+application:
+	catchExceptions: %productionMode%
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\UI\*\**Presenter
+
+di:
+	debugger: true
+
+aws:
+	region: eu-west-1
+	version: latest
+	use_aws_shared_config_files: false

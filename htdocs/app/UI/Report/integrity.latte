@@ -1,0 +1,30 @@
+{block content}
+
+{define checkpoint, $name, $items}
+<h4>{$name}: {if count($items)===0}{1|status}{else}{0|status} [{count($items)} items]{/if}</h4>
+    {if count($items)>0}
+        {foreach $items as $item}
+            {if $item instanceof \App\Model\Database\Entity\Photos}
+                {$item->getArchiveFilename()}{else}{$item}
+            {/if}
+        <br>
+        {/foreach}
+    {/if}
+{/define}
+
+
+
+
+<h2>Integrity checks</h2>
+<a n:href=":default">back to Reports</a>
+
+<h4>Buckets exists {$bucketsOK|status}</h4>
+
+{include checkpoint, 'dbRecordsMissingWithinArchive', $dbRecordsMissingWithinArchive}
+{include checkpoint, 'dbRecordsMissingWithinIIIF', $dbRecordsMissingWithinIIIF}
+
+{include checkpoint, 'unprocessedNewFiles', $unprocessedNewFiles}
+
+{include checkpoint, 'TIFFsWithoutJP2', $TIFFsWithoutJP2}
+{include checkpoint, 'JP2sWithoutTIFF', $JP2sWithoutTIFF}
+{include checkpoint, 'TIFFsWithoutDbRecord', $TIFFsWithoutDbRecord}

@@ -1,0 +1,10 @@
+includes:
+	- base.neon
+
+services:
+    cache.storage: Nette\Caching\Storages\DevNullStorage
+
+database:
+	dsn: 'mysql:host=mariadb-viewer;dbname=images'
+	user: images
+	password: images

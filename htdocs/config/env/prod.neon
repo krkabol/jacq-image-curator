@@ -1,0 +1,7 @@
+includes:
+	- base.neon
+
+database:
+	dsn: 'mysql:host=mariadb-viewer;dbname=images'
+	user: images
+	password: images

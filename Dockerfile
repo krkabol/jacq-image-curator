@@ -13,3 +13,5 @@ RUN apt update && apt dist-upgrade -y && \
 # disable logs
 RUN rm /var/log/nginx/access.log && \
     rm /var/log/nginx/error.log
+
+COPY htdocs /srv/
