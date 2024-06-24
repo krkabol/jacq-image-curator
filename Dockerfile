@@ -1,7 +1,7 @@
 #https://github.com/dockette/web/tree/master/debian-php-83
+FROM dockette/web:php-83
 LABEL org.opencontainers.image.source=https://github.com/krkabol/jacq-image-curator
 LABEL org.opencontainers.image.description="Image processing for JACQ herabrium service"
-FROM dockette/web:php-83
 RUN apt update && apt dist-upgrade -y && \
     apt install -y --no-install-recommends \
         imagemagick \
