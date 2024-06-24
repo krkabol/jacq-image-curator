@@ -3,7 +3,7 @@
 <ol>
 {foreach $images as $image}
     <li>{$image->getArchiveFilename()}, <a n:href=":archiveImage $image->getArchiveFilename()">here</a> link to Archive Master and preview from IIIF:
-        <img src="https://herbarium2.natur.cuni.cz/iiif/2/{$image->getJp2Filename()}/full/300,/0/default.jpg" width="300px">
+        <img src="https://herbarium-iiif.natur.cuni.cz/iiif/2/{$image->getJp2Filename()}/full/300,/0/default.jpg" width="300px">
     </li>
 {/foreach}
 </ol>
