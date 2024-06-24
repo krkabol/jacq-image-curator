@@ -1,3 +1,8 @@
 # jacq-image-curator
 
-aN Docker image is build on push of tag in format 'v*.*.*'
+The web application Curator handles primary data management after uploaded from herbaria In the Czech Republic.
+
+## TODO
+*
+* use assets when individual domain available
+*
