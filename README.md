@@ -4,5 +4,4 @@ The web application Curator handles primary data management after uploaded from 
 
 ## TODO
 * use assets when individual domain available
-* refactor migration object selection - readd all to db with "finished=false"
-* 
+*

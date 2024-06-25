@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace app\Model\Stages;
+namespace app\Model\UpdateStages;
 
-use app\Model\PhotoOfSpecimen;
+use app\Model\Database\Entity\Photos;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class NoveltyControlException extends BaseStageException
+
+class JP2ExistsException extends BaseStageException
 {
 
 }
 
-class NoveltyControlStage implements StageInterface
+class JP2ExistsStage implements StageInterface
 {
 
     protected S3Service $s3Service;
@@ -28,9 +29,9 @@ class NoveltyControlStage implements StageInterface
 
     public function __invoke($payload)
     {
-        /** @var PhotoOfSpecimen $payload */
-        if ($this->s3Service->objectExists($this->configuration->getArchiveBucket(), $payload->getObjectKey())) {
-            throw new NoveltyControlException("Archive master TIF already exists: " . $payload->getObjectKey());
+        /** @var Photos $payload */
+        if (!$this->s3Service->objectExists($this->configuration->getJP2Bucket(), $payload->getJp2Filename())) {
+            throw new JP2ExistsException("Expected JP2 file is missing");
         }
         return $payload;
     }

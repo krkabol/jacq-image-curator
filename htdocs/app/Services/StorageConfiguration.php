@@ -3,7 +3,7 @@
 namespace app\Services;
 
 use app\Model\Database\Entity\Herbaria;
-use app\Model\Stages\FilenameControlException;
+use app\Model\ImportStages\FilenameControlException;
 
 final class StorageConfiguration
 {

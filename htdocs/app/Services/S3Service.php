@@ -30,10 +30,7 @@ class S3Service
 
     public function objectExists(string $bucket, string $object): bool
     {
-        if (!$this->s3->doesObjectExist($bucket, $object)) {
-            return false;
-        }
-        return true;
+        return $this->s3->doesObjectExist($bucket, $object);
     }
 
     public function objectsExists(string $bucket, array $objects): bool
@@ -64,6 +61,7 @@ class S3Service
 
     public function putTiffIfNotExists(string $bucket, string $key, string $path): bool
     {
+        throw new \Exception("readonly S3 operations allowed only");
         if (!$this->s3->doesObjectExist($bucket, $key)) {
             $result = $this->s3->putObject([
                 'Bucket' => $bucket,
@@ -76,7 +74,7 @@ class S3Service
     }
 
     public function copyObjectIfNotExists(string $objectKey, string $sourceBucket, string $targetBucket): bool
-    {
+    {throw new \Exception("readonly S3 operations allowed only");
         if (!$this->s3->doesObjectExist($targetBucket, $objectKey)) {
             $this->s3->copyObject([
                 'Bucket' => $targetBucket,
@@ -106,7 +104,7 @@ class S3Service
     }
 
     public function deleteObject(string $bucket, string $key)
-    {
+    {throw new \Exception("readonly S3 operations allowed only");
         $this->s3->deleteObject([
             'Bucket' => $bucket,
             'Key' => $key,
@@ -114,7 +112,7 @@ class S3Service
     }
 
     public function putJP2Overwrite(string $bucket, string $key, string $path): void
-    {
+    {throw new \Exception("readonly S3 operations allowed only");
         $result = $this->s3->putObject([
             'Bucket' => $bucket,
             'Key' => $key,

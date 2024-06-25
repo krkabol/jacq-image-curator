@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace app\Services;
 
 use app\Model\PhotoOfSpecimenFactory;
-use app\Model\Stages\BarcodeStage;
-use app\Model\Stages\BaseStageException;
-use app\Model\Stages\StageFactory;
+use app\Model\ImportStages\BarcodeStage;
+use app\Model\ImportStages\BaseStageException;
+use app\Model\ImportStages\StageFactory;
 use League\Pipeline\Pipeline;
+use Nette\Neon\Exception;
 
 class ImageService
 {
@@ -28,7 +29,8 @@ class ImageService
 
 
     public function proceedNewImages(): array
-    {
+    {        throw new Exception("not tested in production !");
+
         return $this->runPipeline($this->fileProcessingPipeline());
     }
 

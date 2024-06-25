@@ -1,19 +1,23 @@
 services:
-	- App\Core\RouterFactory::createRouter
-	- App\Services\S3Service
-	- App\Services\TestService
-	- App\Services\ImageService
-	- App\Services\ReportService
-	- App\Services\DatabaseService
-	- App\Services\WebDir(%wwwDir%)
-	- App\Services\TempDir(%tempDir%)
-	- App\Services\StorageConfiguration(%storage%)
-	- App\Model\PhotoOfSpecimenFactory
-	- App\Model\Stages\StageFactory
+    - App\Core\RouterFactory::createRouter
+    - App\Services\S3Service
+    - App\Services\TestService
+    - App\Services\ImageService
+    - App\Services\ReportService
+    - App\Services\DatabaseService
+    - App\Services\WebDir(%wwwDir%)
+    - App\Services\TempDir(%tempDir%)
+    - App\Services\StorageConfiguration(%storage%)
+    - App\Model\PhotoOfSpecimenFactory
+    - App\Model\ImportStages\StageFactory
+    - App\Model\UpdateStages\StageFactory
+
+    - {factory: App\Console\ReadBucketToDatabase, tags: {console.command: app:readBucketToDb}}
+    - {factory: App\Console\UpdateRecords, tags: {console.command: app:updateRecords}}
 
 
 search:
-	-	in: %appDir%
-		classes:
-			- *Factory
-			- *Facade
+    in: %appDir%
+    classes:
+        - *Factory
+        - *Facade

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Model\Stages;
+namespace app\Model\ImportStages;
 
 use App\Model\Database\EntityManager;
 use League\Pipeline\StageInterface;

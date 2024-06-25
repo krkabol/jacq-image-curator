@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace app\Services;
 
+use App\Model\Database\EntityManager;
 use app\Model\PhotoOfSpecimenFactory;
-use app\Model\Stages\BarcodeStage;
-use app\Model\Stages\BaseStageException;
-use app\Model\Stages\StageFactory;
+use app\Model\UpdateStages\BaseStageException;
+use app\Model\UpdateStages\StageFactory;
 use app\UI\Test\TestPresenter;
 use League\Pipeline\Pipeline;
+use Nette\Neon\Exception;
 
 class TestService
 {
@@ -22,7 +23,9 @@ class TestService
     protected StorageConfiguration $storageConfiguration;
     protected ImageService $imageService;
 
-    public function __construct(WebDir $webDir,S3Service $S3Service, PhotoOfSpecimenFactory $photoOfSpecimenFactory, StageFactory $stageFactory, StorageConfiguration $storageConfiguration, ImageService $imageService)
+    protected EntityManager $entityManager;
+
+    public function __construct(WebDir $webDir,S3Service $S3Service, PhotoOfSpecimenFactory $photoOfSpecimenFactory, StageFactory $stageFactory, StorageConfiguration $storageConfiguration, ImageService $imageService, EntityManager $entityManager)
     {
         $this->webDir = $webDir;
         $this->S3Service = $S3Service;
@@ -30,10 +33,16 @@ class TestService
         $this->stageFactory = $stageFactory;
         $this->storageConfiguration = $storageConfiguration;
         $this->imageService = $imageService;
+        $this->entityManager = $entityManager;
     }
 
+    /** @deprecated
+     * used during initial stage for MinIO temp repository
+     */
     public function initialize(): void
     {
+        throw new Exception("do not initialize repository!");
+
         foreach ($this->storageConfiguration->getAllBuckets() as $bucket) {
             $this->S3Service->createBucket($bucket);
         }
@@ -44,45 +53,16 @@ class TestService
         }
     }
 
-    public function proceedExistingImages(): array
-    {
-        return $this->runPipeline($this->migrationPipeline(),$this->storageConfiguration->getArchiveBucket());
-    }
-
-    protected function migrationPipeline(): Pipeline
+     public function migrationPipeline(): Pipeline
     {
         return (new Pipeline())
-            ->pipe($this->stageFactory->createNotInDatabaseStage())
+            ->pipe($this->stageFactory->createJP2ExistsStage())
             ->pipe($this->stageFactory->createFilenameControlStage())
+            ->pipe($this->stageFactory->createDownloadJP2Stage())
             ->pipe($this->stageFactory->createDimensionsStage())
-            ->pipe(new BarcodeStage)
-            ->pipe($this->stageFactory->createRegisterStage())
+            ->pipe($this->stageFactory->createBarcodeStage())
+            ->pipe($this->stageFactory->createUpdateRecordStage())
             ->pipe($this->stageFactory->createCleanupStage());
     }
 
-    public function proceedNewImages(): array
-    {
-        return $this->runPipeline($this->imageService->fileProcessingPipeline(),$this->storageConfiguration->getNewBucket());
-    }
-
-    protected function runPipeline(Pipeline $pipeline, $location): array
-    {
-        $success = [];
-        $error = [];
-        $i = 0;
-        foreach ($this->S3Service->listObjects($location) as $file) {
-            try {
-                $photo = $this->photoOfSpecimenFactory->create($location, $file);
-                $pipeline->process($photo);
-                $success[$file] = "OK";
-                $i++;
-            } catch (BaseStageException $e) {
-                $error[$file] = $e->getMessage();
-            }
-            if ($i >= self::LIMIT) {
-                break;
-            }
-        }
-        return [$success, $error];
-    }
 }

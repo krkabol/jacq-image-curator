@@ -3,32 +3,14 @@
 <a n:href="Curator:">as a curator</a><br>
 <a n:href="Sign:out">Sign out</a><hr>
 
-1. <a n:href=":initialize">Initialize</a> buckets{$bucketsOK|status} and demo tiff{$tiffOK|status} data.
-<pre>
-    <b>Existing:</b>
-    {foreach $buckets["Buckets"] as $bucket}
-            {$bucket["Name"]}
-    {/foreach}
 
-    <b>Planned:</b>
-            /archive - tiff archive files stored here like prc_475443a.tiff
-            /iiif - jp2 files for Cantaloupe
-            /new - a place where curators will upload new photos?
-</pre>
-
-2. <a n:href=":proceed">proceed</a> a pipeline for demo data
+<h4>Existing data migration</h4>
+1. read Archive Bucket to empty db
 <br>
 2b. <a n:href=":proceedMigration">proceed migration</a> a pipeline for <u>already existing</u> data
 
 
 <h4>links</h4>
 <ul>
-    <li><a href="http://localhost:9000" target="_minio">MinIO</a></li>
     <li><a href="http://localhost:8080" target="admin">PHPMyadmin</a></li>
-    <li><a href="https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg" target="test">https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg</a>
-    </li>
-    <li>proxy to Archive Tiff - <a n:href="Iiif:archiveImage 'prc_407087.tif'" target="test">{link Iiif:archiveImage 'prc_407087.tif'}</a>
-    </li>
-    <li>specimen info page - <a n:href="Iiif:specimen 'prc_407087'" target="test">{link Iiif:specimen 'prc_407087'}</a>
-    </li>
 </ul>

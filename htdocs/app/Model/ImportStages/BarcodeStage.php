@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Model\Stages;
+namespace app\Model\ImportStages;
 
 use app\Model\PhotoOfSpecimen;
 use League\Pipeline\StageInterface;
@@ -53,7 +53,7 @@ class BarcodeStage implements StageInterface
         foreach ($codes as $code) {
             $parts = [];
             if (preg_match(self::BARCODE_TEMPLATE, $code, $parts)) {
-                if ($this->item->getHerbariumAcronym() === strtolower($parts['herbarium']) &&
+                if ($this->item->getHerbariumAcronym() === strtoupper($parts['herbarium']) &&
                     $this->item->getSpecimenId() === $parts['specimenId']) {
                     $isValid = true;
                 }

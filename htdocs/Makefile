@@ -1,4 +1,4 @@
-#	docker exec -it --user dfx jacq-curator /bin/bash
+#	docker exec -it --user www-data jacq-curator /bin/bash
 
 build:
  	NETTE_DEBUG=1 bin/console migrations:generate #  generate empty migration class
@@ -13,5 +13,11 @@ build:
 #	NETTE_DEBUG=1 bin/console orm:schema-tool:update --dump-sql --complete
 
 	NETTE_DEBUG=1 bin/console orm:generate-proxies # keep proxies in VCS
+
+
+# analysis of old data
+data_migration:
+	NETTE_DEBUG=1 bin/console app:readBucketToDb
+	NETTE_DEBUG=1 bin/console app:updateRecords
 
 

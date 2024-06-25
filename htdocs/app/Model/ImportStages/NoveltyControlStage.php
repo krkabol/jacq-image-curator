@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace app\Model\Stages;
+namespace app\Model\ImportStages;
 
 use app\Model\PhotoOfSpecimen;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class DimensionStageException extends BaseStageException
+class NoveltyControlException extends BaseStageException
 {
 
 }
 
-class DimensionsStage implements StageInterface
+class NoveltyControlStage implements StageInterface
 {
+
     protected S3Service $s3Service;
     protected StorageConfiguration $configuration;
 
@@ -27,14 +28,12 @@ class DimensionsStage implements StageInterface
 
     public function __invoke($payload)
     {
-        try {
-            /** @var PhotoOfSpecimen $payload */
-            $imagick = $payload->getImagick();
-            $payload->setWidth($imagick->getImageWidth());
-            $payload->setHeight($imagick->getImageHeight());
-        } catch (\Exception $exception) {
-            throw new DimensionStageException("dimensions error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+        /** @var PhotoOfSpecimen $payload */
+        if ($this->s3Service->objectExists($this->configuration->getArchiveBucket(), $payload->getObjectKey())) {
+            throw new NoveltyControlException("Archive master TIF already exists: " . $payload->getObjectKey());
         }
         return $payload;
     }
+
+
 }

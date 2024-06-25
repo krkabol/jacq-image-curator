@@ -41,6 +41,9 @@ class Photos
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ["comment" => "Flag with not finally usage decided yet"])]
     protected bool $finalized = false;
 
+    #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "Result of migration"])]
+    protected ?string $message;
+
     public function getArchiveFilename(): string
     {
         return $this->archiveFilename;
@@ -105,7 +108,7 @@ class Photos
 
     public function setSpecimenId(?string $specimenId): Photos
     {
-        $this->specimenId = $specimenId;
+        $this->specimenId = ltrim($specimenId, '0');
         return $this;
     }
 
@@ -139,6 +142,17 @@ class Photos
     public function setFinalized(bool $finalized): Photos
     {
         $this->finalized = $finalized;
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): Photos
+    {
+        $this->message = $message;
         return $this;
     }
 

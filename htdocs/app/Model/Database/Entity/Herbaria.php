@@ -15,4 +15,17 @@ class Herbaria
 
     #[ORM\OneToMany(targetEntity: "Photos", mappedBy: "herbarium")]
     protected $photos;
+
+    public function getAcronym(): string
+    {
+        return $this->acronym;
+    }
+
+    public function setAcronym(string $acronym): Herbaria
+    {
+        $this->acronym = $acronym;
+        return $this;
+    }
+
+
 }

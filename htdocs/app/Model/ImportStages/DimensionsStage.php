@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace app\Model\Stages;
+namespace app\Model\ImportStages;
 
 use app\Model\PhotoOfSpecimen;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class ArchiveStageException extends BaseStageException
+class DimensionStageException extends BaseStageException
 {
 
 }
 
-class ArchiveStage implements StageInterface
+class DimensionsStage implements StageInterface
 {
     protected S3Service $s3Service;
     protected StorageConfiguration $configuration;
@@ -29,12 +29,12 @@ class ArchiveStage implements StageInterface
     {
         try {
             /** @var PhotoOfSpecimen $payload */
-            $this->s3Service->copyObjectIfNotExists($payload->getObjectKey(), $this->configuration->getNewBucket(), $this->configuration->getArchiveBucket());
+            $imagick = $payload->getImagick();
+            $payload->setWidth($imagick->getImageWidth());
+            $payload->setHeight($imagick->getImageHeight());
         } catch (\Exception $exception) {
-            throw new ArchiveStageException("tiff upload error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new DimensionStageException("dimensions error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
         }
         return $payload;
     }
-
-
 }
