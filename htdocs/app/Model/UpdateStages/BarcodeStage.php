@@ -83,7 +83,7 @@ class BarcodeStage implements StageInterface
         exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
 
         if ($returnVar !== 0) {
-            throw new BarcodeStageException("zbar script error");
+            throw new BarcodeStageException("zbar script error: " . implode("; ",$output));
         }
 
         if (empty($output)) {
