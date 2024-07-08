@@ -8,6 +8,7 @@ use App\Model\UpdateStages\BaseStageException;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TestService;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Order;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,8 +40,8 @@ class UpdateRecords extends Command
     {
         $startTime = microtime(true);
         $output->write("\n" . 'Walk along all records in db and control/update info about image' . "\n");
-
-        $records = $this->entityManager->getPhotosRepository()->findBy(["finalized" => false, "message" => NULL], ["id"=>Order::Ascending],100);
+                /** not ready yet even deprecated https://github.com/doctrine/orm/issues/11313 Criteria:ASC */
+        $records = $this->entityManager->getPhotosRepository()->findBy(["finalized" => false, "message" => NULL], ["id"=>Criteria::ASC],100);
         $output->write("\n" . 'There is ' . count($records) . " not finalized records in the db without \"message\" --> to be processed. \n");
         $pipeline = $this->testService->migrationPipeline();
         $i=0;

@@ -18,6 +18,6 @@ build:
 # analysis of old data
 data_migration:
 	NETTE_DEBUG=1 bin/console app:readBucketToDb
-	NETTE_DEBUG=1 bin/console app:updateRecords
+	NETTE_DEBUG=1 bin/console app:updateRecords #  & disown ## as it is time consuming
 
 
