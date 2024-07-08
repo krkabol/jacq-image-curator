@@ -2,8 +2,8 @@
 FROM dockette/web:php-83
 LABEL org.opencontainers.image.source=https://github.com/krkabol/jacq-image-curator
 LABEL org.opencontainers.image.description="Image processing for JACQ herabrium service"
-RUN apt update && apt dist-upgrade -y && \
-    apt install -y --no-install-recommends \
+RUN apt-get update && apt-get dist-upgrade -y && \
+    apt-get install -y --no-install-recommends \
         imagemagick \
         zbar-tools \
         php8.3-imagick && \
