@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\UI\Iiif;
 
 use App\Model\Database\EntityManager;
+use app\Model\IIIF\IiifManifest_v3;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\UI\Base\BasePresenter;
@@ -61,6 +62,14 @@ final class IiifPresenter extends BasePresenter
         }
         $this->template->images = $images;
         $this->template->id = $id;
+    }
+
+    public function actionManifest()
+    {
+        $model = (new IiifManifest_v3())->getDefault();
+        $baseUrl = rtrim($this->getHttpRequest()->getUrl()->getBaseUrl(),"/");
+        $model["id"] = $baseUrl.$this->link('this');
+        $this->sendJson($model);
     }
 
 }
