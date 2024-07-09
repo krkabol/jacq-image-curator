@@ -37,3 +37,10 @@ aws:
 	region: eu-west-1
 	version: latest
 	use_aws_shared_config_files: false
+
+
+# to allow iiif manifest.json load
+http:
+    headers:
+        Access-Control-Allow-Origin: *
+    frames: true

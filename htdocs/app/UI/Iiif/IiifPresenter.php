@@ -56,9 +56,9 @@ final class IiifPresenter extends BasePresenter
         $acronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($acronym);
-        $images = $this->photosRepository->findBy(["herbarium"=>$herbarium,"specimenId"=>$specimenId]);
-        if(count($images)===0){
-            $this->error("Specimen ". $id ."not in evidence.");
+        $images = $this->photosRepository->findBy(["herbarium" => $herbarium, "specimenId" => $specimenId]);
+        if (count($images) === 0) {
+            $this->error("Specimen " . $id . "not in evidence.");
         }
         $this->template->images = $images;
         $this->template->id = $id;
@@ -67,8 +67,12 @@ final class IiifPresenter extends BasePresenter
     public function actionManifest()
     {
         $model = (new IiifManifest_v3())->getDefault();
-        $baseUrl = rtrim($this->getHttpRequest()->getUrl()->getBaseUrl(),"/");
-        $model["id"] = $baseUrl.$this->link('this');
+        $relativeLink = $this->link('this');
+        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
+        $httpBaseUrl = preg_replace('/^http:/', 'https:', $baseUrl);
+        $absoluteLink = $httpBaseUrl . ltrim($relativeLink, '/');
+        $model["id"] = $absoluteLink;
+
         $this->sendJson($model);
     }
 
