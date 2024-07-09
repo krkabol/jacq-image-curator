@@ -41,7 +41,7 @@ class UpdateRecords extends Command
         $startTime = microtime(true);
         $output->write("\n" . 'Walk along all records in db and control/update info about image' . "\n");
                 /** not ready yet even deprecated https://github.com/doctrine/orm/issues/11313 Criteria:ASC */
-        $records = $this->entityManager->getPhotosRepository()->findBy(["finalized" => false, "message" => NULL], ["id"=>Criteria::ASC],100);
+        $records = $this->entityManager->getPhotosRepository()->findBy(["finalized" => false, "message" => NULL], ["id"=>Criteria::ASC],5000);
         $output->write("\n" . 'There is ' . count($records) . " not finalized records in the db without \"message\" --> to be processed. \n");
         $pipeline = $this->testService->migrationPipeline();
         $i=0;

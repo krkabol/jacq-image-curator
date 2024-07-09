@@ -53,10 +53,4 @@ final class TestPresenter extends SecuredPresenter
         $this->template->error = $result[1];
     }
 
-    public function renderProceedMigration()
-    {
-        $result = $this->testService->proceedExistingImages();
-        $this->template->success = $result[0];
-        $this->template->error = $result[1];
-    }
 }

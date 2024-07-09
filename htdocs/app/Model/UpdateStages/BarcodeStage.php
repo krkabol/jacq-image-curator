@@ -15,7 +15,7 @@ class BarcodeStageException extends BaseStageException
 {
 
 }
-
+//TODO duplicate code in all Update/Import Stages, move code into services
 class BarcodeStage implements StageInterface
 {
     const BARCODE_TEMPLATE = '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/';
@@ -95,10 +95,10 @@ class BarcodeStage implements StageInterface
     {
         $output = [];
         $returnVar = 0;
-        exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
+        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
 
         if ($returnVar !== 0) {
-            throw new BarcodeStageException("zbar script error: " . implode("; ",$output));
+            throw new BarcodeStageException("zbar script error: " . $info);
         }
 
         if (empty($output)) {

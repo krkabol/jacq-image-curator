@@ -15,6 +15,7 @@ class BarcodeStageException extends BaseStageException
 class BarcodeStage implements StageInterface
 {
     const BARCODE_TEMPLATE = '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/';
+    const ZBAR_DIMENSION = 3000;
     protected PhotoOfSpecimen $item;
 
     public function __invoke($payload)
@@ -33,6 +34,19 @@ class BarcodeStage implements StageInterface
             $imagick->modulateImage(100, 0, 100);
             $imagick->whiteThresholdImage('#a9a9a9');
             $imagick->contrastImage(true);
+            $width = $imagick->getImageWidth();
+            $height = $imagick->getImageHeight();
+
+            if ($width > $height) {
+                $newWidth = self::ZBAR_DIMENSION;
+                $newHeight = intval((self::ZBAR_DIMENSION / $width) * $height);
+            } else {
+                $newHeight = self::ZBAR_DIMENSION;
+                $newWidth = intval((self::ZBAR_DIMENSION / $height) * $width);
+            }
+
+            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
+            $imagick->setImageCompressionQuality(80);
             $imagick->setImageFormat('jpg');
             $imagick->writeImage($this->getContrastTempFileName());
             unset($imagick);
@@ -68,10 +82,10 @@ class BarcodeStage implements StageInterface
     {
         $output = [];
         $returnVar = 0;
-        exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
+        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
 
         if ($returnVar !== 0) {
-            throw new BarcodeStageException("zbar script error");
+            throw new BarcodeStageException("zbar script error: " . $info);
         }
 
         if (empty($output)) {
