@@ -67,10 +67,10 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'id', 'createdAt'];
+            return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
         }
 
-        return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'id', 'createdAt'];
+        return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
     }
 
     /**
@@ -375,6 +375,28 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFinalized', [$finalized]);
 
         return parent::setFinalized($finalized);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMessage(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMessage', []);
+
+        return parent::getMessage();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMessage(?string $message): \app\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMessage', [$message]);
+
+        return parent::setMessage($message);
     }
 
     /**

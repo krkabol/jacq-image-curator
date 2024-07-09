@@ -182,6 +182,28 @@ class Herbaria extends \app\Model\Database\Entity\Herbaria implements \Doctrine\
     /**
      * {@inheritDoc}
      */
+    public function getAcronym(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAcronym', []);
+
+        return parent::getAcronym();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAcronym(string $acronym): \app\Model\Database\Entity\Herbaria
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAcronym', [$acronym]);
+
+        return parent::setAcronym($acronym);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId(): int
     {
         if ($this->__isInitialized__ === false) {
