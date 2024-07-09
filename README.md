@@ -4,4 +4,6 @@ The web application Curator handles primary data management after uploaded from 
 
 ## TODO
 * use assets when individual domain available
-*
+
+
+to build locally ```docker build . -t  ghcr.io/krkabol/jacq-image-curator:main``` & ```docker push  ghcr.io/krkabol/jacq-image-curator:main```
