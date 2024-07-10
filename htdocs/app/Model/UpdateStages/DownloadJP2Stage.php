@@ -16,7 +16,7 @@ class DownloadJP2StageException extends BaseStageException
 {
 
 }
-
+/** @deprecated  */
 class DownloadJP2Stage implements StageInterface
 {
     protected S3Service $s3Service;

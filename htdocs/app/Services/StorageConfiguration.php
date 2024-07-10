@@ -2,7 +2,6 @@
 
 namespace app\Services;
 
-use app\Model\Database\Entity\Herbaria;
 use app\Model\ImportStages\FilenameControlException;
 
 final class StorageConfiguration
@@ -40,9 +39,29 @@ final class StorageConfiguration
         return $this->config['jp2Quality'];
     }
 
-    public function getSpecimenNameRegex(): string
+    public function getPhotoNameRegex(): string
     {
-        return $this->config['regex'];
+        return $this->config['photoRegex'];
+    }
+
+    public function getBarcodeRegex(): string
+    {
+        return $this->config['barcodeRegex'];
+    }
+
+    public function getImageIIIFInfoURL($jp2ObjectName): string
+    {
+        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/info.json";
+    }
+
+    public function getImageIIIFURL4Barcode($jp2ObjectName): string
+    {
+        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/,".$this->config['zbarImageHeight']."/0/default.jpg";
+    }
+
+    protected function getIIIFBaseUrl(): string
+    {
+        return $this->config['iiif'];
     }
 
     public function getJP2ObjectKey($archiveObjectKey): string
@@ -55,11 +74,6 @@ final class StorageConfiguration
         return $this->splitId($specimenId)["herbarium"];
     }
 
-    public function getSpecimenIdFromId($specimenId): string
-    {
-        return $this->splitId($specimenId)["specimenId"];
-    }
-
     protected function splitId($specimenId)
     {
         $parts = [];
@@ -68,6 +82,16 @@ final class StorageConfiguration
         } else {
             throw new FilenameControlException("invalid name format: " . $specimenId);
         }
+    }
+
+    public function getSpecimenNameRegex(): string
+    {
+        return $this->config['specimenRegex'];
+    }
+
+    public function getSpecimenIdFromId($specimenId): string
+    {
+        return $this->splitId($specimenId)["specimenId"];
     }
 
 }

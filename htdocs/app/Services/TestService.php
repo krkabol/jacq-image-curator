@@ -58,11 +58,9 @@ class TestService
         return (new Pipeline())
             ->pipe($this->stageFactory->createJP2ExistsStage())
             ->pipe($this->stageFactory->createFilenameControlStage())
-            ->pipe($this->stageFactory->createDownloadJP2Stage())
             ->pipe($this->stageFactory->createDimensionsStage())
             ->pipe($this->stageFactory->createBarcodeStage())
-            ->pipe($this->stageFactory->createUpdateRecordStage())
-            ->pipe($this->stageFactory->createCleanupStage());
+            ->pipe($this->stageFactory->createUpdateRecordStage());
     }
 
 }

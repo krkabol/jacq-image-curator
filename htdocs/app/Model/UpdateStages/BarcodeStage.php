@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace app\Model\UpdateStages;
 
 use app\Model\Database\Entity\Photos;
+use app\Services\StorageConfiguration;
 use app\Services\TempDir;
 use Exception;
+use GuzzleHttp\Client;
 use Imagick;
 use League\Pipeline\StageInterface;
 
@@ -15,62 +17,80 @@ class BarcodeStageException extends BaseStageException
 {
 
 }
+
 //TODO duplicate code in all Update/Import Stages, move code into services
 class BarcodeStage implements StageInterface
 {
-    const BARCODE_TEMPLATE = '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/';
-    const ZBAR_DIMENSION = 3000;
-    protected Photos $item;
-
     protected TempDir $tempDir;
 
-    public function __construct(TempDir $tempDir)
+    protected StorageConfiguration $configuration;
+    protected Client $client;
+    protected Photos $item;
+
+    public function __construct(TempDir $tempDir, StorageConfiguration $configuration, Client $client)
     {
         $this->tempDir = $tempDir;
+        $this->configuration = $configuration;
+        $this->client = $client;
     }
 
     public function __invoke($payload)
     {
-        $this->item = $payload;
-        $this->createContrastedImage();
-        $this->validateFilename();
-        unlink($this->getContrastTempFileName());
-        return $this->item;
+        try {
+            $this->item = $payload;
+            $this->downloadFromIIIF();
+            $this->createContrastedImage();
+            $this->validateFilename();
+            unlink($this->getContrastTempFileName());
+            unlink($this->getDownloadedTempFile());
+            return $this->item;
+        } catch (BarcodeStageException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
+        }
+    }
+
+    protected function downloadFromIIIF()
+    {
+        $response = $this->client->request('GET', $this->configuration->getImageIIIFURL4Barcode($this->item->getJp2Filename()), ['stream' => true]);
+        $statusCode = $response->getStatusCode();
+        if ($statusCode == 404) {
+            throw new BarcodeStageException('Error 404 - unable download image');
+        }
+        $file = fopen($this->getDownloadedTempFile(), 'wb');
+        if (!$file) {
+            throw new BarcodeStageException('Can not write temp file.');
+        }
+
+        $body = $response->getBody();
+        while (!$body->eof()) {
+            fwrite($file, $body->read(1024));
+        }
+        fclose($file);
+
+    }
+
+    protected function getDownloadedTempFile(): string
+    {
+        return $this->tempDir->getPath($this->item->getJp2Filename());
     }
 
     protected function createContrastedImage(): void
     {
-        try {
-            $imagick = new Imagick($this->tempDir->getPath( $this->item->getJp2Filename()));
-            $imagick->modulateImage(100, 0, 100);
-            $imagick->whiteThresholdImage('#a9a9a9');
-            $imagick->contrastImage(true);
-
-            $width = $imagick->getImageWidth();
-            $height = $imagick->getImageHeight();
-
-            if ($width > $height) {
-                $newWidth = self::ZBAR_DIMENSION;
-                $newHeight = intval((self::ZBAR_DIMENSION / $width) * $height);
-            } else {
-                $newHeight = self::ZBAR_DIMENSION;
-                $newWidth = intval((self::ZBAR_DIMENSION / $height) * $width);
-            }
-
-            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
-            $imagick->setImageCompressionQuality(80);
-            $imagick->setImageFormat('jpg');
-            $imagick->writeImage($this->getContrastTempFileName());
-            unset($imagick);
-        } catch (Exception $exception) {
-            unset($imagick);
-            throw new BarcodeStageException($exception->getMessage());
-        }
+        $imagick = new Imagick($this->getDownloadedTempFile());
+        $imagick->modulateImage(100, 0, 100);
+        $imagick->whiteThresholdImage('#a9a9a9');
+        $imagick->contrastImage(true);
+        $imagick->setImageFormat('jpg');
+        $imagick->writeImage($this->getContrastTempFileName());
+        $imagick->destroy();
+        $imagick->clear();
     }
 
     protected function getContrastTempFileName(): string
     {
-        return $this->tempDir->getPath($this->item->getJp2Filename()) . "barcode";
+        return $this->getDownloadedTempFile() . "barcode.jpg";
     }
 
     protected function validateFilename(): void
@@ -79,7 +99,7 @@ class BarcodeStage implements StageInterface
         $codes = $this->detectCodes();
         foreach ($codes as $code) {
             $parts = [];
-            if (preg_match(self::BARCODE_TEMPLATE, $code, $parts)) {
+            if (preg_match($this->configuration->getBarcodeRegex(), $code, $parts)) {
                 if ($this->item->getHerbarium()->getAcronym() === strtoupper($parts['herbarium']) &&
                     (int)$this->item->getSpecimenId() === (int)$parts['specimenId']) {
                     $isValid = true;

@@ -15,7 +15,7 @@ class CleanupStageException extends BaseStageException
 {
 
 }
-
+/** @deprecated  */
 class CleanupStage implements StageInterface
 {
     protected TempDir $tempDir;
