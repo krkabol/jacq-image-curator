@@ -59,6 +59,11 @@ final class StorageConfiguration
         return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/,".$this->config['zbarImageHeight']."/0/default.jpg";
     }
 
+    public function getZbarThreshold()
+    {
+        return $this->config["zbarThreshold"];
+    }
+
     protected function getIIIFBaseUrl(): string
     {
         return $this->config['iiif'];

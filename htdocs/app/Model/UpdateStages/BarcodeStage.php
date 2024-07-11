@@ -80,7 +80,7 @@ class BarcodeStage implements StageInterface
     {
         $imagick = new Imagick($this->getDownloadedTempFile());
         $imagick->modulateImage(100, 0, 100);
-        $imagick->whiteThresholdImage('#a9a9a9');
+        $imagick->whiteThresholdImage($this->configuration->getZbarThreshold());
         $imagick->contrastImage(true);
         $imagick->setImageFormat('jpg');
         $imagick->writeImage($this->getContrastTempFileName());
@@ -111,18 +111,23 @@ class BarcodeStage implements StageInterface
         }
     }
 
+    /**
+     * use Zbar to detect Barcodes
+     * @link https://manpages.ubuntu.com/manpages/jammy/man1/zbarimg.1.html
+     */
     protected function detectCodes(): array
     {
         $output = [];
         $returnVar = 0;
         $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
 
-        if ($returnVar !== 0) {
-            throw new BarcodeStageException("zbar script error: " . $info);
-        }
+        switch ($returnVar) {
+            case 1:
+            case 2:
+                throw new BarcodeStageException("zbar script error: " . $info);
 
-        if (empty($output)) {
-            throw new BarcodeStageException("empty output from zbar");
+            case 4:
+                throw new BarcodeStageException("No barcode was detected");
         }
         return $output;
     }
