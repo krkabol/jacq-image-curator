@@ -76,12 +76,20 @@ class BarcodeStage implements StageInterface
         return $this->tempDir->getPath($this->item->getJp2Filename());
     }
 
+    /**
+     * @link https://www.runcomfy.com/comfyui-nodes/ComfyUI-MagickWand/ImageMagick-Adaptive-Threshold
+     *
+     */
     protected function createContrastedImage(): void
     {
         $imagick = new Imagick($this->getDownloadedTempFile());
-        $imagick->modulateImage(100, 0, 100);
-        $imagick->whiteThresholdImage($this->configuration->getZbarThreshold());
-        $imagick->contrastImage(true);
+        $imagick->modulateImage(100, 0, 100); //convert default.jpg -modulate 100,0,100 out.jpg
+//        $imagick->whiteThresholdImage($this->configuration->getZbarThreshold());
+//        $max = $imagick->getQuantumRange();
+//        $max = $max["quantumRangeLong"];
+//        $imagick->thresholdImage(0.77 * $max);
+        $imagick->adaptiveThresholdImage(100,100, 1);
+//        $imagick->contrastImage(true);
         $imagick->setImageFormat('jpg');
         $imagick->writeImage($this->getContrastTempFileName());
         $imagick->destroy();
