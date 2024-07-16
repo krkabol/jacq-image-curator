@@ -102,8 +102,8 @@ class IiifManifest_v2
     protected function mapImageObject(Photos $photo)
     {
         $imageObject = $this->getJSONImagePrototype();
-        $imageObject["@id"] = Strings::webalize($this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "-image");
-        $imageObject["on"] = Strings::webalize($this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "-canvas");
+        $imageObject["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#image";
+        $imageObject["on"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#canvas";
         $imageObject["resource"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
         $imageObject["resource"]["service"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
         $imageObject["resource"]["height"] = $photo->getHeight();
@@ -114,7 +114,7 @@ class IiifManifest_v2
     protected function mapCanvasObject(Photos $photo)
     {
         $canvasObject = $this->getJSONCanvasPrototype();
-        $canvasObject["@id"] = Strings::webalize($this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "-canvas");
+        $canvasObject["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#canvas";
         $canvasObject["label"] = $photo->getFullSpecimenId();
         $canvasObject["height"] = $photo->getHeight();
         $canvasObject["width"] = $photo->getWidth();
