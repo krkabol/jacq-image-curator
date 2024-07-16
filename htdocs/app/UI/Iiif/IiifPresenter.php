@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace app\UI\Iiif;
 
 use App\Model\Database\EntityManager;
+use App\Model\IIIF\IiifManifest_v2;
 use app\Model\IIIF\IiifManifest_v3;
+use App\Model\IIIF\ManifestFactory;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\UI\Base\BasePresenter;
@@ -25,6 +27,9 @@ final class IiifPresenter extends BasePresenter
     public EntityManager $entityManager;
     protected $photosRepository;
 
+    /** @inject  */
+    public ManifestFactory $manifestFactory;
+
     public function beforeRender()
     {
         $this->photosRepository = $this->entityManager->getPhotosRepository();
@@ -39,8 +44,8 @@ final class IiifPresenter extends BasePresenter
             $stream = $this->s3Service->getStreamOfObject($bucket, $id);
 
             $callback = function (Request $httpRequest, Response $httpResponse) use ($id, $head, $stream) {
-                $httpResponse->addHeader("Content-Type", $head['ContentType']);
-                $httpResponse->addHeader('Content-Disposition', "inline; filename" . $id);
+                $httpResponse->setHeader("Content-Type", $head['ContentType']);
+                $httpResponse->setHeader('Content-Disposition', "inline; filename" . $id);
                 fpassthru($stream);
                 fclose($stream);
             };
@@ -64,9 +69,25 @@ final class IiifPresenter extends BasePresenter
         $this->template->id = $id;
     }
 
-    public function actionManifest()
+    public function actionManifest($id)
     {
-        $model = (new IiifManifest_v3())->getDefault();
+        $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
+        $specimenId = $this->configuration->getSpecimenIdFromId($id);
+
+        $relativeLink = $this->link('this');
+        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
+        $httpBaseUrl = preg_replace('/^http:/', 'https:', $baseUrl);
+        $absoluteLink = $httpBaseUrl . ltrim($relativeLink, '/');
+
+        $model = $this->manifestFactory->prototype_v2($specimenId,$herbariumAcronym,$absoluteLink);
+
+        $manifest = $model->getCompleted();
+        $this->sendJson($manifest);
+    }
+
+    public function actionManifestv3()
+    {
+        $model = $this->manifestFactory->prototype_v3();
         $relativeLink = $this->link('this');
         $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
         $httpBaseUrl = preg_replace('/^http:/', 'https:', $baseUrl);

@@ -1,0 +1,61 @@
+{
+  "@context": [
+    "http://iiif.io/api/presentation/2/context.json",
+    "http://www.w3.org/ns/anno.jsonld"
+  ],
+  "@type": "sc:Manifest",
+  "sequences": [
+    {
+      "@id": "XXXselfReferencingURLXXX#sequence-1",
+      "@type": "sc:Sequence",
+      "canvases": [
+        {
+          "@id": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/c/dr_047922_0",
+          "@type": "sc:Canvas",
+          "label": "dr_047922",
+          "height": 5391,
+          "width": 4146,
+          "images": [
+            {
+              "@id": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/i/dr_047922_0",
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "on": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/c/dr_047922_0",
+              "resource": {
+                "@id": "XXlink2info.jsonXXX",
+                "@type": "dctypes:Image",
+                "format": "image/jp2",
+                "height": 5391,
+                "width": 4146,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "XXlink2info.jsonXXX",
+                  "profile": "http://iiif.io/api/image/2/level2.json",
+                  "protocol": "http://iiif.io/api/image"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "label": "Current order",
+      "viewingDirection": "left-to-right"
+    }
+  ],
+  "thumbnail": {
+    "@id": "XXX400XXX",
+    "@type": "dctypes:Image",
+    "format": "image/jpeg",
+    "service": {
+      "@context": "http://iiif.io/api/image/2/context.json",
+      "@id": "XXlink2info.jsonXXX",
+      "profile": "http://iiif.io/api/image/2/level2.json",
+      "protocol": "http://iiif.io/api/image"
+    }
+  },
+  "@id": "XXXselfReferencingURLXXX",
+  "description": "A preserved herbarium specimen",
+  "logo": {
+    "@id": "https://cas.cuni.cz/cas/images/UK-logo.png"
+  }
+}

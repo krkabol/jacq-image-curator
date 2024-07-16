@@ -59,6 +59,11 @@ final class StorageConfiguration
         return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/,".$this->config['zbarImageHeight']."/0/default.jpg";
     }
 
+    public function getImageIIIFURL4Thumbnail($jp2ObjectName): string
+    {
+        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/".$this->config['thumbImageWidth'].",/0/default.jpg";
+    }
+
     public function getZbarThreshold()
     {
         return $this->config["zbarThreshold"];
@@ -94,9 +99,9 @@ final class StorageConfiguration
         return $this->config['specimenRegex'];
     }
 
-    public function getSpecimenIdFromId($specimenId): string
+    public function getSpecimenIdFromId($specimenId): int
     {
-        return $this->splitId($specimenId)["specimenId"];
+        return (int) $this->splitId($specimenId)["specimenId"];
     }
 
 }

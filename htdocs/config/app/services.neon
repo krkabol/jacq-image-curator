@@ -11,6 +11,7 @@ services:
     - App\Model\PhotoOfSpecimenFactory
     - App\Model\ImportStages\StageFactory
     - App\Model\UpdateStages\StageFactory
+    - App\Model\IIIF\ManifestFactory
 
     - {factory: App\Console\ReadBucketToDatabase, tags: {console.command: app:readBucketToDb}}
     - {factory: App\Console\UpdateRecords, tags: {console.command: app:updateRecords}}
