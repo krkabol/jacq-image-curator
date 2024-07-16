@@ -58,10 +58,5 @@
   "description": "A preserved herbarium specimen",
   "logo": {
     "@id": "https://cas.cuni.cz/cas/images/UK-logo.png"
-  },
-  "rendering": {
-    "@id": "http://example.org/iiif/book1.pdf",
-    "label": "Download as PDF",
-    "format": "application/pdf"
   }
 }
