@@ -17,10 +17,9 @@ RUN rm /var/log/nginx/access.log && \
     rm /var/log/nginx/error.log && \
     rm -rf /srv/www
 
-COPY htdocs /srv/
-
 #increase Imagick limits
 COPY ./policy.xml /etc/ImageMagick-v6/policy.xml
+RUN chown -R dfx:dfx /srv
 
-RUN  chmod -R 777 /srv/log /srv/temp
-
+USER dfx
+COPY htdocs /srv/
