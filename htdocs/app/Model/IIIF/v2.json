@@ -4,6 +4,7 @@
     "http://www.w3.org/ns/anno.jsonld"
   ],
   "@type": "sc:Manifest",
+  "label": "herbarium specimen",
   "sequences": [
     {
       "@id": "XXXselfReferencingURLXXX#sequence-1",
