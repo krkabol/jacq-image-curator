@@ -69,15 +69,22 @@ final class IiifPresenter extends BasePresenter
         $this->template->id = $id;
     }
 
+    /**
+     * we are running http behind the proxy
+     */
+    protected function getAbsoluteHttpsBasePath()
+    {
+        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
+        return preg_replace('/^http:/', 'https:', $baseUrl);
+    }
+
     public function actionManifest($id)
     {
         $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
 
         $relativeLink = $this->link('this');
-        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
-        $httpBaseUrl = preg_replace('/^http:/', 'https:', $baseUrl);
-        $absoluteLink = $httpBaseUrl . ltrim($relativeLink, '/');
+        $absoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
 
         $model = $this->manifestFactory->prototype_v2($specimenId,$herbariumAcronym,$absoluteLink);
 

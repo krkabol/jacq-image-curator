@@ -65,6 +65,12 @@ class IiifManifest_v2
         return $this->default;
     }
 
+    protected function addTiffLink():IiifManifest_v2
+    {
+        $this->completed["rendering"]=array("@id"=>$this->storageConfiguration, "label"=>"download full TIFF scan", "format"=>"image/tiff");
+        return $this;
+    }
+
     protected function addThumbnail(): IiifManifest_v2
     {
         $image = $this->getFirstImage();
