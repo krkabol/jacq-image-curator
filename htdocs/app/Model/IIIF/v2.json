@@ -23,14 +23,14 @@
               "motivation": "sc:painting",
               "on": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/c/dr_047922_0",
               "resource": {
-                "@id": "XXlink2info.jsonXXX",
+                "@id": "XXlink2imageXXX",
                 "@type": "dctypes:Image",
                 "format": "image/jp2",
                 "height": 5391,
                 "width": 4146,
                 "service": {
                   "@context": "http://iiif.io/api/image/2/context.json",
-                  "@id": "XXlink2info.jsonXXX",
+                  "@id": "XXlink2imageXXX",
                   "profile": "http://iiif.io/api/image/2/level2.json",
                   "protocol": "http://iiif.io/api/image"
                 }
@@ -49,7 +49,7 @@
     "format": "image/jpeg",
     "service": {
       "@context": "http://iiif.io/api/image/2/context.json",
-      "@id": "XXlink2info.jsonXXX",
+      "@id": "XXlink2imageXXX",
       "profile": "http://iiif.io/api/image/2/level2.json",
       "protocol": "http://iiif.io/api/image"
     }

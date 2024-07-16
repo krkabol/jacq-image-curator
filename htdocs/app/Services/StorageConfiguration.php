@@ -51,7 +51,7 @@ final class StorageConfiguration
 
     public function getImageIIIFInfoURL($jp2ObjectName): string
     {
-        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/info.json";
+        return $this->getIIIFBaseUrl() . $jp2ObjectName;
     }
 
     public function getImageIIIFURL4Barcode($jp2ObjectName): string
