@@ -115,7 +115,7 @@ class IiifManifest_v2
     {
         $canvasObject = $this->getJSONCanvasPrototype();
         $canvasObject["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#canvas";
-        $canvasObject["label"] = $photo->getFullSpecimenId();
+        $canvasObject["label"] = $photo->getJp2Filename();
         $canvasObject["height"] = $photo->getHeight();
         $canvasObject["width"] = $photo->getWidth();
         $canvasObject["images"][] = $this->mapImageObject($photo);

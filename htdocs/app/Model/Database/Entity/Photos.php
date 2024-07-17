@@ -158,7 +158,7 @@ class Photos
 
     public function getFullSpecimenId(): string
     {
-        return $this->getHerbarium()->getAcronym()."_".sprintf('%08d', $this->getSpecimenId());
+        return $this->getHerbarium()->getAcronym()."_".sprintf('%06d', $this->getSpecimenId());
     }
 
 }
