@@ -1,7 +1,12 @@
 parameters:
     database:
-        driver: pdo_mysql
-        port: 3306
+        dbname: jacq
+        driver: pdo_pgsql
+        port: 5432
+        user: jacq
+        options:
+            lazy: true
+
     storage:
         archiveBucket: archive
         jp2Bucket: iiif

@@ -402,6 +402,17 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
+    public function getFullSpecimenId(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullSpecimenId', []);
+
+        return parent::getFullSpecimenId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId(): int
     {
         if ($this->__isInitialized__ === false) {
