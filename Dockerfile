@@ -1,24 +1,26 @@
-#https://github.com/dockette/web/tree/master/debian-php-83
-FROM dockette/web:php-83
+FROM ghcr.io/krkabol/php-fpm-noroot-socket:main
 LABEL org.opencontainers.image.source=https://github.com/krkabol/jacq-image-curator
 LABEL org.opencontainers.image.description="Image processing for JACQ herabrium service"
+USER root
 RUN apt-get update && apt-get dist-upgrade -y && \
     apt-get install -y --no-install-recommends \
         imagemagick \
-        zbar-tools \
-        php8.3-imagick && \
+        libgraphicsmagick1-dev \
+        libmagickwand-dev \
+        zbar-tools && \
+        pecl install imagick-3.7.0 && \
+    	docker-php-ext-enable imagick && \
         apt-get autoclean -y && \
         apt-get remove -y wget && \
         apt-get autoremove -y && \
         rm -rf /var/lib/apt/lists/* /var/lib/log/* /tmp/* /var/tmp/*
 
-# disable logs
-RUN rm /var/log/nginx/access.log && \
-    rm /var/log/nginx/error.log && \
-    rm -rf /srv/www
-
 #increase Imagick limits
 COPY ./policy.xml /etc/ImageMagick-v6/policy.xml
-COPY htdocs /srv/
+USER www
 
-RUN chmod -R 777 /srv/log /srv/temp
+# devoted for Kubernetes, where the app has to be copied into final destination after the container starts
+COPY htdocs /app
+
+## use in case you want to run in docker on local machine
+#COPY htdocs /var/www/html
