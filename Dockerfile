@@ -7,9 +7,11 @@ RUN apt-get update && apt-get dist-upgrade -y && \
         imagemagick \
         libgraphicsmagick1-dev \
         libmagickwand-dev \
+        libpq-dev \
         zbar-tools && \
         pecl install imagick-3.7.0 && \
     	docker-php-ext-enable imagick && \
+        docker-php-ext-install pdo pdo_pgsql pgsql opcache && \
         apt-get autoclean -y && \
         apt-get remove -y wget && \
         apt-get autoremove -y && \
