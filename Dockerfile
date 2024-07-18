@@ -19,7 +19,7 @@ RUN apt-get update && apt-get dist-upgrade -y && \
 COPY ./policy.xml /etc/ImageMagick-v6/policy.xml
 USER www
 
-# devoted for Kubernetes, where the app has to be copied into final destination after the container starts
+# devoted for Kubernetes, where the app has to be copied into final destination (/srv) after the container starts
 COPY htdocs /app
 
 ## use in case you want to run in docker on local machine
