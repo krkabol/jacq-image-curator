@@ -24,7 +24,7 @@ final class Version20240718123809 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_40DF22BA512D8851 ON herbaria (acronym)');
         $this->addSql('COMMENT ON TABLE herbaria IS \'List of involved herbaria\'');
         $this->addSql('COMMENT ON COLUMN herbaria.acronym IS \'Acronym of herbarium according to Index Herbariorum\'');
-        $this->addSql('CREATE TABLE photos (id SERIAL NOT NULL, herbarium_id INT DEFAULT NULL, archive_filename VARCHAR(255) NOT NULL, jp2filename VARCHAR(255) NOT NULL, specimen_id VARCHAR(255) DEFAULT NULL, width INT DEFAULT NULL, height INT DEFAULT NULL, archive_file_size BIGINT DEFAULT NULL, jp2file_size BIGINT DEFAULT NULL, finalized BOOLEAN NOT NULL, message VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE photos (id SERIAL NOT NULL, herbarium_id INT DEFAULT NULL, archive_filename VARCHAR(255) NOT NULL, jp2filename VARCHAR(255) NOT NULL, specimen_id VARCHAR(255) DEFAULT NULL, width INT DEFAULT NULL, height INT DEFAULT NULL, archive_file_size BIGINT DEFAULT NULL, jp2file_size BIGINT DEFAULT NULL, finalized BOOLEAN NOT NULL, message text DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_876E0D911642609 ON photos (archive_filename)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_876E0D9765B2490 ON photos (jp2filename)');
         $this->addSql('CREATE INDEX IDX_876E0D9DD127992 ON photos (herbarium_id)');

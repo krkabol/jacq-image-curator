@@ -81,7 +81,7 @@ final class StorageConfiguration
 
     public function getHerbariumAcronymFromId($specimenId): string
     {
-        return $this->splitId($specimenId)["herbarium"];
+        return strtoupper($this->splitId($specimenId)["herbarium"]);
     }
 
     protected function splitId($specimenId)
