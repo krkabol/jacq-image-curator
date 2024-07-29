@@ -11,6 +11,7 @@ use App\Model\IIIF\ManifestFactory;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\UI\Base\BasePresenter;
+use Nette\Application\BadRequestException;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -80,8 +81,13 @@ final class IiifPresenter extends BasePresenter
 
     public function actionManifest($id)
     {
+
         $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
+        $specimen = $this->photosRepository->findOneBy(['specimenId' => $specimenId, 'herbarium' => $herbariumAcronym]);
+        if ($specimen === null){
+            throw new BadRequestException('Specimen not found', 404);
+        }
 
         $relativeLink = $this->link('this');
         $absoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
