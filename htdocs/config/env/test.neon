@@ -10,6 +10,3 @@ parameters:
         archiveBucket: test_archive
         jp2Bucket: test_iiif
         newBucket: test_new
-
-services:
-    cache.storage: Nette\Caching\Storages\DevNullStorage

@@ -8,9 +8,6 @@ parameters:
             lazy: true
 
     storage:
-        archiveBucket: archive
-        jp2Bucket: iiif
-        newBucket: new
         jp2Quality: 46
         specimenRegex: '/^(?P<herbarium>[a-zA-Z]+)_(?P<specimenId>\d+)$/'
         barcodeRegex: '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/'

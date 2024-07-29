@@ -1,7 +1,8 @@
 includes:
 	- base.neon
 
-database:
-	dsn: 'mysql:host=mariadb-viewer;dbname=images'
-	user: images
-	password: images
+parameters:
+    storage:
+        archiveBucket: archive
+        jp2Bucket: iiif
+        newBucket: new
