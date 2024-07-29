@@ -3,13 +3,13 @@ includes:
 
 parameters:
     database:
-        dbname: test_jacq
-        user: test_jacq
+        dbname: curator
+        user: curator
 
     storage:
-        archiveBucket: test_archive
-        jp2Bucket: test_iiif
-        newBucket: test_new
+        archiveBucket: test-archive
+        jp2Bucket: test-iiif
+        newBucket: test-new
 
 services:
     cache.storage: Nette\Caching\Storages\DevNullStorage

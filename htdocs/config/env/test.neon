@@ -7,6 +7,6 @@ parameters:
         user: test_jacq
 
     storage:
-        archiveBucket: test_archive
-        jp2Bucket: test_iiif
-        newBucket: test_new
+        archiveBucket: test-archive
+        jp2Bucket: test-iiif
+        newBucket: test-new
