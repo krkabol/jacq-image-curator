@@ -8,8 +8,7 @@ use app\Model\Database\Entity\Herbaria;
 use app\Model\Database\Entity\Photos;
 use app\Model\Database\Repository\PhotosRepository;
 use app\Services\StorageConfiguration;
-use Nette\Utils\Strings;
-
+use Nette\Application\LinkGenerator;
 class IiifManifest_v2
 {
     protected $default;
@@ -21,10 +20,12 @@ class IiifManifest_v2
     /** @var PhotosRepository */
     protected $photosRepository;
     protected StorageConfiguration $storageConfiguration;
+    protected LinkGenerator $linkGenerator;
 
-    public function __construct($repository, StorageConfiguration $configuration)
+    public function __construct($repository, StorageConfiguration $configuration, LinkGenerator $linkGenerator)
     {
         $this->photosRepository = $repository;
+        $this->linkGenerator = $linkGenerator;
         $this->storageConfiguration = $configuration;
         $filePath = '../app/Model/IIIF/v2.json'; //https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
 //        https://iiif.jacq.org/b/?manifest=https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
@@ -108,6 +109,7 @@ class IiifManifest_v2
         $imageObject["resource"]["service"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
         $imageObject["resource"]["height"] = $photo->getHeight();
         $imageObject["resource"]["width"] = $photo->getWidth();
+        $imageObject["metadata"][] = ["label"=>"Archive Master file (TIFF)", "value"=>"<a href='".$this->linkGenerator->link("Iiif:archiveImage", [$photo->getArchiveFilename()])."'>download original</a>"];
         return $imageObject;
     }
 
