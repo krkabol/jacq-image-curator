@@ -2,9 +2,11 @@ includes:
 	- base.neon
 
 parameters:
+    environment: 'testing'
     database:
-        dbname: test_jacq
-        user: test_jacq
+        host: jacq-pg-cluster-rw
+        dbname: jacq_test
+        user: jacq_test
 
     storage:
         archiveBucket: test-archive

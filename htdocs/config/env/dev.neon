@@ -2,6 +2,7 @@ includes:
 	- base.neon
 
 parameters:
+    environment: 'development'
     database:
         host: curator-db
 

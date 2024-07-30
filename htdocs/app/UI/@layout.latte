@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
 
-    <title>{ifset title}{include title|stripHtml} | {/ifset}JACQ CZ/PRC</title>
-
+    <title>{ifset $platform} |! {$platform} || {/ifset} {ifset title}{include title|stripHtml} | {/ifset}JACQ CZ/PRC </title>
     <!-- Meta -->
     <meta name="description" n:ifset="#description" content="{include #description}">
     <meta name="keywords" n:ifset="#keywords" content="{include #keywords}">

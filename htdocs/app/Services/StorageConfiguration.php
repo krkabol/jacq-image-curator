@@ -13,7 +13,6 @@ final class StorageConfiguration
     {
         $this->config = $config;
     }
-
     public function getAllBuckets(): array
     {
         return [$this->getNewBucket(), $this->getArchiveBucket(), $this->getJP2Bucket()];

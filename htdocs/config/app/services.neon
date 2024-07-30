@@ -8,6 +8,7 @@ services:
     - App\Services\WebDir(%wwwDir%)
     - App\Services\TempDir(%tempDir%)
     - App\Services\StorageConfiguration(%storage%)
+    - App\Services\AppConfiguration(@container::getParameters())
     - App\Model\PhotoOfSpecimenFactory
     - App\Model\ImportStages\StageFactory
     - App\Model\UpdateStages\StageFactory

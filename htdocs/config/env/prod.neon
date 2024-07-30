@@ -2,6 +2,9 @@ includes:
 	- base.neon
 
 parameters:
+    environment: 'production'
+    database:
+        host: jacq-pg-cluster-rw
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
