@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace app\UI\Iiif;
 
 use App\Model\Database\EntityManager;
-use App\Model\IIIF\IiifManifest_v2;
-use app\Model\IIIF\IiifManifest_v3;
 use App\Model\IIIF\ManifestFactory;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
@@ -31,10 +29,10 @@ final class IiifPresenter extends BasePresenter
     /** @inject  */
     public ManifestFactory $manifestFactory;
 
-    public function beforeRender()
+    public function startup()
     {
         $this->photosRepository = $this->entityManager->getPhotosRepository();
-        parent::beforeRender();
+        parent::startup();
     }
 
     public function actionArchiveImage($id)
@@ -84,7 +82,8 @@ final class IiifPresenter extends BasePresenter
 
         $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
-        $specimen = $this->photosRepository->findOneBy(['specimenId' => $specimenId, 'herbarium' => $herbariumAcronym]);
+        $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($herbariumAcronym);
+        $specimen = $this->photosRepository->findOneBy(['specimenId' => $specimenId, 'herbarium' => $herbarium]);
         if ($specimen === null){
             throw new BadRequestException('Specimen not found', 404);
         }
