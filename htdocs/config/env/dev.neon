@@ -2,10 +2,9 @@ includes:
 	- base.neon
 
 parameters:
-    environment: 'development'
+    environment: development
     database:
         host: curator-db
-
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif

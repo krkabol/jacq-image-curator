@@ -17,11 +17,11 @@ final class Error4xxPresenter extends Nette\Application\UI\Presenter
 	public function renderDefault(Nette\Application\BadRequestException $exception): void
 	{
 		// renders the appropriate error template based on the HTTP status code
-		$code = $exception->getCode();
-		$file = is_file($file = __DIR__ . "/Error4xxPresenter.php")
-			? $file
-			: __DIR__ . '/4xx.latte';
-		$this->template->httpCode = $code;
-		$this->template->setFile($file);
+        $code = $exception->getCode();
+        $file = is_file($file = __DIR__ . "/$code.latte")
+            ? $file
+            : __DIR__ . '/4xx.latte';
+        $this->template->httpCode = $code;
+        $this->template->setFile($file);
 	}
 }

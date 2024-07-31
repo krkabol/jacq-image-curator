@@ -2,12 +2,11 @@ includes:
 	- base.neon
 
 parameters:
-    environment: 'testing'
+    environment: test
     database:
         host: jacq-pg-cluster-rw
         dbname: jacq_test
         user: jacq_test
-
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif

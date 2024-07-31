@@ -85,7 +85,7 @@ final class IiifPresenter extends BasePresenter
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($herbariumAcronym);
         $specimen = $this->photosRepository->findOneBy(['specimenId' => $specimenId, 'herbarium' => $herbarium]);
         if ($specimen === null){
-            throw new BadRequestException('Specimen not found', 404);
+            $this->error('Specimen not found', 404);
         }
 
         $relativeLink = $this->link('this');
