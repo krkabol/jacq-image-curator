@@ -3,9 +3,10 @@
 namespace app\Model\Database\Entity;
 
 use app\Model\Database\Entity\Attributes\TId;
+use app\Model\Database\Repository\HerbariaRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: HerbariaRepository::class)]
 #[ORM\Table(name: 'herbaria', options: ["comment" => "List of involved herbaria"])]
 class Herbaria
 {

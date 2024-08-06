@@ -4,10 +4,11 @@ namespace app\Model\Database\Entity;
 
 use app\Model\Database\Entity\Attributes\TCreatedAt;
 use app\Model\Database\Entity\Attributes\TId;
+use app\Model\Database\Repository\PhotosRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: PhotosRepository::class)]
 #[ORM\Table(name: 'photos', options: ["comment" => "Specimen photos"])]
 class Photos
 {

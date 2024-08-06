@@ -52,7 +52,7 @@ class RegisterStage implements StageInterface
     {
         /** @var PhotoOfSpecimen $payload */
         $entity = new Photos();
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($payload->getHerbariumAcronym());
+        $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($payload->getHerbariumAcronym());
         $entity
             ->setCreatedAt()
             ->setArchiveFilename($payload->getObjectKey())

@@ -62,6 +62,7 @@ class UpdateRecords extends Command
                 $i=0;
             }
         }
+        $this->entityManager->flush();
         return Command::SUCCESS;
     }
 

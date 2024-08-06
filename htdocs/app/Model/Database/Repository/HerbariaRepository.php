@@ -11,17 +11,16 @@ use app\Model\Database\Entity\Herbaria;
  * @method Herbaria[] findBy(array $criteria, array $orderBy = NULL, ?int $limit = NULL, ?int $offset = NULL)
  * @extends AbstractRepository<Herbaria>
  */
-class HerbariaRepository extends AbstractRepository
+final class HerbariaRepository extends AbstractRepository
 {
 
-    public function findOneByAcronym(string $acronym): ?Herbaria
+    public function findOneWithAcronym(string $acronym): ?Herbaria
     {
-        return $this->getEntityManager()->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->where('upper(a.acronym) = upper(:acronym)')
             ->setParameter('acronym', $acronym)
-            ->setMaxResults(1)
             ->getQuery()
-            ->execute();
+            ->getOneOrNullResult();
     }
 
 }

@@ -59,7 +59,7 @@ final class IiifPresenter extends BasePresenter
     {
         $acronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($acronym);
+        $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($acronym);
         $images = $this->photosRepository->findBy(["herbarium" => $herbarium, "specimenId" => $specimenId]);
         if (count($images) === 0) {
             $this->error("Specimen " . $id . "not in evidence.");
@@ -82,7 +82,7 @@ final class IiifPresenter extends BasePresenter
 
         $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneByAcronym($herbariumAcronym);
+        $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($herbariumAcronym);
         $specimen = $this->photosRepository->findOneBy(['specimenId' => $specimenId, 'herbarium' => $herbarium]);
         if ($specimen === null){
             $this->error('Specimen not found', 404);
