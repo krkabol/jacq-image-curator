@@ -14,26 +14,22 @@ class Bootstrap
         $configurator = new Configurator;
         $appDir = dirname(__DIR__);
 
-        if (getenv('NETTE_ENV', true) === 'development') {
-            $configurator->setDebugMode(true);
-        }
         //$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
         $configurator->enableTracy($appDir . '/log');
-
         $configurator->setTempDirectory($appDir . '/temp');
 
         $configurator->createRobotLoader()
             ->addDirectory(__DIR__)
             ->register();
 
-        $configurator->addStaticParameters([
-            'rootDir' => realpath(__DIR__ . '/..'),
-            'appDir' => __DIR__,
-            'wwwDir' => realpath(__DIR__ . '/../www'),
+        $configurator->addDynamicParameters([
+            'env' => getenv(),
         ]);
-        $environment =getenv('NETTE_ENV', true);
+
+        $environment = getenv('NETTE_ENV', true);
         switch ($environment) {
             case "development":
+                $configurator->setDebugMode(true);
                 $configurator->addConfig($appDir . '/config/env/dev.neon');
                 break;
             case "test":
