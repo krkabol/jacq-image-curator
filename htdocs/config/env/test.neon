@@ -4,10 +4,10 @@ includes:
 parameters:
     environment: test
     database:
-        host: jacq-pg-cluster-rw
+        host: jacq-pgsql-cluster-rw
         dbname: jacq_test
         user: jacq_test
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif
-        newBucket: test-new
+        newBucket: herbarium-test
