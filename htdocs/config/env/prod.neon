@@ -3,7 +3,7 @@ includes:
 
 parameters:
     database:
-        host: jacq-pg-cluster-rw
+        host: jacq-pgsql-cluster-rw
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
