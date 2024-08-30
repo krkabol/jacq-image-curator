@@ -14,3 +14,5 @@ docker run --rm --interactive --tty \
         -w="/data" \
         --entrypoint "npm" \
         node $COMMAND
+
+# ./npm.sh rebuild node-sass
