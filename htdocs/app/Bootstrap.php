@@ -14,10 +14,7 @@ class Bootstrap
         $configurator = new Configurator;
         $appDir = dirname(__DIR__);
 
-        //$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
-        $configurator->enableTracy($appDir . '/log');
         $configurator->setTempDirectory($appDir . '/temp');
-
         $configurator->createRobotLoader()
             ->addDirectory(__DIR__)
             ->register();
@@ -29,16 +26,19 @@ class Bootstrap
         $environment = getenv('NETTE_ENV', true);
         switch ($environment) {
             case "development":
-                $configurator->setDebugMode(true);
                 $configurator->addConfig($appDir . '/config/env/dev.neon');
+                $configurator->setDebugMode(true);
                 break;
             case "test":
                 $configurator->addConfig($appDir . '/config/env/test.neon');
+                //$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
                 break;
             default:
                 $configurator->addConfig($appDir . '/config/env/prod.neon');
         }
         $configurator->addConfig($appDir . '/config/local.neon');
+        $configurator->enableTracy($appDir . '/log');
+
         return $configurator;
     }
 }
