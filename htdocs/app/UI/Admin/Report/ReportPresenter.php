@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Report;
+namespace App\UI\Admin\Report;
 
 use App\Services\ReportService;
 use app\Services\S3Service;

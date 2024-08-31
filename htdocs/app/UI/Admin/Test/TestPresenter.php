@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Test;
+namespace App\UI\Admin\Test;
 
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
@@ -26,7 +26,7 @@ final class TestPresenter extends SecuredPresenter
 
    public function checkRequirements($element): void
    {
-       if($this->user->getId()!=="admin"){
+       if($this->user->getId()!=="admin" ||  getenv('NETTE_ENV', true) == "production"){
            $this->redirect(BasePresenter::DESTINATION_AFTER_SIGN_IN);
        }
        parent::checkRequirements($element);

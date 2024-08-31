@@ -1,6 +1,5 @@
 {block content}
 <h2>Management of images</h2>
-<a n:href="Sign:out">Sign out</a><hr>
 
 1. [link for image processing temporally disabled], but you can run <a n:href=":dryrun">dry run</a> to control images in <em>new</em> bucket. Limit for single batch processing is {\app\Services\ImageService::LIMIT} files.
 <pre>
@@ -24,9 +23,9 @@
 <ul>
     <li><a href="https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg" target="test">https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg</a>
     </li>
-    <li>proxy to Archive Tiff - <a n:href="Iiif:archiveImage 'prc_407087.tif'" target="test">{link Iiif:archiveImage 'prc_407087.tif'}</a>
+    <li>proxy to Archive Tiff - <a n:href=":Front:Iiif:archiveImage 'prc_407087.tif'" target="test">{link :Front:Iiif:archiveImage 'prc_407087.tif'}</a>
     </li>
-    <li>specimen info page - <a n:href="Iiif:specimen 'prc_407087'" target="test">{link Iiif:specimen 'prc_407087'}</a>
+    <li>specimen info page - <a n:href=":Front:Iiif:specimen 'prc_407087'" target="test">{link :Front:Iiif:specimen 'prc_407087'}</a>
     </li>
 </ul>
 

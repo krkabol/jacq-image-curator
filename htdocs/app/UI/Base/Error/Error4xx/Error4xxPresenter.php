@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Error\Error4xx;
+namespace App\UI\Base\Error\Error4xx;
 
 use Nette;
 use Nette\Application\Attributes\Requires;

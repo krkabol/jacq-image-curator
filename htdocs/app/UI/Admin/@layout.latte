@@ -1,0 +1,42 @@
+{layout '../Base/@layout.latte'}
+    {block main}
+<nav class="navbar navbar-expand-lg navbar bg-primary-subtle mb-2 py-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" n:href="Home:"><img src="{$basePath}/logo/jacq.png" class="m-0"
+                                                    style="width: 100px; height: 40px" alt="JACQ"><em>images</em>CZ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link {if $presenter->isLinkCurrent('Report:')}active{/if}"
+                       n:href="Report:">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {if $presenter->isLinkCurrent('Test:')}active{/if}"
+                       n:href="Test:">Dev</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link" n:href=":Admin:Sign:out"><i class="bi bi-box-arrow-in-right"></i> Sign out</a>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="container-fluid">
+        <div class="col-sm-12">
+            <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+        </div>
+        {include content}
+    </div>
+</div>
+    {/block}

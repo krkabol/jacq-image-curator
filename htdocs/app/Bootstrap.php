@@ -31,7 +31,6 @@ class Bootstrap
                 break;
             case "test":
                 $configurator->addConfig($appDir . '/config/env/test.neon');
-                //$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
                 break;
             default:
                 $configurator->addConfig($appDir . '/config/env/prod.neon');

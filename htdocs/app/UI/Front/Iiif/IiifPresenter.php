@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Iiif;
+namespace App\UI\Front\Iiif;
 
 use App\Model\Database\EntityManager;
 use App\Model\IIIF\ManifestFactory;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
-use app\UI\Base\BasePresenter;
-use Nette\Application\BadRequestException;
+use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request;
 use Nette\Http\Response;
 
 
-final class IiifPresenter extends BasePresenter
+final class IiifPresenter extends UnsecuredPresenter
 {
     /** @inject */
     public S3Service $s3Service;

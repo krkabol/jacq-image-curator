@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Curator;
+namespace App\UI\Admin\Home;
 
 use app\Services\ImageService;
 use app\UI\Base\SecuredPresenter;
 
 
-final class CuratorPresenter extends SecuredPresenter
+final class HomePresenter extends SecuredPresenter
 {
     /** @inject */
     public ImageService $imageService;

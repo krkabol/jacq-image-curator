@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Error\Error5xx;
+namespace App\UI\Base\Error\Error5xx;
 
 use Nette;
 use Nette\Application\Responses;

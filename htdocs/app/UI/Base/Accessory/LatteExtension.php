@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Accessory;
+namespace App\UI\Base\Accessory;
 
 use Latte\Extension;
 use Nette\Utils\Html;

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace app\UI\Sign;
+namespace App\UI\Admin\Sign;
 
 use app\UI\Base\BasePresenter;
+use App\UI\Base\Form\FormFactory;
 use app\UI\Base\SecuredPresenter;
-use App\UI\Form\FormFactory;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;
 

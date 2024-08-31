@@ -21,14 +21,17 @@ latte:
 	strictTypes: yes
 	strictParsing: yes
 	extensions:
-		- App\UI\Accessory\LatteExtension
+		- App\UI\Base\Accessory\LatteExtension
 
 application:
 	catchExceptions: %productionMode%
 	errorPresenter:
-		4xx: Error:Error4xx
-		5xx: Error:Error5xx
-	mapping: App\UI\*\**Presenter
+		4xx: Base:Error:Error4xx
+		5xx: Base:Error:Error5xx
+	mapping:
+		Admin: App\UI\Admin\**Presenter
+		Front: App\UI\Front\**Presenter
+
 
 di:
 	debugger: true
