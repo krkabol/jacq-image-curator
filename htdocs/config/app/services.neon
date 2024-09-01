@@ -1,5 +1,6 @@
 services:
     - App\Core\RouterFactory::createRouter
+    - App\Security\UserAuthenticator
     - App\Services\S3Service
     - App\Services\TestService
     - App\Services\ImageService

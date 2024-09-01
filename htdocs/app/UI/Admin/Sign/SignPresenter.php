@@ -44,7 +44,7 @@ final class SignPresenter extends SecuredPresenter
             $this->user->setExpiration($form->values->remember ? '14 days' : '20 minutes');
             $this->user->login($form->values->username, $form->values->password);
         } catch (AuthenticationException $e) {
-            $form->addError('Invalid username or password');
+            $form->addError('Invalid credentials');
 
             return;
         }

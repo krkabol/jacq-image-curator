@@ -1,0 +1,43 @@
+{block content}
+<h2>Management of images</h2>
+
+1. [link for image processing temporally disabled], but you can run <a n:href=":dryrun">dry run</a> to control images in <em>new</em> bucket. Limit for single batch processing is {\app\Services\ImageService::LIMIT} files.
+<pre>
+    <b>Implemented steps of image processing:</b>
+            --dryrun
+            filename - split acronym and specimenId, check validity {1|status}
+            novelty - check if the same file is already in archive {1|status}
+            dimensions - read height, width {1|status}
+            barcode - detect barcode and check for consistency with filename {1|status}
+            --after dryrun
+            convert - creates JP2 file and put to bucket, {1|status}
+            archive - move tiff file from <i>new</i> bucket to the <i>archive</i> bucket {1|status}
+            cleanup - remove temp file {1|status}
+            register - read size of JP2+tiff file, write all info into database {1|status}
+    <b>Requested:</b>
+</pre>
+
+2. <a n:href="Report:">report</a> information about integrity of all components
+
+<h4>links</h4>
+<ul>
+    <li><a href="https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg" target="test">https://herbarium2.natur.cuni.cz/iiif/2/prc_407087.jp2/full/300,/0/default.jpg</a>
+    </li>
+    <li>proxy to Archive Tiff - <a n:href=":Front:Iiif:archiveImage 'prc_407087.tif'" target="test">{link :Front:Iiif:archiveImage 'prc_407087.tif'}</a>
+    </li>
+    <li>specimen info page - <a n:href=":Front:Iiif:specimen 'prc_407087'" target="test">{link :Front:Iiif:specimen 'prc_407087'}</a>
+    </li>
+</ul>
+
+<hr>
+
+<h4>ideas</h4>
+<ul>
+    <li>proxy linking public to archive tiff file or ACL ?</li>
+    <li>allow bucket-versioning or disable rewrite ?</li>
+    <li>scheduled processing of new data or on request?</li>
+    <li>manifest.json</li>
+    <li>specimenID (numeric) and herbariumid (acronym + numeric part) - is it generally accepted..?</li>
+    <li>leading zeros in specimenid</li>
+    <li>store jp2 filename in db?</li>
+</ul>

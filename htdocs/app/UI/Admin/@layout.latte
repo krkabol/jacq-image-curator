@@ -22,9 +22,23 @@
                 </li>
             </ul>
             <form class="d-flex">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-                    <li class="nav-item">
-                        <a class="nav-link" n:href=":Admin:Sign:out"><i class="bi bi-box-arrow-in-right"></i> Sign out</a>
+                <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center justify-content-end">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person"></i> {$user->getIdentity()->name}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" href=":Admin:User:password"><i class="bi bi-shield-lock"></i>-->
+<!--                                    Change password</a>-->
+<!--                            </li>-->
+<!--                            <hr class="dropdown-divider">-->
+                            <li>
+                                <a class="dropdown-item" n:href=":Admin:Sign:out"><i class="bi bi-box-arrow-right"></i>
+                                    Sign out</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </form>

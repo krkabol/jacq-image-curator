@@ -1,0 +1,18 @@
+<?php declare(strict_types = 1);
+
+namespace app\Model\Database\Repository;
+
+use app\Model\Database\Entity\User;
+
+/**
+ * @method User|NULL find($id, ?int $lockMode = NULL, ?int $lockVersion = NULL)
+ * @method User|NULL findOneBy(array $criteria, array $orderBy = NULL)
+ * @method User[] findAll()
+ * @method User[] findBy(array $criteria, array $orderBy = NULL, ?int $limit = NULL, ?int $offset = NULL)
+ * @extends AbstractRepository<User>
+ */
+class UserRepository extends AbstractRepository
+{
+
+
+}

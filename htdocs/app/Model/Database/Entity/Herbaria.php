@@ -14,8 +14,14 @@ class Herbaria
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "Acronym of herbarium according to Index Herbariorum"])]
     protected string $acronym;
 
-    #[ORM\OneToMany(targetEntity: "Photos", mappedBy: "herbarium")]
+    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "S3 bucket where are stored new images before imported to the repository"])]
+    protected string $bucket;
+
+    #[ORM\OneToMany(mappedBy: "herbarium", targetEntity: "Photos")]
     protected $photos;
+
+    #[ORM\OneToMany(mappedBy: "herbarium", targetEntity: "User")]
+    protected $users;
 
     public function getAcronym(): string
     {
@@ -28,5 +34,9 @@ class Herbaria
         return $this;
     }
 
+    public function getBucket(): string
+    {
+        return $this->bucket;
+    }
 
 }
