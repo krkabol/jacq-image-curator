@@ -4,14 +4,10 @@ namespace app\Services;
 
 use app\Model\ImportStages\FilenameControlException;
 
-final class StorageConfiguration
+final readonly class StorageConfiguration
 {
-
-    private array $config;
-
-    public function __construct(array $config)
+    public function __construct(private array $config)
     {
-        $this->config = $config;
     }
     public function getAllBuckets(): array
     {

@@ -9,13 +9,10 @@ use Aws\Result;
 use Aws\S3\S3Client;
 use Nette\Neon\Exception;
 
-class S3Service
+readonly class S3Service
 {
-    private S3Client $s3;
-
-    public function __construct(S3Client $s3)
+    public function __construct(protected S3Client $s3)
     {
-        $this->s3 = $s3;
     }
 
     public function bucketsExists(array $buckets): bool

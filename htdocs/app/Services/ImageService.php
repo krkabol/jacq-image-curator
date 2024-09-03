@@ -13,20 +13,10 @@ use Nette\Neon\Exception;
 
 class ImageService
 {
-    const LIMIT = 100;
-    protected S3Service $S3Service;
-    protected PhotoOfSpecimenFactory $photoOfSpecimenFactory;
-    protected StageFactory $stageFactory;
-    protected StorageConfiguration $storageConfiguration;
-
-    public function __construct(S3Service $S3Service, PhotoOfSpecimenFactory $photoOfSpecimenFactory, StageFactory $stageFactory, StorageConfiguration $storageConfiguration)
+    const int LIMIT = 100;
+    public function __construct(protected readonly S3Service $S3Service, protected readonly PhotoOfSpecimenFactory $photoOfSpecimenFactory, protected readonly StageFactory $stageFactory, protected readonly StorageConfiguration $storageConfiguration)
     {
-        $this->S3Service = $S3Service;
-        $this->photoOfSpecimenFactory = $photoOfSpecimenFactory;
-        $this->stageFactory = $stageFactory;
-        $this->storageConfiguration = $storageConfiguration;
     }
-
 
     public function proceedNewImages(): array
     {        throw new Exception("not tested in production !");

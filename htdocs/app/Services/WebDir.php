@@ -3,14 +3,11 @@
 
 namespace app\Services;
 
-class WebDir
+readonly class WebDir
 {
 
-    protected $wwwDir;
-
-    public function __construct($wwwDir)
+    public function __construct(protected string $wwwDir)
     {
-        $this->wwwDir = $wwwDir;
     }
 
     public function getPath($fromBaseDir = '')

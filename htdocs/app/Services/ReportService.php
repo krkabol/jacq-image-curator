@@ -9,17 +9,12 @@ use App\Model\Database\EntityManager;
 
 final class ReportService
 {
-    protected S3Service $S3Service;
-
-    protected StorageConfiguration $storageConfiguration;
     protected $photosRepository;
 
     protected $dbRecords;
 
-    public function __construct(S3Service $S3Service, StorageConfiguration $storageConfiguration, EntityManager $entityManager)
+    public function __construct(protected readonly S3Service $S3Service, protected readonly StorageConfiguration $storageConfiguration, protected readonly EntityManager $entityManager)
     {
-        $this->S3Service = $S3Service;
-        $this->storageConfiguration = $storageConfiguration;
         $this->photosRepository = $entityManager->getPhotosRepository();
     }
 

@@ -13,26 +13,9 @@ use Nette\Neon\Exception;
 
 class TestService
 {
-    protected WebDir $webDir;
-
-    const LIMIT = 10;
-    protected S3Service $S3Service;
-    protected PhotoOfSpecimenFactory $photoOfSpecimenFactory;
-    protected StageFactory $stageFactory;
-    protected StorageConfiguration $storageConfiguration;
-    protected ImageService $imageService;
-
-    protected EntityManager $entityManager;
-
-    public function __construct(WebDir $webDir,S3Service $S3Service, PhotoOfSpecimenFactory $photoOfSpecimenFactory, StageFactory $stageFactory, StorageConfiguration $storageConfiguration, ImageService $imageService, EntityManager $entityManager)
+    const int LIMIT = 10;
+    public function __construct(protected readonly WebDir $webDir,protected readonly S3Service $S3Service,protected readonly  PhotoOfSpecimenFactory $photoOfSpecimenFactory,protected readonly  StageFactory $stageFactory,protected readonly  StorageConfiguration $storageConfiguration,protected readonly  ImageService $imageService,protected readonly EntityManager $entityManager)
     {
-        $this->webDir = $webDir;
-        $this->S3Service = $S3Service;
-        $this->photoOfSpecimenFactory = $photoOfSpecimenFactory;
-        $this->stageFactory = $stageFactory;
-        $this->storageConfiguration = $storageConfiguration;
-        $this->imageService = $imageService;
-        $this->entityManager = $entityManager;
     }
 
     /** @deprecated

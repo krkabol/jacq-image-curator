@@ -5,11 +5,11 @@ services:
     - App\Services\TestService
     - App\Services\ImageService
     - App\Services\ReportService
-    - App\Services\DatabaseService
     - App\Services\WebDir(%wwwDir%)
     - App\Services\TempDir(%tempDir%)
     - App\Services\StorageConfiguration(%storage%)
     - App\Services\AppConfiguration(@container::getParameters())
+    - App\Services\CuratorService
     - App\Model\PhotoOfSpecimenFactory
     - App\Model\ImportStages\StageFactory
     - App\Model\UpdateStages\StageFactory
