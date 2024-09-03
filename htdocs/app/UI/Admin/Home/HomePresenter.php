@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\UI\Admin\Home;
 
-use App\Model\Database\EntityManager;
+use App\Services\CuratorService;
 use app\Services\ImageService;
-use app\Services\S3Service;
 use app\UI\Base\SecuredPresenter;
 
 final class HomePresenter extends SecuredPresenter
@@ -15,16 +14,18 @@ final class HomePresenter extends SecuredPresenter
     public ImageService $imageService;
 
     /** @inject */
-    public S3Service $s3Service;
+    public CuratorService $curatorService;
 
-    /** @inject */
-    public EntityManager $entityManager;
-
-    public function renderDefault()
+    public function renderImport()
     {
-        $herbariumId = $this->getUser()->getIdentity()->herbarium;
-        $herbarium = $this->entityManager->getHerbariaRepository()->find($herbariumId);
-        $this->template->files = $this->s3Service->listObjects($herbarium->getBucket());
+        $files = $this->curatorService->getAvailableNewFiles($this->getUser()->getIdentity()->herbarium);
+        $this->template->files = $files;
+        $this->template->eligible = count(array_filter($files, function ($item) {
+            return $item->isEligibleToBeImported() === true;
+        }));
+        $this->template->nonvalid = count(array_filter($files, function ($item) {
+            return $item->isEligibleToBeImported() === false;
+        }));
     }
 
     public function renderDryrun()
