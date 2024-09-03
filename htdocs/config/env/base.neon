@@ -31,6 +31,7 @@ application:
 	mapping:
 		Admin: App\UI\Admin\**Presenter
 		Front: App\UI\Front\**Presenter
+		Base: App\UI\Base\**Presenter
 
 
 di:
