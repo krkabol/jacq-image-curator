@@ -7,3 +7,12 @@
 
 <a href="https://editsvgcode.com/">editor</a>
 <a href="https://www.w3schools.com/graphics/svg_circle.asp">docs</a>
+
+<hr>
+<h4>Possible statuses of photos in the application</h4>
+<dl class="row">
+    {foreach $statuses as $status}
+    <dt class="col-sm-3">{$status->getName()}</dt>
+    <dd class="col-sm-9">{$status->getDescription()}</dd>
+    {/foreach}
+</dl>

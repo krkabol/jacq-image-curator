@@ -26,6 +26,10 @@ class Photos
     #[ORM\JoinColumn(name: "herbarium_id", referencedColumnName: "id", options: ["comment" => "Herbarium storing and managing the specimen data"])]
     protected Herbaria $herbarium;
 
+    #[ORM\ManyToOne(targetEntity: "PhotosStatus")]
+    #[ORM\JoinColumn(name: "status_id", referencedColumnName: "id", nullable: false, options: ["comment" => "Status of the photo"])]
+    protected PhotosStatus $status;
+
     #[ORM\Column(type: Types::STRING, nullable: true, options: ["comment" => "Herbarium internal unique id of specimen in form without herbarium acronym"])]
     protected ?string $specimenId;
 
@@ -44,6 +48,8 @@ class Photos
 
     #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "Result of migration"])]
     protected ?string $message;
+
+
 
     public function getArchiveFilename(): string
     {
@@ -161,5 +167,17 @@ class Photos
     {
         return $this->getHerbarium()->getAcronym()."_".sprintf('%06d', $this->getSpecimenId());
     }
+
+    public function getStatus(): PhotosStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(PhotosStatus $status): Photos
+    {
+        $this->status = $status;
+        return $this;
+    }
+
 
 }

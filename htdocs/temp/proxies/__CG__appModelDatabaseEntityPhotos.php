@@ -67,10 +67,10 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
+            return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
         }
 
-        return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
+        return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
     }
 
     /**
@@ -408,6 +408,28 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullSpecimenId', []);
 
         return parent::getFullSpecimenId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStatus(): \app\Model\Database\Entity\PhotosStatus
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStatus', []);
+
+        return parent::getStatus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStatus(\app\Model\Database\Entity\PhotosStatus $status): \app\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStatus', [$status]);
+
+        return parent::setStatus($status);
     }
 
     /**

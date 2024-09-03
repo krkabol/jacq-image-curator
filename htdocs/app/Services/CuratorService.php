@@ -25,4 +25,8 @@ readonly class CuratorService
         return $files;
     }
 
+    public function getAllStatuses():array
+    {
+        return $this->entityManager->getPhotosStatusRepository()->findAll();
+    }
 }

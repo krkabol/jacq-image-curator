@@ -16,6 +16,10 @@ final class HomePresenter extends SecuredPresenter
     /** @inject */
     public CuratorService $curatorService;
 
+    public function renderDefault()
+    {
+        $this->template->statuses = $this->curatorService->getAllStatuses();
+    }
     public function renderImport()
     {
         $files = $this->curatorService->getAvailableNewFiles($this->getUser()->getIdentity()->herbarium);

@@ -3,6 +3,7 @@
 namespace app\Model\Database;
 use app\Model\Database\Entity\Herbaria;
 use app\Model\Database\Entity\Photos;
+use app\Model\Database\Entity\PhotosStatus;
 use app\Model\Database\Entity\User;
 
 /**
@@ -24,6 +25,11 @@ trait TRepositories
     public function getUserRepository()
     {
         return $this->getRepository(User::class);
+    }
+
+    public function getPhotosStatusRepository()
+    {
+        return $this->getRepository(PhotosStatus::class);
     }
 
 }
