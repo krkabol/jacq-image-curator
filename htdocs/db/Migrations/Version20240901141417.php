@@ -45,8 +45,8 @@ final class Version20240901141417 extends AbstractMigration
         $this->addSql("INSERT INTO usersrole VALUES (DEFAULT, 'admin', 'curator privileges over all herbaria')");
         $this->addSql("INSERT INTO usersrole VALUES (DEFAULT, 'curator', 'manage photos in single herbarium')");
         $this->addSql("INSERT INTO usersrole VALUES (DEFAULT, 'guest', 'read only access to single herbarium')");
-        $this->addSql("INSERT INTO users VALUES (DEFAULT, 1, 1, 'admin', '$2y$10$iMv7YJoqFRGCrpWzVX/84e1NZcoeKbKMx1FIG9HhEcrBVHwglYeP2', 'Petr', 'Novotný', 'novotp@natur.cuni.cz', true, NULL, now(), now())");
-        $this->addSql("INSERT INTO users VALUES (DEFAULT, 1, 3, 'curator_prc_1', '$2y$10$iMv7YJoqFRGCrpWzVX/84e1NZcoeKbKMx1FIG9HhEcrBVHwglYeP2', 'Zdeněk', 'Vaněček', 'vanecekz@natur.cuni.cz', true, NULL, now(), now())");
+        $this->addSql('INSERT INTO users VALUES (DEFAULT, 1, 1, \'admin\', \'$2y$10$iMv7YJoqFRGCrpWzVX/84e1NZcoeKbKMx1FIG9HhEcrBVHwglYeP2\', \'Petr\', \'Novotný\', \'novotp@natur.cuni.cz\', true, NULL, now(), now())');
+        $this->addSql('INSERT INTO users VALUES (DEFAULT, 1, 3, \'curator_prc_1\', \'$2y$10$iMv7YJoqFRGCrpWzVX/84e1NZcoeKbKMx1FIG9HhEcrBVHwglYeP2\', \'Zdeněk\', \'Vaněček\', \'vanecekz@natur.cuni.cz\', true, NULL, now(), now())');
     }
 
     public function down(Schema $schema): void
