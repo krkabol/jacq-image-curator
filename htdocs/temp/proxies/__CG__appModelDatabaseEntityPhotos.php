@@ -67,10 +67,10 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
+            return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
         }
 
-        return ['__isInitialized__', 'archiveFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'finalized', 'message', 'id', 'createdAt'];
+        return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
     }
 
     /**
@@ -358,28 +358,6 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function isFinalized(): bool
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isFinalized', []);
-
-        return parent::isFinalized();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setFinalized(bool $finalized): \app\Model\Database\Entity\Photos
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFinalized', [$finalized]);
-
-        return parent::setFinalized($finalized);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getMessage(): ?string
     {
 
@@ -435,6 +413,28 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
+    public function getOriginalFilename(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOriginalFilename', []);
+
+        return parent::getOriginalFilename();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOriginalFilename(string $originalFilename): \app\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOriginalFilename', [$originalFilename]);
+
+        return parent::setOriginalFilename($originalFilename);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId(): int
     {
         if ($this->__isInitialized__ === false) {
@@ -467,6 +467,50 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreatedAt', []);
 
         return parent::setCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastEditAt(): \DateTime
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastEditAt', []);
+
+        return parent::getLastEditAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLastEditAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastEditAt', []);
+
+        return parent::setLastEditAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOriginalFileAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOriginalFileAt', []);
+
+        return parent::getOriginalFileAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOriginalFileAt($timestamp)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOriginalFileAt', [$timestamp]);
+
+        return parent::setOriginalFileAt($timestamp);
     }
 
 }

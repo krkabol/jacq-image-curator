@@ -20,7 +20,7 @@
             </table>
 
             {if $eligible>0}
-            <a href="#" class="btn btn-primary btn-lg" role="button">Send to repository</a>
+            <a n:href=":primaryImport" id="importButton" class="btn btn-primary btn-lg" role="button">Send to repository</a>
             {/if}
         </div>
         <div class="col">
@@ -28,20 +28,21 @@
                 <thead>
                 <tr>
                     <th scope="col">filename</th>
-                    <th scope="col">uploaded</th>
                     <th scope="col">created</th>
+                    <th scope="col">uploaded</th>
                     <th scope="col">size</th>
                     <th scope="col">filetypeCheck</th>
                     <th scope="col">sizeCheck</th>
-                    <th scope="col">availability</th>
+                    <th scope="col">alreadyWaiting</th>
+                    <th scope="col">action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach $files as $file}
                 <tr {if !$file->isEligibleToBeImported()}class="table-warning"{/if}>
                     <th>{$file->name}</th>
-                    <td>{$file->getUploaded()}</td>
                     <td>{$file->getCreated()}</td>
+                    <td>{$file->getUploaded()}</td>
                     <td>{$file->getSize()|bytes:1} <small>({$file->getSize()|number} bytes)</small></td>
                     <td title="Required type is {\App\Model\FileManagement\File::MIME_TYPE}">
                         {$file->isTypeOK()|status}
@@ -49,8 +50,12 @@
                     <td title="Required size is between {\App\Model\FileManagement\File::MIN_FILESIZE|bytes:1} and {\App\Model\FileManagement\File::MAX_FILESIZE|bytes:1}">
                         {$file->isSizeOK()|status}
                     </td>
-                    <td>{$file->isEligibleToBeImported()|status} {if $file->isEligibleToBeImported()}ready for
-                        imported{else}will be ignored{/if}
+                    <td title="Please be patient, this file should be processed by the repository soon">
+                        {$file->isAlreadyWaiting()|status}
+                    </td>
+                    <td>{if $file->isEligibleToBeImported()}{1|status} ready for upload
+                        {else}
+                        {if $file->isAlreadyWaiting()}🕑 already in processing{else}{0|status} is ignored{/if}{/if}
                     </td>
                 </tr>
                 {/foreach}

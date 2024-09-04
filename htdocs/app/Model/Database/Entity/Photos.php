@@ -4,6 +4,8 @@ namespace app\Model\Database\Entity;
 
 use app\Model\Database\Entity\Attributes\TCreatedAt;
 use app\Model\Database\Entity\Attributes\TId;
+use App\Model\Database\Entity\Attributes\TLastEditAt;
+use App\Model\Database\Entity\Attributes\TOriginalFileAt;
 use app\Model\Database\Repository\PhotosRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,11 +17,16 @@ class Photos
 
     use TId;
     use TCreatedAt;
+    use TLastEditAt;
+    use TOriginalFileAt;
 
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "Filename of Archive Master TIF file"])]
+    #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of Archive Master TIF file"])]
     protected string $archiveFilename;
 
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "Filename of JP2 file"])]
+    #[ORM\Column(nullable: true, options: ["comment" => "Filename that was provided during curator upload, could make sense or completely missing semantical content"])]
+    protected string $originalFilename;
+
+    #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of JP2 file"])]
     protected string $jp2Filename;
 
     #[ORM\ManyToOne(targetEntity: "Herbaria", inversedBy: "photos")]
@@ -43,8 +50,6 @@ class Photos
 
     #[ORM\Column(type: Types::BIGINT, nullable: true, options: ["comment" => "Filesize of converted JP2 file in bytes"])]
     protected ?int $JP2FileSize;
-    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ["comment" => "Flag with not finally usage decided yet"])]
-    protected bool $finalized = false;
 
     #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "Result of migration"])]
     protected ?string $message;
@@ -141,17 +146,6 @@ class Photos
         return $this;
     }
 
-    public function isFinalized(): bool
-    {
-        return $this->finalized;
-    }
-
-    public function setFinalized(bool $finalized): Photos
-    {
-        $this->finalized = $finalized;
-        return $this;
-    }
-
     public function getMessage(): ?string
     {
         return $this->message;
@@ -178,6 +172,18 @@ class Photos
         $this->status = $status;
         return $this;
     }
+
+    public function getOriginalFilename(): ?string
+    {
+        return $this->originalFilename;
+    }
+
+    public function setOriginalFilename(string $originalFilename): Photos
+    {
+        $this->originalFilename = $originalFilename;
+        return $this;
+    }
+
 
 
 }

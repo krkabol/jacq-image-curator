@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'photos_status', options: ["comment" => "List of allowed photo statuses"])]
 class PhotosStatus
 {
+    const int WAITING = 1;
     use TId;
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "name of the status"])]
     protected string $name;

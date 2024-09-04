@@ -11,3 +11,4 @@ parameters:
         archiveBucket: test-archive
         jp2Bucket: test-iiif
         newBucket: herbarium-test
+        uploadedBucket: test-new

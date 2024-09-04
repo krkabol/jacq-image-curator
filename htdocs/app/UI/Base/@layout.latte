@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>{ifset $platform} |! {$platform} || {/ifset} {ifset title}{include title|stripHtml} | {/ifset}JACQ
+    <title>{ifset $platform} |! {$platform} || {/ifset} {ifset $title}{$title} | {/ifset}JACQ
         CZ </title>
     <meta name="description" n:ifset="#description" content="{include #description}">
     <meta name="keywords" n:ifset="#keywords" content="{include #keywords}">

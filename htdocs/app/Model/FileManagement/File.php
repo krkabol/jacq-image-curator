@@ -11,9 +11,9 @@ readonly class File
     const int MIN_FILESIZE = 5242880;
     const int MAX_FILESIZE = 398458880;
 
-    const string MIME_TYPE = 'image/tif';
+    const string MIME_TYPE = 'image/tiff';
 
-    public function __construct(public readonly string $name, public readonly Result $info)
+    public function __construct(public readonly string $name, public readonly Result $info, public readonly bool $alreadyWaiting)
     {
 
     }
@@ -34,6 +34,17 @@ readonly class File
         return "unknown";
     }
 
+    public function getCreatedTimestamp(): ?\DateTimeImmutable
+    {
+        $data = $this->info->get("Metadata");
+
+        if (isset($data["origin-date-iso8601"])) {
+            return new \DateTimeImmutable($data["origin-date-iso8601"]);
+
+        }
+        return null;
+    }
+
     public function isSizeOK(): bool
     {
         return $this->getSize() >= self::MIN_FILESIZE && $this->getSize() <= self::MAX_FILESIZE;
@@ -49,9 +60,14 @@ readonly class File
         return $this->info->get("ContentType") === self::MIME_TYPE;
     }
 
+    public function isAlreadyWaiting(): bool
+    {
+        return $this->alreadyWaiting;
+    }
+
     public function isEligibleToBeImported(): bool
     {
-        return ($this->isSizeOK() && $this->isTypeOK());
+        return ($this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting());
     }
 
 }

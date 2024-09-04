@@ -17,9 +17,10 @@ trait TLastEditAt
 	}
 
     #[ORM\PreUpdate()]
-	public function setSetLastEditAt(): void
+	public function setLastEditAt()
 	{
 		$this->lastEdit = new \DateTime();
+        return $this;
 	}
 
 }

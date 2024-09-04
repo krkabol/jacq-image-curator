@@ -18,11 +18,14 @@ final class HomePresenter extends SecuredPresenter
 
     public function renderDefault()
     {
+        $this->template->title = 'Admin';
         $this->template->statuses = $this->curatorService->getAllStatuses();
     }
+
     public function renderUpload()
     {
-        $files = $this->curatorService->getAvailableNewFiles($this->getUser()->getIdentity()->herbarium);
+        $this->template->title = 'New Files';
+        $files = $this->curatorService->getAllCuratorBucketFiles($this->getUser()->getIdentity()->herbarium);
         $this->template->files = $files;
         $this->template->eligible = count(array_filter($files, function ($item) {
             return $item->isEligibleToBeImported() === true;
@@ -38,5 +41,16 @@ final class HomePresenter extends SecuredPresenter
         $this->setView("proceed");
         $this->template->success = $result[0];
         $this->template->error = $result[1];
+    }
+
+    public function actionPrimaryImport()
+    {
+        try {
+            $this->curatorService->registerNewFiles($this->getUser()->getIdentity()->herbarium);
+            $this->flashMessage("Files successfully marked to be processed", "success");
+        }catch (\Exception $exception){
+            $this->flashMessage("An error occured: ".$exception->getMessage(), "danger");
+        }
+        $this->redirect("upload");
     }
 }

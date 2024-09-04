@@ -439,12 +439,12 @@ class User extends \app\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function setSetLastEditAt(): void
+    public function setLastEditAt()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSetLastEditAt', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastEditAt', []);
 
-        parent::setSetLastEditAt();
+        return parent::setLastEditAt();
     }
 
 }

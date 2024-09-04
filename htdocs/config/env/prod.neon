@@ -7,4 +7,4 @@ parameters:
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
-        newBucket: new
+        uploadedBucket: new
