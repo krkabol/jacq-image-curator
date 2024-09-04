@@ -30,8 +30,14 @@ final class HomePresenter extends SecuredPresenter
         $this->template->eligible = count(array_filter($files, function ($item) {
             return $item->isEligibleToBeImported() === true;
         }));
-        $this->template->nonvalid = count(array_filter($files, function ($item) {
-            return $item->isEligibleToBeImported() === false;
+        $this->template->waiting = count(array_filter($files, function ($item) {
+            return $item->isAlreadyWaiting() === true;
+        }));
+        $this->template->sizeError = count(array_filter($files, function ($item) {
+            return $item->isSizeOK() === false;
+        }));
+        $this->template->typeError = count(array_filter($files, function ($item) {
+            return $item->isTypeOK() === false;
         }));
     }
 

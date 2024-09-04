@@ -4,18 +4,29 @@
     <h2>Files in the "new" bucket</h2>
     <div class="row">
         <div class="col-sm-12 col-md-2">
-            <table class="table table-striped">
+            <table class="table">
                 <tr>
-                    <td>Total count of files</td>
+                    <td><strong>Total count of files</strong></td>
                     <td>{count($files)}</td>
                 </tr>
                 <tr>
-                    <td>Eligible for import</td>
+                    <td><strong>Ready for import</strong></td>
                     <td>{$eligible}</td>
                 </tr>
+            </table>
+
+                <table class="table table-striped">
                 <tr>
-                    <td>Nonvalid</td>
-                    <td>{$nonvalid}</td>
+                    <td>Waiting for repository processing</td>
+                    <td>{$waiting}</td>
+                </tr>
+                <tr>
+                    <td>SizeCheck error</td>
+                    <td>{$sizeError}</td>
+                </tr>
+                <tr>
+                    <td>TypeCheck error</td>
+                    <td>{$typeError}</td>
                 </tr>
             </table>
 
@@ -28,7 +39,6 @@
                 <thead>
                 <tr>
                     <th scope="col">filename</th>
-                    <th scope="col">created</th>
                     <th scope="col">uploaded</th>
                     <th scope="col">size</th>
                     <th scope="col">filetypeCheck</th>
@@ -41,13 +51,12 @@
                 {foreach $files as $file}
                 <tr {if !$file->isEligibleToBeImported()}class="table-warning"{/if}>
                     <th>{$file->name}</th>
-                    <td>{$file->getCreated()}</td>
-                    <td>{$file->getUploaded()}</td>
-                    <td>{$file->getSize()|bytes:1} <small>({$file->getSize()|number} bytes)</small></td>
-                    <td title="Required type is {\App\Model\FileManagement\File::MIME_TYPE}">
+                     <td>{$file->getUploaded()}</td>
+                    <td>{$file->size|bytes:1} <small>({$file->size|number} bytes)</small></td>
+                    <td title="Required type is {\App\Model\FileManagement\FileInsideCuratorBucket::EXTENSION}">
                         {$file->isTypeOK()|status}
                     </td>
-                    <td title="Required size is between {\App\Model\FileManagement\File::MIN_FILESIZE|bytes:1} and {\App\Model\FileManagement\File::MAX_FILESIZE|bytes:1}">
+                    <td title="Required size is between {\App\Model\FileManagement\FileInsideCuratorBucket::MIN_FILESIZE|bytes:1} and {\App\Model\FileManagement\FileInsideCuratorBucket::MAX_FILESIZE|bytes:1}">
                         {$file->isSizeOK()|status}
                     </td>
                     <td title="Please be patient, this file should be processed by the repository soon">

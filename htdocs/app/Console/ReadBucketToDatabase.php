@@ -33,7 +33,7 @@ class ReadBucketToDatabase extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->write("\n" . 'Walk along all objects in Archive Bucket, and store basic info about image' . "\n");
-        $tiffs = $this->S3Service->listObjects($this->storageConfiguration->getArchiveBucket());
+        $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
         $output->write("\n" . 'There is '. count($tiffs) . " objects in the bucket. \n");
         foreach ($tiffs as $tiff) {
             $entity = new Photos();

@@ -52,7 +52,7 @@ class ImageService
         $success = [];
         $error = [];
         $i = 0;
-        foreach ($this->S3Service->listObjects($this->storageConfiguration->getNewBucket()) as $file) {
+        foreach ($this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getNewBucket()) as $file) {
             try {
                 $photo = $this->photoOfSpecimenFactory->create($this->storageConfiguration->getNewBucket(), $file);
                 $pipeline->process($photo);

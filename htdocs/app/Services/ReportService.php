@@ -51,12 +51,12 @@ final class ReportService
 
     public function unprocessedNewFiles(): array
     {
-        return $this->S3Service->listObjects($this->storageConfiguration->getNewBucket());
+        return $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getNewBucket());
     }
 
     public function TIFFsWithoutJP2(): array
     {
-        $jp2s = $this->S3Service->listObjects($this->storageConfiguration->getJP2Bucket());
+        $jp2s = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getJP2Bucket());
         return $this->findMissingObjects($this->getConvertedTiffsToJP2Names(), $jp2s);
     }
 
@@ -70,7 +70,7 @@ final class ReportService
 
     protected function getConvertedTiffsToJP2Names()
     {
-        $tiffs = $this->S3Service->listObjects($this->storageConfiguration->getArchiveBucket());
+        $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
         $mapper = $this->storageConfiguration;
         return array_map(function ($value) use ($mapper) {
             return $mapper->getJP2ObjectKey($value);
@@ -79,14 +79,14 @@ final class ReportService
 
     public function JP2sWithoutTIFF(): array
     {
-        $jp2s = $this->S3Service->listObjects($this->storageConfiguration->getJP2Bucket());
+        $jp2s = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getJP2Bucket());
         return $this->findMissingObjects($jp2s, $this->getConvertedTiffsToJP2Names());
     }
 
     public function TIFFsWithoutDbRecord(): array
     {
         $missing = [];
-        $tiffs = $this->S3Service->listObjects($this->storageConfiguration->getArchiveBucket());
+        $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
         foreach ($tiffs as $tiff) {
             if($this->photosRepository->findOneBy(["archiveFilename"=>$tiff]) === null){
                 $missing[] = $tiff;

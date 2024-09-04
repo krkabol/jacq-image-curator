@@ -8,11 +8,7 @@ use Aws\Result;
 
 readonly class File
 {
-    const int MIN_FILESIZE = 5242880;
-    const int MAX_FILESIZE = 398458880;
-
-    const string MIME_TYPE = 'image/tiff';
-
+/** @deprecated  */
     public function __construct(public readonly string $name, public readonly Result $info, public readonly bool $alreadyWaiting)
     {
 
@@ -47,7 +43,7 @@ readonly class File
 
     public function isSizeOK(): bool
     {
-        return $this->getSize() >= self::MIN_FILESIZE && $this->getSize() <= self::MAX_FILESIZE;
+        return $this->getSize() >= FileInsideCuratorBucket::MIN_FILESIZE && $this->getSize() <= FileInsideCuratorBucket::MAX_FILESIZE;
     }
 
     public function getSize(): int
@@ -57,7 +53,7 @@ readonly class File
 
     public function isTypeOK(): bool
     {
-        return $this->info->get("ContentType") === self::MIME_TYPE;
+        return $this->info->get("ContentType") === FileInsideCuratorBucket::MIME_TYPE;
     }
 
     public function isAlreadyWaiting(): bool

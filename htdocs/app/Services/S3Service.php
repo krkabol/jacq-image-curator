@@ -126,7 +126,7 @@ readonly class S3Service
             'SaveAs' => $path]);
     }
 
-    public function listObjects(string $bucket): array
+    public function listObjectsNamesOnly(string $bucket): array
     {
         $objects = [];
         $result = $this->s3->getIterator('ListObjects', array(
@@ -137,6 +137,16 @@ readonly class S3Service
             $objects[] = $object['Key'];
         }
         return $objects;
+    }
+
+    public function listObjects(string $bucket): \Iterator
+    {
+        $objects = [];
+        $result = $this->s3->getIterator('ListObjects', array(
+            "Bucket" => $bucket,
+            // "Prefix" => 'some_folder/'
+        ));
+        return $result;
     }
 
     public function getStreamOfObject($bucket, $key)

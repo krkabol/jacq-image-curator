@@ -5,7 +5,7 @@ namespace App\Services;
 use app\Model\Database\Entity\Photos;
 use app\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
-use App\Model\FileManagement\File;
+use App\Model\FileManagement\FileInsideCuratorBucket;
 
 readonly class CuratorService
 {
@@ -21,18 +21,16 @@ readonly class CuratorService
 
     public function registerNewFiles($herbariumId)
     {
-        /** @var File $file */
+        /** @var FileInsideCuratorBucket $file */
         foreach ($this->getEligibleCuratorBucketFiles($herbariumId) as $file) {
             $entity = new Photos();
             $entity
                 ->setCreatedAt()
                 ->setLastEditAt()
-                ->setOriginalFileAt($file->getCreatedTimestamp())
                 ->setOriginalFilename($file->name)
                 ->setStatus($this->entityManager->getPhotosStatusRepository()->find(PhotosStatus::WAITING))
                 ->setHerbarium($this->entityManager->getHerbariaRepository()->find($herbariumId))
-                ->setArchiveFileSize($file->getSize());
-
+                ->setArchiveFileSize($file->size);
             $this->entityManager->persist($entity);
         }
         $this->entityManager->flush();
@@ -50,9 +48,10 @@ readonly class CuratorService
     {
         $herbarium = $this->entityManager->getHerbariaRepository()->find($herbariumId);
         $files = [];
+
         foreach ($this->s3Service->listObjects($herbarium->getBucket()) as $filename) {
-            $alreadyWaiting = !(($this->entityManager->getPhotosRepository()->findOneBy(["status" => PhotosStatus::WAITING, "herbarium" => $herbarium, "originalFilename" => $filename]) === NULL));
-            $file = new File($filename, $this->s3Service->headObject($herbarium->getBucket(), $filename), $alreadyWaiting);
+            $alreadyWaiting = !(($this->entityManager->getPhotosRepository()->findOneBy(["status" => PhotosStatus::WAITING, "herbarium" => $herbarium, "originalFilename" => $filename["Key"]]) === NULL));
+            $file = new FileInsideCuratorBucket($filename["Key"], (int) $filename["Size"] , $filename["LastModified"], $alreadyWaiting);
             $files[] = $file;
 
         }
