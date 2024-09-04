@@ -1,18 +1,25 @@
 {block content}
+<div class="container">
+    <div class="row">
+        <figure class="figure">
+            <svg width="100%" height="600" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100%" height="100%" fill="#868e96"></rect>
+                <text x="50%" y="50%" fill="#dee2e6" font-size="50px">TBD</text>
+            </svg>
+            <figcaption class="figure-caption text-end">Workflow schema (<a href="https://editsvgcode.com/">editor</a> |
+                <a href="https://www.w3schools.com/graphics/svg_circle.asp">docs</a>)
+            </figcaption>
+        </figure>
 
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-
-    <circle cx="25" cy="15" r="12"/>
-</svg>
-
-<a href="https://editsvgcode.com/">editor</a>
-<a href="https://www.w3schools.com/graphics/svg_circle.asp">docs</a>
-
-<hr>
-<h4>Possible statuses of photos in the application</h4>
-<dl class="row">
-    {foreach $statuses as $status}
-    <dt class="col-sm-3">{$status->getName()}</dt>
-    <dd class="col-sm-9">{$status->getDescription()}</dd>
-    {/foreach}
-</dl>
+    </div>
+    <hr>
+    <div class="row">
+        <h4>Possible statuses of photos in the application</h4>
+        <dl class="row">
+            {foreach $statuses as $status}
+            <dt class="col-sm-3">{$status->getName()}</dt>
+            <dd class="col-sm-9">{$status->getDescription()}</dd>
+            {/foreach}
+        </dl>
+    </div>
+</div>

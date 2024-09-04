@@ -1,5 +1,5 @@
 {layout '../Base/@layout.latte'}
-    {block main}
+{block main}
 <nav class="navbar navbar-expand-lg navbar bg-primary-subtle mb-2 py-1">
     <div class="container-fluid">
         <a class="navbar-brand" n:href="Home:"><img src="{$basePath}/logo/jacq.png" class="m-0"
@@ -13,7 +13,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link {if $presenter->isLinkCurrent('Home:import')}active{/if}"
-                       n:href="Home:import">Import</a>
+                       n:href="Home:upload">Upload</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {if $presenter->isLinkCurrent('Report:')}active{/if}"
@@ -32,11 +32,11 @@
                             <i class="bi bi-person"></i> {$user->getIdentity()->name}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-<!--                            <li>-->
-<!--                                <a class="dropdown-item" href=":Admin:User:password"><i class="bi bi-shield-lock"></i>-->
-<!--                                    Change password</a>-->
-<!--                            </li>-->
-<!--                            <hr class="dropdown-divider">-->
+                            <!--                            <li>-->
+                            <!--                                <a class="dropdown-item" href=":Admin:User:password"><i class="bi bi-shield-lock"></i>-->
+                            <!--                                    Change password</a>-->
+                            <!--                            </li>-->
+                            <!--                            <hr class="dropdown-divider">-->
                             <li>
                                 <a class="dropdown-item" n:href=":Admin:Sign:out"><i class="bi bi-box-arrow-right"></i>
                                     Sign out</a>
@@ -53,7 +53,7 @@
         <div class="col-sm-12">
             <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
         </div>
-        {include content}
     </div>
 </div>
-    {/block}
+{include content}
+{/block}
