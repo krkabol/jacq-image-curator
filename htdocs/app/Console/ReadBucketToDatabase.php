@@ -18,6 +18,7 @@ class ReadBucketToDatabase extends Command
 
     public function __construct(EntityManager $entityManager, StorageConfiguration $storageConfiguration, S3Service $s3Service, ?string $name = null)
     {
+        die("allow only for initial import of data");
         $this->entityManager = $entityManager;
         $this->storageConfiguration = $storageConfiguration;
         $this->S3Service = $s3Service;
