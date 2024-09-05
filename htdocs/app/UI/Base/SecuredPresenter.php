@@ -7,7 +7,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Security\User;
 
 
-abstract class SecuredPresenter extends Presenter
+abstract class SecuredPresenter extends BasePresenter
 {
     public function checkRequirements($element): void
     {
