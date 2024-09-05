@@ -17,6 +17,7 @@ services:
 
     - {factory: App\Console\ReadBucketToDatabase, tags: {console.command: app:readBucketToDb}}
     - {factory: App\Console\UpdateRecords, tags: {console.command: app:updateRecords}}
+    - {factory: App\Console\ProceedCuratorImage, tags: {console.command: curator:importImage}}
 
     - GuzzleHttp\Client
 
