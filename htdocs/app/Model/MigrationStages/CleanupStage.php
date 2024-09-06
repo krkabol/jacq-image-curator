@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Model\UpdateStages;
+namespace app\Model\MigrationStages;
 
 
 use app\Model\Database\Entity\Photos;

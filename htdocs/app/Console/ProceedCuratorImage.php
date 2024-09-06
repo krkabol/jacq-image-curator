@@ -14,6 +14,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProceedCuratorImage extends Command
 {
+    /**
+     * Running as a CronJob
+     *
+     *
+     * for testing on local machine:
+     * docker run --network host -v ./htdocs:/app -w /app ghcr.io/krkabol/curator_base:main ./cron_curator_importImage.sh
+     */
+
 
     public function __construct(protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, ?string $name = null)
     {
@@ -36,7 +44,6 @@ class ProceedCuratorImage extends Command
         $this->setName('curator:importImage');
         $this->setDescription('take an image from curator bucket and prepare necessary files');
     }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->entityManager->getConnection()->beginTransaction();

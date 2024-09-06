@@ -6,7 +6,7 @@ namespace app\Services;
 
 use App\Model\Database\EntityManager;
 use app\Model\PhotoOfSpecimenFactory;
-use app\Model\UpdateStages\StageFactory;
+use app\Model\MigrationStages\StageFactory;
 use App\UI\Admin\Test\TestPresenter;
 use League\Pipeline\Pipeline;
 use Nette\Neon\Exception;

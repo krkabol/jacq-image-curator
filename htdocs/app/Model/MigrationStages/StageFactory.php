@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\UpdateStages;
+namespace App\Model\MigrationStages;
 
 use App\Model\Database\EntityManager;
 use app\Services\S3Service;

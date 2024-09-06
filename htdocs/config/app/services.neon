@@ -12,7 +12,7 @@ services:
     - App\Services\CuratorService
     - App\Model\PhotoOfSpecimenFactory
     - App\Model\ImportStages\StageFactory
-    - App\Model\UpdateStages\StageFactory
+    - App\Model\MigrationStages\StageFactory
     - App\Model\IIIF\ManifestFactory
 
     - {factory: App\Console\ReadBucketToDatabase, tags: {console.command: app:readBucketToDb}}
