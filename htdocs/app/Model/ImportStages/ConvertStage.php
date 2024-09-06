@@ -10,7 +10,7 @@ use app\Services\StorageConfiguration;
 use Exception;
 use League\Pipeline\StageInterface;
 
-class ConvertStageException extends BaseStageException
+class ConvertImportStageException extends ImportStageException
 {
 
 }
@@ -40,7 +40,7 @@ class ConvertStage implements StageInterface
 
             unlink($payload->getJP2Fullname());
         } catch (Exception $exception) {
-            throw new ConvertStageException("unable convert to JP2 (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new ConvertImportStageException("unable convert to JP2 (" . $exception->getMessage() . "): " . $payload->getObjectKey());
         }
         return $payload;
     }

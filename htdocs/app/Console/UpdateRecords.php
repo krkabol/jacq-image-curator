@@ -9,7 +9,6 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TestService;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\Order;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +18,7 @@ class UpdateRecords extends Command
 
     public function __construct(protected readonly EntityManager $entityManager,protected readonly  StorageConfiguration $storageConfiguration,protected readonly  S3Service $s3Service,protected readonly  TestService $testService, ?string $name = null)
     {
-        die("allow only for initial import of data");
+        die("allow carefully only for initial import of data");
         parent::__construct($name);
     }
 

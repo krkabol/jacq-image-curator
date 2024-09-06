@@ -9,7 +9,7 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class DimensionStageException extends BaseStageException
+class DimensionImportStageException extends ImportStageException
 {
 
 }
@@ -33,7 +33,7 @@ class DimensionsStage implements StageInterface
             $payload->setWidth($imagick->getImageWidth());
             $payload->setHeight($imagick->getImageHeight());
         } catch (\Exception $exception) {
-            throw new DimensionStageException("dimensions error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new DimensionImportStageException("dimensions error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
         }
         return $payload;
     }

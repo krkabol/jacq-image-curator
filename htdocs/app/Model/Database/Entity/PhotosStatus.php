@@ -10,7 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 class PhotosStatus
 {
     const int WAITING = 1;
+    const int CONTROL_ERROR = 2;
+    const int CONTROL_OK = 3;
     use TId;
+
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "name of the status"])]
     protected string $name;
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "short description"])]
@@ -28,3 +31,4 @@ class PhotosStatus
 
 
 }
+

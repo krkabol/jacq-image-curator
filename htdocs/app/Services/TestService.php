@@ -31,7 +31,7 @@ class TestService
 
         $testDataDir = $this->webDir->getPath('data');
         foreach (TestPresenter::TEST_FILES as $file) {
-            $this->S3Service->putTiffIfNotExists($this->storageConfiguration->getNewBucket(), strtolower($file), $testDataDir . DIRECTORY_SEPARATOR . $file);
+            $this->S3Service->putTiffIfNotExists($this->storageConfiguration->getCuratorBucket(), strtolower($file), $testDataDir . DIRECTORY_SEPARATOR . $file);
         }
     }
 

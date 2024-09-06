@@ -6,7 +6,7 @@ namespace app\Services;
 
 use app\Model\PhotoOfSpecimenFactory;
 use app\Model\ImportStages\BarcodeStage;
-use app\Model\ImportStages\BaseStageException;
+use app\Model\ImportStages\ImportStageException;
 use app\Model\ImportStages\StageFactory;
 use League\Pipeline\Pipeline;
 use Nette\Neon\Exception;
@@ -52,13 +52,13 @@ class ImageService
         $success = [];
         $error = [];
         $i = 0;
-        foreach ($this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getNewBucket()) as $file) {
+        foreach ($this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getCuratorBucket()) as $file) {
             try {
-                $photo = $this->photoOfSpecimenFactory->create($this->storageConfiguration->getNewBucket(), $file);
+                $photo = $this->photoOfSpecimenFactory->create($this->storageConfiguration->getCuratorBucket(), $file);
                 $pipeline->process($photo);
                 $success[$file] = "OK";
                 $i++;
-            } catch (BaseStageException $e) {
+            } catch (ImportStageException $e) {
                 $error[$file] = $e->getMessage();
             }
             if ($i >= self::LIMIT) {

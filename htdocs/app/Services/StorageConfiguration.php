@@ -2,19 +2,22 @@
 
 namespace app\Services;
 
-use app\Model\ImportStages\FilenameControlException;
+
+use app\Model\Database\Entity\Photos;
+use app\Model\MigrationStages\FilenameControlException;
 
 final readonly class StorageConfiguration
 {
-    public function __construct(private array $config)
+    const string TEMP_FILE = "default";
+    public function __construct(protected array $config, protected TempDir $tempDir)
     {
     }
     public function getAllBuckets(): array
     {
-        return [$this->getNewBucket(), $this->getArchiveBucket(), $this->getJP2Bucket()];
+        return [$this->getCuratorBucket(), $this->getArchiveBucket(), $this->getJP2Bucket()];
     }
 
-    public function getNewBucket(): string
+    public function getCuratorBucket(): string
     {
         return $this->config['newBucket'];
     }
@@ -99,4 +102,8 @@ final readonly class StorageConfiguration
         return (int) $this->splitId($specimenId)["specimenId"];
     }
 
+    public function getImportTempPath(Photos $photo): string
+    {
+        return $this->tempDir->getPath(self::TEMP_FILE . "." . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
+    }
 }

@@ -9,7 +9,7 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class NoveltyControlException extends BaseStageException
+class NoveltyControlExceptionImport extends ImportStageException
 {
 
 }
@@ -30,7 +30,7 @@ class NoveltyControlStage implements StageInterface
     {
         /** @var PhotoOfSpecimen $payload */
         if ($this->s3Service->objectExists($this->configuration->getArchiveBucket(), $payload->getObjectKey())) {
-            throw new NoveltyControlException("Archive master TIF already exists: " . $payload->getObjectKey());
+            throw new NoveltyControlExceptionImport("Archive master TIF already exists: " . $payload->getObjectKey());
         }
         return $payload;
     }

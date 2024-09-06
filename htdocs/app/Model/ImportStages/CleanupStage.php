@@ -10,7 +10,7 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class CleanupStageException extends BaseStageException
+class CleanupImportStageException extends ImportStageException
 {
 
 }
@@ -33,9 +33,9 @@ class CleanupStage implements StageInterface
             /** @var PhotoOfSpecimen $payload */
             $payload->unsetImagick();
             unlink($payload->getTempfile());
-            $this->s3Service->deleteObject($this->configuration->getNewBucket(), $payload->getObjectKey());
+            $this->s3Service->deleteObject($this->configuration->getCuratorBucket(), $payload->getObjectKey());
         } catch (\Exception $exception) {
-            throw new CleanupStageException("cleanup error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new CleanupImportStageException("cleanup error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
         }
         return $payload;
     }

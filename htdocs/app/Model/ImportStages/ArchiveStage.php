@@ -9,7 +9,7 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class ArchiveStageException extends BaseStageException
+class ArchiveImportStageException extends ImportStageException
 {
 
 }
@@ -29,9 +29,9 @@ class ArchiveStage implements StageInterface
     {
         try {
             /** @var PhotoOfSpecimen $payload */
-            $this->s3Service->copyObjectIfNotExists($payload->getObjectKey(), $this->configuration->getNewBucket(), $this->configuration->getArchiveBucket());
+            $this->s3Service->copyObjectIfNotExists($payload->getObjectKey(), $this->configuration->getCuratorBucket(), $this->configuration->getArchiveBucket());
         } catch (\Exception $exception) {
-            throw new ArchiveStageException("tiff upload error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new ArchiveImportStageException("tiff upload error (" . $exception->getMessage() . "): " . $payload->getObjectKey());
         }
         return $payload;
     }

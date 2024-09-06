@@ -7,7 +7,7 @@ namespace app\Model\ImportStages;
 use app\Model\PhotoOfSpecimen;
 use League\Pipeline\StageInterface;
 
-class BarcodeStageException extends BaseStageException
+class BarcodeImportStageException extends ImportStageException
 {
 
 }
@@ -51,7 +51,7 @@ class BarcodeStage implements StageInterface
             $imagick->writeImage($this->getContrastTempFileName());
             unset($imagick);
         } catch (\Exception $exception) {
-            throw new BarcodeStageException($exception->getMessage());
+            throw new BarcodeImportStageException($exception->getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ class BarcodeStage implements StageInterface
             }
         }
         if (!$isValid) {
-            throw new BarcodeStageException("wrong barcode or image name: " . $this->item->getObjectKey() . ". Detected code(s): " . implode($codes));
+            throw new BarcodeImportStageException("wrong barcode or image name: " . $this->item->getObjectKey() . ". Detected code(s): " . implode($codes));
         }
     }
 
@@ -85,11 +85,11 @@ class BarcodeStage implements StageInterface
         $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
 
         if ($returnVar !== 0) {
-            throw new BarcodeStageException("zbar script error: " . $info);
+            throw new BarcodeImportStageException("zbar script error: " . $info);
         }
 
         if (empty($output)) {
-            throw new BarcodeStageException("empty output from zbar");
+            throw new BarcodeImportStageException("empty output from zbar");
         }
         return $output;
     }

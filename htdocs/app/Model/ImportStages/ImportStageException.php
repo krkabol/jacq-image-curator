@@ -6,7 +6,7 @@ namespace app\Model\ImportStages;
 
 use Nette\Neon\Exception;
 
-class BaseStageException extends Exception
+class ImportStageException extends Exception
 {
 
 }
