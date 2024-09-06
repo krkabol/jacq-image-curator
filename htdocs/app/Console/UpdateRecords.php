@@ -4,7 +4,7 @@ namespace App\Console;
 
 use app\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
-use App\Model\UpdateStages\BaseStageException;
+use App\Model\MigrationStages\BaseStageException;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TestService;
@@ -16,18 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateRecords extends Command
 {
-    protected EntityManager $entityManager;
-    protected StorageConfiguration $storageConfiguration;
-    protected S3Service $S3Service;
-    protected TestService $testService;
 
-    public function __construct(EntityManager $entityManager, StorageConfiguration $storageConfiguration, S3Service $s3Service, TestService $testService, ?string $name = null)
+    public function __construct(protected readonly EntityManager $entityManager,protected readonly  StorageConfiguration $storageConfiguration,protected readonly  S3Service $s3Service,protected readonly  TestService $testService, ?string $name = null)
     {
         die("allow only for initial import of data");
-        $this->entityManager = $entityManager;
-        $this->storageConfiguration = $storageConfiguration;
-        $this->S3Service = $s3Service;
-        $this->testService = $testService;
         parent::__construct($name);
     }
 
