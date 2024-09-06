@@ -7,6 +7,7 @@ namespace app\Services;
 use Aws\Exception\AwsException;
 use Aws\Result;
 use Aws\S3\S3Client;
+use DateTimeImmutable;
 use Nette\Neon\Exception;
 
 readonly class S3Service
@@ -90,6 +91,19 @@ readonly class S3Service
             'Key' => $key,
         ]);
         return $result['ContentLength'];
+    }
+
+    public function getObjectOriginalTimestamp(string $bucket, string $key): ?DateTimeImmutable
+    {
+        $result = $this->s3->headObject([
+            'Bucket' => $bucket,
+            'Key' => $key,
+        ]);
+        $data = $result->get("Metadata");
+        if (isset($data["origin-date-iso8601"])) {
+            return new \DateTimeImmutable($data["origin-date-iso8601"]);
+        }
+        return null;
     }
 
     public function headObject($bucket, $key)

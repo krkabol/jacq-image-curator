@@ -46,11 +46,8 @@ readonly class CuratorService
     public function getImportPipeline(): Pipeline
     {
         return (new Pipeline())
-            ->pipe($this->stageFactory->createDownloadControlStage());
-//            ->pipe($this->stageFactory->createFilenameControlStage())
-//            ->pipe($this->stageFactory->createDimensionsStage())
-//            ->pipe($this->stageFactory->createBarcodeStage())
-//            ->pipe($this->stageFactory->createUpdateRecordStage());
+            ->pipe($this->stageFactory->createDownloadStage())
+            ->pipe($this->stageFactory->createBarcodeStage());
     }
 
     protected function getEligibleCuratorBucketFiles($herbariumId): array

@@ -16,9 +16,14 @@ class StageFactory
     {
     }
 
-    public function createDownloadControlStage(): DownloadStage
+    public function createDownloadStage(): DownloadStage
     {
         return new DownloadStage($this->s3Service, $this->storageConfiguration);
+    }
+
+    public function createBarcodeStage():BarcodeStage
+    {
+        return new BarcodeStage($this->storageConfiguration);
     }
 //
 //    public function createFilenameControlStage(): FilenameControlStage

@@ -9,6 +9,8 @@ use app\Model\MigrationStages\FilenameControlException;
 final readonly class StorageConfiguration
 {
     const string TEMP_FILE = "default";
+    const string TEMP_ZBAR_FILE = "default_zbar";
+
     public function __construct(protected array $config, protected TempDir $tempDir)
     {
     }
@@ -54,7 +56,12 @@ final readonly class StorageConfiguration
 
     public function getImageIIIFURL4Barcode($jp2ObjectName): string
     {
-        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/,".$this->config['zbarImageHeight']."/0/default.jpg";
+        return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/,".$this->getZbarImageSize()."/0/default.jpg";
+    }
+
+    public function getZbarImageSize(): int
+    {
+        return $this->config['zbarImageHeight'];
     }
 
     public function getImageIIIFURL4Thumbnail($jp2ObjectName): string
@@ -105,5 +112,9 @@ final readonly class StorageConfiguration
     public function getImportTempPath(Photos $photo): string
     {
         return $this->tempDir->getPath(self::TEMP_FILE . "." . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
+    }
+    public function getImportTempZbarPath(Photos $photo): string
+    {
+        return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . "." . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
     }
 }

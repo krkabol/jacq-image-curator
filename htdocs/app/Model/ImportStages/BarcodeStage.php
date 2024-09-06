@@ -4,94 +4,108 @@ declare(strict_types=1);
 
 namespace app\Model\ImportStages;
 
-use app\Model\PhotoOfSpecimen;
+use app\Model\Database\Entity\Photos;
+use app\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
-class BarcodeImportStageException extends ImportStageException
+class BarcodeStageException extends ImportStageException
 {
 
 }
 
 class BarcodeStage implements StageInterface
 {
-    const BARCODE_TEMPLATE = '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/';
-    const ZBAR_DIMENSION = 3000;
-    protected PhotoOfSpecimen $item;
+    protected Photos $item;
+    protected array $barcodes;
+
+    public function __construct(protected readonly StorageConfiguration $storageConfiguration)
+    {
+    }
 
     public function __invoke($payload)
     {
-        $this->item = $payload;
-        $this->createContrastedImage();
-        $this->validateFilename();
-        unlink($this->getContrastTempFileName());
-        return $this->item;
-    }
-
-    protected function createContrastedImage(): void
-    {
         try {
-            $imagick = new \Imagick($this->item->getTempfile());
-            $imagick->modulateImage(100, 0, 100);
-            $imagick->whiteThresholdImage('#a9a9a9');
-            $imagick->contrastImage(true);
-            $width = $imagick->getImageWidth();
-            $height = $imagick->getImageHeight();
-
-            if ($width > $height) {
-                $newWidth = self::ZBAR_DIMENSION;
-                $newHeight = intval((self::ZBAR_DIMENSION / $width) * $height);
-            } else {
-                $newHeight = self::ZBAR_DIMENSION;
-                $newWidth = intval((self::ZBAR_DIMENSION / $height) * $width);
-            }
-
-            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
-            $imagick->setImageCompressionQuality(80);
-            $imagick->setImageFormat('jpg');
-            $imagick->writeImage($this->getContrastTempFileName());
-            unset($imagick);
-        } catch (\Exception $exception) {
-            throw new BarcodeImportStageException($exception->getMessage());
+            $this->item = $payload;
+            $imagick = $this->readDimensions();
+            $this->createContrastedImage($imagick);
+            $this->detectCodes();
+            $this->harvestCodes();
+            return $this->item;
+        } catch (BarcodeStageException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
         }
     }
 
-    protected function getContrastTempFileName(): string
+    protected function readDimensions(): \Imagick
     {
-        return $this->item->getTempfile() . "barcode";
+        $imagick = new \Imagick($this->storageConfiguration->getImportTempPath($this->item));
+        $this->item->setWidth($imagick->getImageWidth());
+        $this->item->setHeight($imagick->getImageHeight());
+        return $imagick;
     }
 
-    protected function validateFilename(): void
+    protected function createContrastedImage(\Imagick $imagick): void
+    {
+        $imagick->modulateImage(100, 0, 100);
+        $imagick->adaptiveThresholdImage(100, 100, 1);
+        $imagick->setImageFormat('jpg');
+        $width = $this->item->getWidth();
+        $height = $this->item->getHeight();
+        if ($width > 1500 || $height > 1500) {
+            if ($width > $height) {
+                $newWidth = $this->storageConfiguration->getZbarImageSize();
+                $newHeight = intval(($this->storageConfiguration->getZbarImageSize() / $width) * $height);
+            } else {
+                $newHeight = $this->storageConfiguration->getZbarImageSize();
+                $newWidth = intval(($this->storageConfiguration->getZbarImageSize() / $height) * $width);
+            }
+            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+        }
+        $imagick->setImageCompressionQuality(80);
+        $imagick->setImageFormat('jpg');
+        $imagick->writeImage($this->storageConfiguration->getImportTempZbarPath($this->item));
+        $imagick->destroy();
+        $imagick->clear();
+        unset($imagick);
+    }
+
+    /**
+     * use Zbar to detect Barcodes
+     * @link https://manpages.ubuntu.com/manpages/jammy/man1/zbarimg.1.html
+     */
+    protected function detectCodes(): void
+    {
+        $output = [];
+        $returnVar = 0;
+        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->storageConfiguration->getImportTempZbarPath($this->item)), $output, $returnVar);
+
+        switch ($returnVar) {
+            case 1:
+            case 2:
+                throw new BarcodeStageException("zbar script error: " . $info);
+            case 4:
+                throw new BarcodeStageException("No barcode was detected");
+        }
+        $this->barcodes = $output;
+    }
+
+    protected function harvestCodes(): void
     {
         $isValid = false;
-        $codes = $this->detectCodes();
-        foreach ($codes as $code) {
+        foreach ($this->barcodes as $code) {
             $parts = [];
-            if (preg_match(self::BARCODE_TEMPLATE, $code, $parts)) {
-                if ($this->item->getHerbariumAcronym() === strtoupper($parts['herbarium']) &&
-                    $this->item->getSpecimenId() === $parts['specimenId']) {
+            if (preg_match($this->storageConfiguration->getBarcodeRegex(), $code, $parts)) {
+                if ($this->item->getHerbarium()->getAcronym() === strtoupper($parts['herbarium']) && $parts['specimenId'] != "") {
                     $isValid = true;
+                    $this->item->setSpecimenId($parts['specimenId']);
                 }
             }
         }
         if (!$isValid) {
-            throw new BarcodeImportStageException("wrong barcode or image name: " . $this->item->getObjectKey() . ". Detected code(s): " . implode($codes));
+            throw new BarcodeStageException("barcode read error: " . ". Detected code(s): " . implode($this->barcodes));
         }
-    }
-
-    protected function detectCodes(): array
-    {
-        $output = [];
-        $returnVar = 0;
-        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->getContrastTempFileName()), $output, $returnVar);
-
-        if ($returnVar !== 0) {
-            throw new BarcodeImportStageException("zbar script error: " . $info);
-        }
-
-        if (empty($output)) {
-            throw new BarcodeImportStageException("empty output from zbar");
-        }
-        return $output;
     }
 
 }
