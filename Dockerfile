@@ -2,8 +2,9 @@ FROM ghcr.io/krkabol/curator_base:main@sha256:726f9a51052ce93358cf2ad398c69b2511
 LABEL org.opencontainers.image.source=https://github.com/krkabol/jacq-image-curator
 LABEL org.opencontainers.image.description="Image processing for JACQ herabrium service"
 
-# devoted for Kubernetes, where the app has to be copied into final destination (/srv) after the container starts
-COPY htdocs /app
-RUN mkdir -p /app/temp/cache && chmod -R 777 /app/temp/cache
+# devoted for Kubernetes, where the app has to be copied into final destination (/app) after the container starts
+COPY  --chown=www:www htdocs /app
+RUN chmod -R 777 /app/temp
+
 ## use in case you want to run in docker on local machine
 #COPY htdocs /var/www/html
