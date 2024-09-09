@@ -53,7 +53,7 @@ class BarcodeStage implements StageInterface
         $imagick->setImageFormat('jpg');
         $width = $this->item->getWidth();
         $height = $this->item->getHeight();
-        if ($width > 1500 || $height > 1500) {
+        if ($width > $this->storageConfiguration->getZbarImageSize() || $height > $this->storageConfiguration->getZbarImageSize()) {
             if ($width > $height) {
                 $newWidth = $this->storageConfiguration->getZbarImageSize();
                 $newHeight = intval(($this->storageConfiguration->getZbarImageSize() / $width) * $height);
