@@ -10,6 +10,11 @@ use Aws\S3\S3Client;
 use DateTimeImmutable;
 use Nette\Neon\Exception;
 
+class S3Exception extends Exception
+{
+
+}
+
 readonly class S3Service
 {
     public function __construct(protected S3Client $s3)
@@ -57,22 +62,21 @@ readonly class S3Service
         return $this->s3->listBuckets();
     }
 
-    public function putTiffIfNotExists(string $bucket, string $key, string $path): bool
+    public function putTiffIfNotExists(string $bucket, string $key, string $path): Result
     {
-        throw new \Exception("readonly S3 operations allowed only");
         if (!$this->s3->doesObjectExist($bucket, $key)) {
-            $result = $this->s3->putObject([
+            return $this->s3->putObject([
                 'Bucket' => $bucket,
                 'Key' => $key,
                 'SourceFile' => $path,
                 'ContentType' => 'image/tiff']);
-            return true;
         }
-        return false;
+        throw new S3Exception("Tif file {$key} already exists");
     }
 
     public function copyObjectIfNotExists(string $objectKey, string $sourceBucket, string $targetBucket): bool
-    {throw new \Exception("readonly S3 operations allowed only");
+    {
+        throw new \Exception("readonly S3 operations allowed only");
         if (!$this->s3->doesObjectExist($targetBucket, $objectKey)) {
             $this->s3->copyObject([
                 'Bucket' => $targetBucket,
@@ -93,6 +97,14 @@ readonly class S3Service
         return $result['ContentLength'];
     }
 
+    public function headObject($bucket, $key)
+    {
+        return $this->s3->headObject([
+            'Bucket' => $bucket,
+            'Key' => $key,
+        ]);
+    }
+
     public function getObjectOriginalTimestamp(string $bucket, string $key): ?DateTimeImmutable
     {
         $result = $this->s3->headObject([
@@ -106,29 +118,24 @@ readonly class S3Service
         return null;
     }
 
-    public function headObject($bucket, $key)
+    public function deleteObject(string $bucket, string $key): Result
     {
-        return $this->s3->headObject([
+        return $this->s3->deleteObject([
             'Bucket' => $bucket,
             'Key' => $key,
         ]);
     }
 
-    public function deleteObject(string $bucket, string $key)
-    {throw new \Exception("readonly S3 operations allowed only");
-        $this->s3->deleteObject([
-            'Bucket' => $bucket,
-            'Key' => $key,
-        ]);
-    }
-
-    public function putJP2Overwrite(string $bucket, string $key, string $path): void
-    {throw new \Exception("readonly S3 operations allowed only");
-        $result = $this->s3->putObject([
-            'Bucket' => $bucket,
-            'Key' => $key,
-            'SourceFile' => $path,
-            'ContentType' => 'image/jp2']);
+    public function putJP2IfNotExists(string $bucket, string $key, string $path): Result
+    {
+        if (!$this->s3->doesObjectExist($bucket, $key)) {
+            return $this->s3->putObject([
+                'Bucket' => $bucket,
+                'Key' => $key,
+                'SourceFile' => $path,
+                'ContentType' => 'image/jp2']);
+        }
+        throw new S3Exception("JP2 file {$key} already exists");
 
     }
 

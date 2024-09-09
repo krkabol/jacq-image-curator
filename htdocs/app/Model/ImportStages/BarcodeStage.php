@@ -104,7 +104,7 @@ class BarcodeStage implements StageInterface
             }
         }
         if (!$isValid) {
-            throw new BarcodeStageException("barcode read error: " . ". Detected code(s): " . implode($this->barcodes));
+            throw new BarcodeStageException("barcode error: " . ". Detected code(s): " . implode($this->barcodes));
         }
     }
 

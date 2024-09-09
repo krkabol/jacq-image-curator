@@ -46,16 +46,16 @@ class ProceedCuratorImage extends Command
         }
 
         try {
-            $output->write("\n filename: s3://" . $photo->getHerbarium()->getBucket() ."/". $photo->getOriginalFilename() . "\n");
+            $output->write("\n filename: s3://" . $photo->getHerbarium()->getBucket() . "/" . $photo->getOriginalFilename() . "\n");
             $photo->setLastEditAt();
             $photo->setMessage(NULL);
-            $this->curatorService->getImportPipeline()->process($photo);
+            $this->curatorService->importNewFiles()->process($photo);
 
-            $output->write("\n Specimen fullID: ".$photo->getFullSpecimenId()); //temp
-//            $photo->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_OK));
+//            $output->write("\n Specimen fullID: ".$photo->getFullSpecimenId());
+            $photo->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_OK));
         } catch (ImportStageException $e) {
-            $photo->setMessage($e->getMessage());
-//                ->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_ERROR));
+            $photo->setMessage($e->getMessage())
+                ->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_ERROR));
             $output->write("\n ERROR: " . $e->getMessage() . "\n");
         } catch (\Exception $e) {
             $this->entityManager->getConnection()->rollBack();

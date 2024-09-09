@@ -43,11 +43,13 @@ readonly class CuratorService
         $this->entityManager->flush();
     }
 
-    public function getImportPipeline(): Pipeline
+    public function importNewFiles(): Pipeline
     {
         return (new Pipeline())
             ->pipe($this->stageFactory->createDownloadStage())
-            ->pipe($this->stageFactory->createBarcodeStage());
+            ->pipe($this->stageFactory->createBarcodeStage())
+            ->pipe($this->stageFactory->createConvertStage())
+            ->pipe($this->stageFactory->createTransferStage());
     }
 
     protected function getEligibleCuratorBucketFiles($herbariumId): array

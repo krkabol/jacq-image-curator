@@ -113,8 +113,21 @@ final readonly class StorageConfiguration
     {
         return $this->tempDir->getPath(self::TEMP_FILE . "." . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
     }
+    public function getImportTempJP2Path(Photos $photo): string
+    {
+        return $this->tempDir->getPath(self::TEMP_FILE . ".jp2");
+    }
     public function getImportTempZbarPath(Photos $photo): string
     {
-        return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . "." . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
+        return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . ".jpg");
+    }
+
+    public function createS3JP2Name(Photos $photo): string
+    {
+        return strtolower($photo->getHerbarium()->getAcronym())."/".$photo->getFullSpecimenId()."_".$photo->getId().".jp2";
+    }
+    public function createS3TIFName(Photos $photo): string
+    {
+        return strtolower($photo->getHerbarium()->getAcronym())."/".$photo->getFullSpecimenId()."_".$photo->getId().".tif";
     }
 }

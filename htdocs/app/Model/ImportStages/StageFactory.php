@@ -9,10 +9,10 @@ use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TempDir;
 
-class StageFactory
+readonly class StageFactory
 {
 
-    public function __construct(protected readonly S3Service $s3Service,protected readonly  TempDir $tempDir,protected readonly  EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration)
     {
     }
 
@@ -21,15 +21,18 @@ class StageFactory
         return new DownloadStage($this->s3Service, $this->storageConfiguration);
     }
 
-    public function createBarcodeStage():BarcodeStage
+    public function createBarcodeStage(): BarcodeStage
     {
         return new BarcodeStage($this->storageConfiguration);
     }
-//
-//    public function createFilenameControlStage(): FilenameControlStage
-//    {
-//        $result = $this->entityManager->createQuery("SELECT a.acronym FROM app\Model\Database\Entity\Herbaria a")->getScalarResult();
-//        $herbariaAvailable = array_column($result, "acronym");
-//        return new FilenameControlStage($herbariaAvailable);
-//    }
+
+    public function createConvertStage(): ConvertStage
+    {
+        return new ConvertStage($this->s3Service, $this->storageConfiguration);
+    }
+
+    public function createTransferStage(): TransferStage
+    {
+        return new TransferStage($this->s3Service, $this->storageConfiguration);
+    }
 }

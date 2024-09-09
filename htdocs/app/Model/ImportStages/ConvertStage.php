@@ -4,46 +4,40 @@ declare(strict_types=1);
 
 namespace app\Model\ImportStages;
 
-use app\Model\PhotoOfSpecimen;
+use app\Model\Database\Entity\Photos;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use Exception;
 use League\Pipeline\StageInterface;
 
-class ConvertImportStageException extends ImportStageException
+class ConvertStageException extends ImportStageException
 {
 
 }
 
 class ConvertStage implements StageInterface
 {
-    protected S3Service $s3Service;
-    protected StorageConfiguration $configuration;
 
-    public function __construct(S3Service $s3Service, StorageConfiguration $configuration)
+    public function __construct(protected readonly S3Service $s3Service, protected readonly StorageConfiguration $storageConfiguration)
     {
-        $this->s3Service = $s3Service;
-        $this->configuration = $configuration;
     }
 
 
     public function __invoke($payload)
     {
-        /** @var PhotoOfSpecimen $payload */
+        /** @var Photos $payload */
         try {
-            $imagick = $payload->getImagick();
+            $imagick = new \Imagick($this->storageConfiguration->getImportTempPath($payload));
             $imagick->setImageFormat('jp2');
-            $imagick->setCompressionQuality($this->configuration->getJP2Quality());
-            $imagick->writeImage($payload->getJP2Fullname());
-
-            $this->s3Service->putJP2Overwrite($this->configuration->getJP2Bucket(), $this->configuration->getJP2ObjectKey($payload->getObjectKey()), $payload->getJP2Fullname());
-
-            unlink($payload->getJP2Fullname());
+            $imagick->setImageCompressionQuality(100);//$this->storageConfiguration->getJP2Quality());
+            $imagick->writeImage($this->storageConfiguration->getImportTempJP2Path($payload));
+            $imagick->destroy();
+            $imagick->clear();
+            unset($imagick);
+            $payload->setJP2FileSize(filesize($this->storageConfiguration->getImportTempJP2Path($payload)));
         } catch (Exception $exception) {
-            throw new ConvertImportStageException("unable convert to JP2 (" . $exception->getMessage() . "): " . $payload->getObjectKey());
+            throw new ConvertStageException("unable convert to JP2 (" . $exception->getMessage() . "): " . $payload->getId());
         }
         return $payload;
     }
-
-
 }
