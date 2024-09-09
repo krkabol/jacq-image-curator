@@ -21,13 +21,13 @@ class Photos
     use TOriginalFileAt;
 
     #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of Archive Master TIF file"])]
-    protected string $archiveFilename;
+    protected ?string $archiveFilename;
 
     #[ORM\Column(nullable: true, options: ["comment" => "Filename that was provided during curator upload, could make sense or completely missing semantical content"])]
     protected string $originalFilename;
 
     #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of JP2 file"])]
-    protected string $jp2Filename;
+    protected ?string $jp2Filename;
 
     #[ORM\ManyToOne(targetEntity: "Herbaria", inversedBy: "photos")]
     #[ORM\JoinColumn(name: "herbarium_id", referencedColumnName: "id", options: ["comment" => "Herbarium storing and managing the specimen data"])]
@@ -56,7 +56,7 @@ class Photos
 
 
 
-    public function getArchiveFilename(): string
+    public function getArchiveFilename(): ?string
     {
         return $this->archiveFilename;
     }
@@ -67,7 +67,7 @@ class Photos
         return $this;
     }
 
-    public function getJp2Filename(): string
+    public function getJp2Filename(): ?string
     {
         return $this->jp2Filename;
     }

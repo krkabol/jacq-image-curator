@@ -1,0 +1,23 @@
+{block content}
+<div class="container">
+
+    <h2>latest processed files </h2>
+    <table class="table table-striped table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">original filename</th>
+            <th scope="col">jp2 adress</th>
+            <th scope="col">tiff address</th>
+             </tr>
+        </thead>
+        <tbody>
+        {foreach $files as $file}
+        <tr>
+            <th>{$file->getOriginalFilename()}</th>
+            <td>{$file->getJp2Filename()}</td>
+            <td>{$file->getArchiveFilename()}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>

@@ -41,6 +41,12 @@ final class HomePresenter extends SecuredPresenter
         }));
     }
 
+    public function renderOverview()
+    {
+        $files = $this->curatorService->getLatestImports($this->getUser()->getIdentity()->herbarium);
+        $this->template->files = $files;
+    }
+
     public function renderDryrun()
     {
         $result = $this->imageService->proceedDryrun();

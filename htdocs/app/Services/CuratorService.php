@@ -8,6 +8,7 @@ use app\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use App\Model\FileManagement\FileInsideCuratorBucket;
 use app\Model\ImportStages\StageFactory;
+use Doctrine\Common\Collections\Criteria;
 use League\Pipeline\Pipeline;
 
 readonly class CuratorService
@@ -73,5 +74,11 @@ readonly class CuratorService
         return $files;
     }
 
+
+    public function getLatestImports($herbariumId): array
+    {
+        return $this->entityManager->getPhotosRepository()->findBy(["herbarium" => $herbariumId, "status"=> [3,4,5]], ["lastEdit"=> Criteria::DESC], 30);
+
+    }
 
 }
