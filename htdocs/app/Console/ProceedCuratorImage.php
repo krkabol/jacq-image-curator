@@ -9,6 +9,7 @@ use app\Model\ImportStages\ImportStageException;
 use App\Services\CuratorService;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,7 +77,11 @@ class ProceedCuratorImage extends Command
         $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id = ? ORDER BY id asc FOR UPDATE SKIP LOCKED LIMIT 1 ', $rsm);
         $query->setParameter(1, PhotosStatus::WAITING);
         /** @var Photos $photo */
-        $photo = $query->getSingleResult();
+        try {
+            $photo = $query->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
         return $photo;
     }
 
