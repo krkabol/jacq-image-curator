@@ -40,7 +40,7 @@ class Test extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
-        $imagick = new \Imagick($this->tempDir->getPath("barcode/test-archive/test 1.tif"));
+        $imagick = new \Imagick($this->tempDir->getPath("barcode/test-archive/test_5b.tif"));
 
 $page = $this->getLargestImage($imagick);
 $imagick->setIteratorIndex($page);
@@ -60,7 +60,7 @@ if ($width > $limit || $height > $limit) {
 }
 
         $imagick->modulateImage(100, 0, 100);
-        $imagick->adaptiveThresholdImage(100, 100, 1);
+        $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('jpg');
         $imagick->setImageCompressionQuality(80);
         $imagick->writeImage($this->tempDir->getPath("barcode/test-archive/output.jpg"));
