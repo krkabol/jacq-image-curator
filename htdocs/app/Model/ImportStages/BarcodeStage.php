@@ -6,6 +6,8 @@ namespace app\Model\ImportStages;
 
 use app\Model\Database\Entity\Photos;
 use app\Services\StorageConfiguration;
+use Exception;
+use Imagick;
 use League\Pipeline\StageInterface;
 
 class BarcodeStageException extends ImportStageException
@@ -26,31 +28,55 @@ class BarcodeStage implements StageInterface
     {
         try {
             $this->item = $payload;
-            $imagick = $this->readDimensions();
+            $imagick = $this->createImagick();
+            $this->readDimensions($imagick);
             $this->createContrastedImage($imagick);
             $this->detectCodes();
             $this->harvestCodes();
             return $this->item;
         } catch (BarcodeStageException $e) {
             throw $e;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
         }
     }
 
-    protected function readDimensions(): \Imagick
+    protected function createImagick(): Imagick
     {
-        $imagick = new \Imagick($this->storageConfiguration->getImportTempPath($this->item));
+        $imagick = new Imagick($this->storageConfiguration->getImportTempPath($this->item));
+        $imagick->setIteratorIndex($this->getLargestImageIndex($imagick));
+        return $imagick;
+    }
+
+    protected function getLargestImageIndex(Imagick $image): int
+    {
+        $numberOfImages = $image->getNumberImages();
+        $maxWidth = 0;
+        $maxHeight = 0;
+        $largestImage = null;
+        for ($i = 0; $i < $numberOfImages; $i++) {
+            $image->setIteratorIndex($i);
+            $width = $image->getImageWidth();
+            $height = $image->getImageHeight();
+
+            if ($width * $height > $maxWidth * $maxHeight) {
+                $maxWidth = $width;
+                $maxHeight = $height;
+                $largestImage = $i;
+            }
+        }
+        return $largestImage;
+    }
+
+    protected function readDimensions(Imagick $imagick): Imagick
+    {
         $this->item->setWidth($imagick->getImageWidth());
         $this->item->setHeight($imagick->getImageHeight());
         return $imagick;
     }
 
-    protected function createContrastedImage(\Imagick $imagick): void
+    protected function createContrastedImage(Imagick $imagick): void
     {
-        $imagick->modulateImage(100, 0, 100);
-        $imagick->adaptiveThresholdImage(100, 100, 1);
-        $imagick->setImageFormat('jpg');
         $width = $this->item->getWidth();
         $height = $this->item->getHeight();
         if ($width > $this->storageConfiguration->getZbarImageSize() || $height > $this->storageConfiguration->getZbarImageSize()) {
@@ -61,10 +87,12 @@ class BarcodeStage implements StageInterface
                 $newHeight = $this->storageConfiguration->getZbarImageSize();
                 $newWidth = intval(($this->storageConfiguration->getZbarImageSize() / $height) * $width);
             }
-            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
         }
-        $imagick->setImageCompressionQuality(80);
+        $imagick->modulateImage(100, 0, 100);
+        $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('jpg');
+        $imagick->setImageCompressionQuality(80);
         $imagick->writeImage($this->storageConfiguration->getImportTempZbarPath($this->item));
         $imagick->destroy();
         $imagick->clear();

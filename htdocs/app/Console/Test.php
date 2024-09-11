@@ -2,29 +2,17 @@
 
 namespace App\Console;
 
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
-use app\Model\ImportStages\ImportStageException;
 use App\Services\CuratorService;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TempDir;
-use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Test extends Command
 {
-    /**
-     * Running as a CronJob - process images from curatorBucket to the repository waiting room     *
-     *
-     * for testing on local machine:
-     * docker run --network host -v ./htdocs:/app -w /app/bin ghcr.io/krkabol/curator_base:main ./cron_curator_importImage.sh
-     */
-
 
     public function __construct(protected readonly TempDir $tempDir, protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorService $curatorService, ?string $name = null)
     {
@@ -42,22 +30,22 @@ class Test extends Command
         $startTime = microtime(true);
         $imagick = new \Imagick($this->tempDir->getPath("barcode/test-archive/test_5b.tif"));
 
-$page = $this->getLargestImage($imagick);
-$imagick->setIteratorIndex($page);
+        $page = $this->getLargestImage($imagick);
+        $imagick->setIteratorIndex($page);
 
-$width = $imagick->getImageWidth();
-$height = $imagick->getImageHeight();
-$limit= 3000;
-if ($width > $limit || $height > $limit) {
-    if ($width > $height) {
-        $newWidth = $limit;
-        $newHeight = intval(($limit / $width) * $height);
-    } else {
-        $newHeight = $limit;
-        $newWidth = intval(($limit / $height) * $width);
-    }
-    $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
-}
+        $width = $imagick->getImageWidth();
+        $height = $imagick->getImageHeight();
+        $limit = 3000;
+        if ($width > $limit || $height > $limit) {
+            if ($width > $height) {
+                $newWidth = $limit;
+                $newHeight = intval(($limit / $width) * $height);
+            } else {
+                $newHeight = $limit;
+                $newWidth = intval(($limit / $height) * $width);
+            }
+            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+        }
 
         $imagick->modulateImage(100, 0, 100);
         $imagick->adaptiveThresholdImage(150, 150, 1);
@@ -70,36 +58,36 @@ if ($width > $limit || $height > $limit) {
         $outputZbar = [];
         $returnVar = 0;
         $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->tempDir->getPath("barcode/test-archive/output.jpg")), $outputZbar, $returnVar);
-var_dump($returnVar);
+        var_dump($returnVar);
 
-var_dump($outputZbar);
+        var_dump($outputZbar);
 
 
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
-         return Command::SUCCESS;
+        return Command::SUCCESS;
     }
 
-    public function getLargestImage($image): int 
+    public function getLargestImage(\Imagick $image): int
     {
         $numberOfImages = $image->getNumberImages();
 
-$maxWidth = 0;
-$maxHeight = 0;
-$largestImage = null;
+        $maxWidth = 0;
+        $maxHeight = 0;
+        $largestImage = null;
 
-for ($i = 0; $i < $numberOfImages; $i++) {
-    $image->setIteratorIndex($i);
-    $width = $image->getImageWidth();
-    $height = $image->getImageHeight();
-        
-    if ($width * $height > $maxWidth * $maxHeight) {
-        $maxWidth = $width;
-        $maxHeight = $height;
-        $largestImage = $i; 
-    }
-    
-}
-return $largestImage;
+        for ($i = 0; $i < $numberOfImages; $i++) {
+            $image->setIteratorIndex($i);
+            $width = $image->getImageWidth();
+            $height = $image->getImageHeight();
+
+            if ($width * $height > $maxWidth * $maxHeight) {
+                $maxWidth = $width;
+                $maxHeight = $height;
+                $largestImage = $i;
+            }
+
+        }
+        return $largestImage;
 
     }
 

@@ -13,6 +13,6 @@ parameters:
         barcodeRegex: '/^(?P<herbarium>[a-zA-Z]+)[ _-]+(?P<specimenId>\d+)$/'
         photoRegex: '/^(?P<herbarium>[a-zA-Z]+)_(?P<specimenId>\d+)(?P<supplement>[_\-a-zA-Z]*)\.(?P<extension>tif)$/'
         iiif: https://herbarium-iiif.dyn.cloud.e-infra.cz/iiif/3/
-        zbarImageHeight: 2500  #px size of image used for zbar barcode recognition
+        zbarImageHeight: 3000  #px size of image used for zbar barcode recognition
         thumbImageWidth: 400  #px size of image used for manifest thumbnail
         zbarThreshold: #a9a9a9
