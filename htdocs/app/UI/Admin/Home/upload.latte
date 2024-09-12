@@ -9,25 +9,28 @@
                     <td><strong>Total count of files</strong></td>
                     <td>{count($files)}</td>
                 </tr>
-                <tr>
-                    <td><strong>Ready for import</strong></td>
-                    <td>{$eligible}</td>
-                </tr>
+
+
             </table>
 
                 <table class="table table-striped">
+                    <tr>
+                        <td>Ready for import</td>
+                        <td>{$eligible}</td>
+                    </tr>
                 <tr>
                     <td>Waiting for repository processing</td>
                     <td>{$waiting}</td>
                 </tr>
+                    <tr>
+                        <td>Import error</td>
+                        <td>{$erroneous}</td>
+                    </tr>
                 <tr>
-                    <td>SizeCheck error</td>
-                    <td>{$sizeError}</td>
+                    <td>Precontrol error</td>
+                    <td>{$preliminaryError}</td>
                 </tr>
-                <tr>
-                    <td>TypeCheck error</td>
-                    <td>{$typeError}</td>
-                </tr>
+
             </table>
 
             {if $eligible>0}
@@ -44,7 +47,8 @@
                     <th scope="col">filetypeCheck</th>
                     <th scope="col">sizeCheck</th>
                     <th scope="col">alreadyWaiting</th>
-                    <th scope="col">action</th>
+                    <th scope="col">status</th>
+                    <th scope="col">message</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +68,39 @@
                     </td>
                     <td>{if $file->isEligibleToBeImported()}{1|status} ready for upload
                         {else}
-                        {if $file->isAlreadyWaiting()}🕑 already in processing{else}{0|status} is ignored{/if}{/if}
+                        {if $file->isAlreadyWaiting()}🕑 already in processing{else}
+                            {if $file->hasControlError()}control error{else}
+                        {0|status} is ignored{/if}{/if}{/if}
+                    </td>
+                    <td>{$file->getControlMsg()}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {if count($orphanedItems)>0}
+    <div class="row">
+        <h3>Orphaned</h3>
+        <p>Files with unfinished status in but without files present in the curator bucket.</p>
+        <div class="col">
+            <table class="table table-striped table-hover table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">filename</th>
+                    <th scope="col">imported</th>
+                    <th scope="col">status</th>
+                    <th scope="col">message</th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $orphanedFiles as $photo}
+                <tr>
+                    <th>{$photo->getOriginalFilename()}</th>
+                    <td>{$photo->getCreatedAt()->format('j. F Y')}</td>
+                    <td>{$photo->getStatus()->getName()}</td>
+                    <td>
+                        {$photo->getMessage()}
                     </td>
                 </tr>
                 {/foreach}
@@ -72,4 +108,5 @@
             </table>
         </div>
     </div>
+    {/if}
 </div>

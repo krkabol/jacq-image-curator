@@ -66,18 +66,40 @@ readonly class CuratorService
         $files = [];
 
         foreach ($this->s3Service->listObjects($herbarium->getBucket()) as $filename) {
-            $alreadyWaiting = !(($this->entityManager->getPhotosRepository()->findOneBy(["status" => PhotosStatus::WAITING, "herbarium" => $herbarium, "originalFilename" => $filename["Key"]]) === NULL));
-            $file = new FileInsideCuratorBucket($filename["Key"], (int) $filename["Size"] , $filename["LastModified"], $alreadyWaiting);
+            /** @var Photos $entity */
+            $entity = $this->entityManager->getPhotosRepository()->findOneBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium, "originalFilename" => $filename["Key"]]);
+            if ($entity === NULL) {
+                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], false, false, NULL);
+            }else{
+                $alreadyWaiting = $entity->getStatus()->getId() === PhotosStatus::WAITING;
+                $hasControlError = $entity->getStatus()->getId() === PhotosStatus::CONTROL_ERROR;
+                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], $alreadyWaiting, $hasControlError, $entity->getMessage());
+            }
             $files[] = $file;
-
         }
         return $files;
     }
 
 
+    public function getOrphanedItems($herbariumId): array
+    {
+        $files = [];
+        $herbarium = $this->entityManager->getHerbariaRepository()->find($herbariumId);
+        $dbItems = $this->entityManager->getPhotosRepository()->findBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium]);
+        $bucketItems = $this->s3Service->listObjects($herbarium->getBucket());
+        foreach ($dbItems as $photo) {
+            /** @var Photos $photo */
+            if (!$this->s3Service->objectExists($herbarium->getBucket(), $photo->getOriginalFilename())){
+                $files[] = $photo;
+            }
+        }
+        return $files;
+        }
+
+
     public function getLatestImports($herbariumId): array
     {
-        return $this->entityManager->getPhotosRepository()->findBy(["herbarium" => $herbariumId, "status"=> [3,4,5]], ["lastEdit"=> Criteria::DESC], 30);
+        return $this->entityManager->getPhotosRepository()->findBy(["herbarium" => $herbariumId, "status" => [3, 4, 5]], ["lastEdit" => Criteria::DESC], 30);
 
     }
 

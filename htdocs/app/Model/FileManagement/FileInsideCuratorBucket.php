@@ -15,7 +15,7 @@ readonly class FileInsideCuratorBucket
     const string EXTENSION = 'tif';
     const string MIME_TYPE = 'image/tiff';
 
-    public function __construct(public readonly string $name, public readonly int $size, public readonly DateTimeResult $timestamp, public readonly bool $alreadyWaiting)
+    public function __construct(public readonly string $name, public readonly int $size, public readonly DateTimeResult $timestamp, public readonly bool $alreadyWaiting, public readonly bool $hasControlError, public readonly ?string $controlMsg)
     {
     }
 
@@ -40,9 +40,19 @@ readonly class FileInsideCuratorBucket
         return $this->alreadyWaiting;
     }
 
+    public function hasControlError(): bool
+    {
+        return $this->hasControlError;
+    }
+
+    public function getControlMsg(): ?string
+    {
+        return $this->controlMsg;
+    }
+
     public function isEligibleToBeImported(): bool
     {
-        return ($this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting());
+        return ($this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting()&& !$this->hasControlError());
     }
 
 }

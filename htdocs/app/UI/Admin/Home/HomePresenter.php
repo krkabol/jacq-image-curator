@@ -27,18 +27,20 @@ final class HomePresenter extends SecuredPresenter
         $this->template->title = 'New Files';
         $files = $this->curatorService->getAllCuratorBucketFiles($this->getUser()->getIdentity()->herbarium);
         $this->template->files = $files;
+        $this->template->orphanedItems = $this->curatorService->getOrphanedItems($this->getUser()->getIdentity()->herbarium);
         $this->template->eligible = count(array_filter($files, function ($item) {
             return $item->isEligibleToBeImported() === true;
+        }));
+        $this->template->erroneous = count(array_filter($files, function ($item) {
+            return $item->hasControlError() === true;
         }));
         $this->template->waiting = count(array_filter($files, function ($item) {
             return $item->isAlreadyWaiting() === true;
         }));
-        $this->template->sizeError = count(array_filter($files, function ($item) {
-            return $item->isSizeOK() === false;
+        $this->template->preliminaryError = count(array_filter($files, function ($item) {
+            return ($item->isSizeOK() === false || $item->isTypeOK() === false);
         }));
-        $this->template->typeError = count(array_filter($files, function ($item) {
-            return $item->isTypeOK() === false;
-        }));
+
     }
 
     public function renderOverview()
