@@ -119,7 +119,7 @@ final readonly class StorageConfiguration
     }
     public function getImportTempZbarPath(Photos $photo): string
     {
-        return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . ".jpg");
+        return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . ".png");
     }
 
     public function createS3JP2Name(Photos $photo): string

@@ -90,9 +90,9 @@ class BarcodeStage implements StageInterface
             $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
         }
         $imagick->modulateImage(100, 0, 100);
-        $imagick->adaptiveThresholdImage(150, 150, 1);
-        $imagick->setImageFormat('jpg');
-        $imagick->setImageCompressionQuality(80);
+//        $imagick->adaptiveThresholdImage(150, 150, 1);
+        $imagick->setImageFormat('png');
+//        $imagick->setImageCompressionQuality(80);
         $imagick->writeImage($this->storageConfiguration->getImportTempZbarPath($this->item));
         $imagick->destroy();
         $imagick->clear();

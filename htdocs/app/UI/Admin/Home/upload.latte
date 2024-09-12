@@ -68,7 +68,7 @@
                     </td>
                     <td>{if $file->isEligibleToBeImported()}{1|status} ready for upload
                         {else}
-                        {if $file->isAlreadyWaiting()}🕑 already in processing{else}
+                        {if $file->isAlreadyWaiting()}🕑 in processing{else}
                             {if $file->hasControlError()}control error{else}
                         {0|status} is ignored{/if}{/if}{/if}
                     </td>

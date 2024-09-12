@@ -28,7 +28,7 @@ class Test extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
-        $imagick = new \Imagick($this->tempDir->getPath("barcode/test-archive/test_5b.tif"));
+        $imagick = new \Imagick($this->tempDir->getPath("test-archive/test_5.tif"));
 
         $page = $this->getLargestImage($imagick);
         $imagick->setIteratorIndex($page);
@@ -48,16 +48,16 @@ class Test extends Command
         }
 
         $imagick->modulateImage(100, 0, 100);
-        $imagick->adaptiveThresholdImage(150, 150, 1);
-        $imagick->setImageFormat('jpg');
-        $imagick->setImageCompressionQuality(80);
-        $imagick->writeImage($this->tempDir->getPath("barcode/test-archive/output.jpg"));
+//        $imagick->adaptiveThresholdImage(150, 150, 1);
+        $imagick->setImageFormat('png');
+        $imagick->setImageCompressionQuality(100);
+        $imagick->writeImage($this->tempDir->getPath("output.png"));
         $output->writeln(sprintf("\n Conversion time: %.2f sec", (microtime(true) - $startTime)));
 
 
         $outputZbar = [];
         $returnVar = 0;
-        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->tempDir->getPath("barcode/test-archive/output.jpg")), $outputZbar, $returnVar);
+        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->tempDir->getPath("output.png")), $outputZbar, $returnVar);
         var_dump($returnVar);
 
         var_dump($outputZbar);
