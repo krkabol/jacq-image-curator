@@ -31,6 +31,11 @@ readonly class StageFactory
         return new ConvertStage($this->s3Service, $this->storageConfiguration);
     }
 
+    public function createDuplicityStage(): DuplicityStage
+    {
+        return new DuplicityStage($this->entityManager);
+    }
+
     public function createTransferStage(): TransferStage
     {
         return new TransferStage($this->s3Service, $this->storageConfiguration);
