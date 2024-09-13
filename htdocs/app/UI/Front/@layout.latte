@@ -20,7 +20,12 @@
                     <a class="nav-link {if $presenter->isLinkCurrent('Home:contact')}active{/if}"
                        n:href="Home:contact">Contact</a>
                 </li>
+
             </ul>
+            <form class="d-flex" action="{link Repository:specimen}" method="GET">
+                <input name="specimenFullId"  class="form-control me-2" type="search" placeholder="PRC_37" aria-label="Search specimen">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
             <form class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                     <li class="nav-item">

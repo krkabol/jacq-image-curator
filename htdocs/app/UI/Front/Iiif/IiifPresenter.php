@@ -34,51 +34,9 @@ final class IiifPresenter extends UnsecuredPresenter
         parent::startup();
     }
 
-    public function actionArchiveImage($id)
-    {
-        $bucket = $this->configuration->getArchiveBucket();
-        if ($this->s3Service->objectExists($bucket, $id)) {
-            $head = $this->s3Service->headObject($bucket, $id);
-            $stream = $this->s3Service->getStreamOfObject($bucket, $id);
-
-            $callback = function (Request $httpRequest, Response $httpResponse) use ($id, $head, $stream) {
-                $httpResponse->setHeader("Content-Type", $head['ContentType']);
-                $httpResponse->setHeader('Content-Disposition', "inline; filename" . $id);
-                fpassthru($stream);
-                fclose($stream);
-            };
-
-            $response = new CallbackResponse($callback);
-            $this->sendResponse($response);
-        }
-        $this->error("The requested image does not exists.");
-    }
-
-    public function renderSpecimen($id)
-    {
-        $acronym = $this->configuration->getHerbariumAcronymFromId($id);
-        $specimenId = $this->configuration->getSpecimenIdFromId($id);
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($acronym);
-        $images = $this->photosRepository->findBy(["herbarium" => $herbarium, "specimenId" => $specimenId]);
-        if (count($images) === 0) {
-            $this->error("Specimen " . $id . "not in evidence.");
-        }
-        $this->template->images = $images;
-        $this->template->id = $id;
-    }
-
-    /**
-     * we are running http behind the proxy
-     */
-    protected function getAbsoluteHttpsBasePath()
-    {
-        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
-        return preg_replace('/^http:/', 'https:', $baseUrl);
-    }
 
     public function actionManifest($id)
     {
-
         $herbariumAcronym = $this->configuration->getHerbariumAcronymFromId($id);
         $specimenId = $this->configuration->getSpecimenIdFromId($id);
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($herbariumAcronym);

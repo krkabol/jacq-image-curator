@@ -22,4 +22,13 @@ abstract class BasePresenter extends Presenter
         }
         parent::beforeRender();
     }
+
+    /**
+     * we are running http behind the proxy
+     */
+    protected function getAbsoluteHttpsBasePath()
+    {
+        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
+        return preg_replace('/^http:/', 'https:', $baseUrl);
+    }
 }

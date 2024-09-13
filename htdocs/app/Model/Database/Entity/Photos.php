@@ -162,6 +162,11 @@ class Photos
         return strtoupper($this->getHerbarium()->getAcronym())."_".sprintf('%06d', $this->getSpecimenId());
     }
 
+    public function getJACQs_PID():string
+    {
+        return "https://".strtolower($this->getHerbarium()->getAcronym()).".jacq.org/".strtoupper($this->getHerbarium()->getAcronym()).$this->getSpecimenId();
+    }
+
     public function getStatus(): PhotosStatus
     {
         return $this->status;
