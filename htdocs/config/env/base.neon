@@ -18,6 +18,7 @@ session:
 	autoStart: true
 
 latte:
+	locale: en
 	strictTypes: yes
 	strictParsing: yes
 	extensions:
