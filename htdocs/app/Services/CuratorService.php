@@ -21,7 +21,7 @@ readonly class CuratorService
 
     public function getAllStatuses(): array
     {
-        return $this->entityManager->getPhotosStatusRepository()->findAll();
+        return $this->entityManager->getPhotosStatusRepository()->findBy([], ['id' => 'ASC']);
     }
 
     /**
