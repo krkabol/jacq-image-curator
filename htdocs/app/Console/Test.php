@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
+use app\Services\ImageService;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TempDir;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Test extends Command
 {
 
-    public function __construct(protected readonly TempDir $tempDir, protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorService $curatorService, ?string $name = null)
+    public function __construct(protected readonly TempDir $tempDir, protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorService $curatorService, protected readonly ImageService $imageService, ?string $name = null)
     {
         parent::__construct($name);
     }
@@ -28,24 +29,10 @@ class Test extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
-        $imagick = new \Imagick($this->tempDir->getPath("test-archive/test_5.tif"));
+        $imagick = $this->imageService->createImagick($this->tempDir->getPath("test-archive/test_5.tif"));
 
-        $page = $this->getLargestImage($imagick);
-        $imagick->setIteratorIndex($page);
-
-        $width = $imagick->getImageWidth();
-        $height = $imagick->getImageHeight();
         $limit = 3000;
-        if ($width > $limit || $height > $limit) {
-            if ($width > $height) {
-                $newWidth = $limit;
-                $newHeight = intval(($limit / $width) * $height);
-            } else {
-                $newHeight = $limit;
-                $newWidth = intval(($limit / $height) * $width);
-            }
-            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
-        }
+        $imagick = $this->imageService->resizeImage($imagick, $limit);
 
         $imagick->modulateImage(100, 0, 100);
 //        $imagick->adaptiveThresholdImage(150, 150, 1);
@@ -65,30 +52,6 @@ class Test extends Command
 
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
         return Command::SUCCESS;
-    }
-
-    public function getLargestImage(\Imagick $image): int
-    {
-        $numberOfImages = $image->getNumberImages();
-
-        $maxWidth = 0;
-        $maxHeight = 0;
-        $largestImage = null;
-
-        for ($i = 0; $i < $numberOfImages; $i++) {
-            $image->setIteratorIndex($i);
-            $width = $image->getImageWidth();
-            $height = $image->getImageHeight();
-
-            if ($width * $height > $maxWidth * $maxHeight) {
-                $maxWidth = $width;
-                $maxHeight = $height;
-                $largestImage = $i;
-            }
-
-        }
-        return $largestImage;
-
     }
 
 }

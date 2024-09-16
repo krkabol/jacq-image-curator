@@ -14,7 +14,7 @@ use Nette\Neon\Exception;
 class TestService
 {
     const int LIMIT = 10;
-    public function __construct(protected readonly WebDir $webDir,protected readonly S3Service $S3Service,protected readonly  PhotoOfSpecimenFactory $photoOfSpecimenFactory,protected readonly  StageFactory $stageFactory,protected readonly  StorageConfiguration $storageConfiguration,protected readonly  ImageService $imageService,protected readonly EntityManager $entityManager)
+    public function __construct(protected readonly WebDir $webDir,protected readonly S3Service $S3Service,protected readonly  PhotoOfSpecimenFactory $photoOfSpecimenFactory,protected readonly  StageFactory $stageFactory,protected readonly  StorageConfiguration $storageConfiguration, protected readonly EntityManager $entityManager)
     {
     }
 

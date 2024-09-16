@@ -4,68 +4,59 @@ declare(strict_types=1);
 
 namespace app\Services;
 
-use app\Model\PhotoOfSpecimenFactory;
-use app\Model\ImportStages\BarcodeStage;
-use app\Model\ImportStages\ImportStageException;
-use app\Model\ImportStages\StageFactory;
-use League\Pipeline\Pipeline;
-use Nette\Neon\Exception;
-
+use \Imagick;
 class ImageService
 {
-    const int LIMIT = 100;
-    public function __construct(protected readonly S3Service $S3Service, protected readonly PhotoOfSpecimenFactory $photoOfSpecimenFactory, protected readonly StageFactory $stageFactory, protected readonly StorageConfiguration $storageConfiguration)
+
+    public function __construct(protected readonly S3Service $S3Service,  protected readonly StorageConfiguration $storageConfiguration)
     {
     }
 
-    public function proceedNewImages(): array
-    {        throw new Exception("not tested in production !");
-
-        return $this->runPipeline($this->fileProcessingPipeline());
-    }
-
-    public function fileProcessingPipeline(): Pipeline
+    public function getLargestImageIndex(Imagick $imagick): int
     {
-        return $this->controlPipeline()
-            ->pipe($this->stageFactory->createConvertStage())
-            ->pipe($this->stageFactory->createArchiveStage())
-            ->pipe($this->stageFactory->createRegisterStage())
-            ->pipe($this->stageFactory->createCleanupStage());
-    }
+        $numberOfImages = $imagick->getNumberImages();
+        $maxWidth = 0;
+        $maxHeight = 0;
+        $largestImageIndex = null;
+        for ($i = 0; $i < $numberOfImages; $i++) {
+            $imagick->setIteratorIndex($i);
+            $width = $imagick->getImageWidth();
+            $height = $imagick->getImageHeight();
 
-    public function controlPipeline(): Pipeline
-    {
-        return (new Pipeline())
-            ->pipe($this->stageFactory->createFilenameControlStage())
-            ->pipe($this->stageFactory->createNoveltyControlStage())
-            ->pipe($this->stageFactory->createDimensionsStage())
-            ->pipe(new BarcodeStage);
-    }
-
-    public function proceedDryrun(): array
-    {
-        return $this->runPipeline($this->controlPipeline());
-    }
-
-    protected function runPipeline(Pipeline $pipeline): array
-    {
-        $success = [];
-        $error = [];
-        $i = 0;
-        foreach ($this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getCuratorBucket()) as $file) {
-            try {
-                $photo = $this->photoOfSpecimenFactory->create($this->storageConfiguration->getCuratorBucket(), $file);
-                $pipeline->process($photo);
-                $success[$file] = "OK";
-                $i++;
-            } catch (ImportStageException $e) {
-                $error[$file] = $e->getMessage();
-            }
-            if ($i >= self::LIMIT) {
-                break;
+            if ($width * $height > $maxWidth * $maxHeight) {
+                $maxWidth = $width;
+                $maxHeight = $height;
+                $largestImageIndex = $i;
             }
         }
-        return [$success, $error];
+        return $largestImageIndex;
+    }
+
+    /**
+     * creates Imagick instance with the largest page of file activated
+     */
+    public function createImagick($path): Imagick
+    {
+        $imagick = new Imagick($path);
+        $imagick->setIteratorIndex($this->getLargestImageIndex($imagick));
+        return $imagick;
+    }
+
+    public function resizeImage(Imagick $imagick, int $maxEdgeLength): Imagick
+    {
+        $width = $imagick->getImageWidth();
+        $height = $imagick->getImageHeight();
+        if ($width > $maxEdgeLength || $height > $maxEdgeLength) {
+            if ($width > $height) {
+                $newWidth = $maxEdgeLength;
+                $newHeight = intval(($maxEdgeLength / $width) * $height);
+            } else {
+                $newHeight = $maxEdgeLength;
+                $newWidth = intval(($maxEdgeLength / $height) * $width);
+            }
+            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+        }
+        return $imagick;
     }
 
 

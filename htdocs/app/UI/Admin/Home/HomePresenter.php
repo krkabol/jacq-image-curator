@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\UI\Admin\Home;
 
 use App\Services\CuratorService;
-use app\Services\ImageService;
 use app\UI\Base\SecuredPresenter;
 
 final class HomePresenter extends SecuredPresenter
 {
-    /** @inject */
-    public ImageService $imageService;
 
     /** @inject */
     public CuratorService $curatorService;
@@ -47,14 +44,6 @@ final class HomePresenter extends SecuredPresenter
     {
         $files = $this->curatorService->getLatestImports($this->getUser()->getIdentity()->herbarium);
         $this->template->files = $files;
-    }
-
-    public function renderDryrun()
-    {
-        $result = $this->imageService->proceedDryrun();
-        $this->setView("proceed");
-        $this->template->success = $result[0];
-        $this->template->error = $result[1];
     }
 
     public function actionPrimaryImport()
