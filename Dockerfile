@@ -1,4 +1,4 @@
-FROM ghcr.io/krkabol/curator_base:main@sha256:a894e5f5f0399e3a06ad734b87dffc8638ab46a848e7ad36ce4abdfa2f1a2f66
+FROM ghcr.io/krkabol/curator_base:main@sha256:04b35efd213dcb26484256879fd59ce4d3c96f8d345977ad8f38e9da9484a83b
 LABEL org.opencontainers.image.source=https://github.com/krkabol/jacq-image-curator
 LABEL org.opencontainers.image.description="Image processing for JACQ herabrium service"
 
