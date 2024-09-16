@@ -55,7 +55,7 @@ class Photos
     protected ?string $message;
 
     #[ORM\Column(type: Types::BLOB,nullable: true, options: ["comment" => "Thumbnail during import phase"])]
-    protected ?string $thumbnail;
+    protected $thumbnail;
 
     public function getArchiveFilename(): ?string
     {
@@ -190,7 +190,7 @@ class Photos
         return $this;
     }
 
-    public function getThumbnail(): ?string
+    public function getThumbnail()
     {
         return $this->thumbnail;
     }

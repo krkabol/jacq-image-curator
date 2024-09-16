@@ -69,7 +69,7 @@
                     <td>{if $file->isEligibleToBeImported()}{1|status} ready for upload
                         {else}
                         {if $file->isAlreadyWaiting()}🕑 in processing{else}
-                            {if $file->hasControlError()}control error{else}
+                        {if $file->hasControlError()}control error <a n:href=":revise $file->rowId">revise</a>{else}
                         {0|status} is ignored{/if}{/if}{/if}
                     </td>
                     <td>{$file->getControlMsg()}</td>

@@ -1,0 +1,14 @@
+{block content}
+<div class="container">
+<h2>Detail of import task {$photo->getId()}</h2>
+
+<a n:href=":upload">back to upload results</a>
+
+    <div class="row">
+<div class="col-md-8"><img src="{link :thumbnail $photo->getId()}" class="img-fluid"></div>
+        <div class="col-md-4">
+            <p><b>error:</b> {$photo->getMessage()}</p>
+        </div>
+    </div>
+
+</div>

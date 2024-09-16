@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\UI\Admin\Home;
 
+use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
 use app\UI\Base\SecuredPresenter;
-
+use Nette\Application\Responses\CallbackResponse;
 final class HomePresenter extends SecuredPresenter
 {
 
     /** @inject */
     public CuratorService $curatorService;
+    /** @inject */
+    public EntityManager $entityManager;
 
     public function renderDefault()
     {
@@ -40,6 +43,27 @@ final class HomePresenter extends SecuredPresenter
 
     }
 
+    public function actionThumbnail($id)
+    {
+        $thumb = $this->entityManager->getPhotosRepository()->find($id)->getThumbnail();
+        if ($thumb !== null) {
+            $this->sendResponse(new CallbackResponse(function ($request, $response) use ($thumb) {
+                $response->setContentType("image");
+                $response->setExpiration('1 hour');
+                echo stream_get_contents($thumb);
+            }));
+        } else {
+            $this->error('Thumbnail not found');
+        }
+
+    }
+
+    public function renderRevise($id)
+    {
+       $this->template->photo = $this->entityManager->getPhotosRepository()->find($id);
+
+    }
+
     public function renderOverview()
     {
         $files = $this->curatorService->getLatestImports($this->getUser()->getIdentity()->herbarium);
@@ -51,8 +75,8 @@ final class HomePresenter extends SecuredPresenter
         try {
             $this->curatorService->registerNewFiles($this->getUser()->getIdentity()->herbarium);
             $this->flashMessage("Files successfully marked to be processed", "success");
-        }catch (\Exception $exception){
-            $this->flashMessage("An error occured: ".$exception->getMessage(), "danger");
+        } catch (\Exception $exception) {
+            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
         }
         $this->redirect("upload");
     }

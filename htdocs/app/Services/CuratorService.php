@@ -71,11 +71,11 @@ readonly class CuratorService
             /** @var Photos $entity */
             $entity = $this->entityManager->getPhotosRepository()->findOneBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium, "originalFilename" => $filename["Key"]]);
             if ($entity === NULL) {
-                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], false, false, NULL);
+                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], false, false, NULL, NULL);
             }else{
                 $alreadyWaiting = $entity->getStatus()->getId() === PhotosStatus::WAITING;
                 $hasControlError = $entity->getStatus()->getId() === PhotosStatus::CONTROL_ERROR;
-                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], $alreadyWaiting, $hasControlError, $entity->getMessage());
+                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], $alreadyWaiting, $hasControlError, $entity->getId(), $entity->getMessage());
             }
             $files[] = $file;
         }

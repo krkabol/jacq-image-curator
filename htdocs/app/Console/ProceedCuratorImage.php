@@ -18,10 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ProceedCuratorImage extends Command
 {
     /**
-     * Running as a CronJob - process images from curatorBucket to the repository waiting room     *
-     *
-     * for testing on local machine:
-     * docker run --network host -v ./htdocs:/app -w /app/bin ghcr.io/krkabol/curator_base:main ./cron_curator_importImage.sh
+     * Running as a CronJob - process images from curatorBucket to the repository waiting room
      */
 
 

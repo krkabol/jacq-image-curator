@@ -15,7 +15,7 @@ readonly class FileInsideCuratorBucket
     const string EXTENSION = 'tif';
     const string MIME_TYPE = 'image/tiff';
 
-    public function __construct(public readonly string $name, public readonly int $size, public readonly DateTimeResult $timestamp, public readonly bool $alreadyWaiting, public readonly bool $hasControlError, public readonly ?string $controlMsg)
+    public function __construct(public readonly string $name, public readonly int $size, public readonly DateTimeResult $timestamp, public readonly bool $alreadyWaiting, public readonly bool $hasControlError, public readonly ?int $rowId, public readonly ?string $controlMsg)
     {
     }
 
