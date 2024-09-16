@@ -67,10 +67,10 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
+            return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
         }
 
-        return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
+        return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
     }
 
     /**
@@ -182,7 +182,7 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getArchiveFilename(): string
+    public function getArchiveFilename(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArchiveFilename', []);
@@ -204,7 +204,7 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getJp2Filename(): string
+    public function getJp2Filename(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJp2Filename', []);
@@ -391,6 +391,17 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
+    public function getJACQs_PID(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJACQs_PID', []);
+
+        return parent::getJACQs_PID();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getStatus(): \app\Model\Database\Entity\PhotosStatus
     {
 
@@ -430,6 +441,28 @@ class Photos extends \app\Model\Database\Entity\Photos implements \Doctrine\ORM\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOriginalFilename', [$originalFilename]);
 
         return parent::setOriginalFilename($originalFilename);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getThumbnail(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getThumbnail', []);
+
+        return parent::getThumbnail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setThumbnail(?string $thumbnail): \app\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setThumbnail', [$thumbnail]);
+
+        return parent::setThumbnail($thumbnail);
     }
 
     /**

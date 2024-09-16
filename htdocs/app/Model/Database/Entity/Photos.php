@@ -54,7 +54,8 @@ class Photos
     #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "Result of migration"])]
     protected ?string $message;
 
-
+    #[ORM\Column(type: Types::BLOB,nullable: true, options: ["comment" => "Thumbnail during import phase"])]
+    protected ?string $thumbnail;
 
     public function getArchiveFilename(): ?string
     {
@@ -189,6 +190,15 @@ class Photos
         return $this;
     }
 
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
 
+    public function setThumbnail(?string $thumbnail): Photos
+    {
+        $this->thumbnail = $thumbnail;
+        return $this;
+    }
 
 }
