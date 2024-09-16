@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\Model\ImportStages;
 
 use App\Model\Database\EntityManager;
+use app\Services\ImageService;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TempDir;
@@ -12,7 +13,7 @@ use app\Services\TempDir;
 readonly class StageFactory
 {
 
-    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
     {
     }
 
@@ -23,7 +24,12 @@ readonly class StageFactory
 
     public function createBarcodeStage(): BarcodeStage
     {
-        return new BarcodeStage($this->storageConfiguration);
+        return new BarcodeStage($this->storageConfiguration, $this->imageService);
+    }
+
+    public function createThumbnailStage(): ThumbnailStage
+    {
+        return new ThumbnailStage($this->storageConfiguration, $this->imageService);
     }
 
     public function createConvertStage(): ConvertStage

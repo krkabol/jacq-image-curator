@@ -48,6 +48,7 @@ readonly class CuratorService
     {
         return (new Pipeline())
             ->pipe($this->stageFactory->createDownloadStage())
+            ->pipe($this->stageFactory->createThumbnailStage())
             ->pipe($this->stageFactory->createBarcodeStage())
             ->pipe($this->stageFactory->createDuplicityStage())
             ->pipe($this->stageFactory->createConvertStage())

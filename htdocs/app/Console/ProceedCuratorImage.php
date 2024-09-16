@@ -53,6 +53,7 @@ class ProceedCuratorImage extends Command
             $this->curatorService->importNewFiles()->process($photo);
 
 //            $output->write("\n Specimen fullID: ".$photo->getFullSpecimenId());
+            $photo->setThumbnail(NULL);
             $photo->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_OK));
         } catch (ImportStageException $e) {
             $photo->setMessage($e->getMessage())
