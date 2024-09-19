@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace app\UI\Base;
 use app\Model\Database\Entity\Herbaria;
+use App\Model\Database\EntityManager;
+use App\UI\Base\Form\FormFactory;
 use Nette\Security\User;
 
 
 abstract class SecuredPresenter extends BasePresenter
 {
     protected Herbaria $herbarium;
+
+    /** @var FormFactory @inject */
+    public $formFactory;
+    /** @inject */
+    public EntityManager $entityManager;
 
     public function checkRequirements($element): void
     {

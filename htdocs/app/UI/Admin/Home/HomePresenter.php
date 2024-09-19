@@ -16,8 +16,6 @@ final class HomePresenter extends SecuredPresenter
 
     /** @inject */
     public CuratorService $curatorService;
-    /** @inject */
-    public EntityManager $entityManager;
 
     public $photo;
 

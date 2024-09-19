@@ -99,7 +99,7 @@ class BarcodeStage implements StageInterface
             }
         }
         if (!$isValid) {
-            throw new BarcodeStageException("Invalid barcode. Detected code(s): " . implode($this->barcodes));
+            throw new BarcodeStageException("Invalid barcode. Detected non-valid code(s): " . implode($this->barcodes));
         }
     }
 

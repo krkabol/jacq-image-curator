@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <h5 class="card-title">PID: NRPKA3.3domain.image{$image->getId()}</h5>
                         <p class="card-text">Archive Master filename: {$image->getArchiveFilename()} <a
-                            n:href=":archiveImage $image->getArchiveFilename()">download</a></p>
+                            n:href=":archiveImage $image->getId()">download</a></p>
                         <p class="card-text">W×H: {$image->getWidth()}×{$image->getHeight()}</p>
                         <p class="card-text">Filesize: {$image->getArchiveFileSize()|bytes:2}</p>
                         <p class="card-text"><small class="text-muted">Imported at

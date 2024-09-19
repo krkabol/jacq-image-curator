@@ -72,7 +72,7 @@
                         {if $file->hasControlError()}control error <a n:href=":revise $file->rowId">revise</a>{else}
                         {0|status} is ignored{/if}{/if}{/if}
                     </td>
-                    <td>{$file->getControlMsg()}</td>
+                    <td>{$file->getControlMsg()|noescape}</td>
                 </tr>
                 {/foreach}
                 </tbody>

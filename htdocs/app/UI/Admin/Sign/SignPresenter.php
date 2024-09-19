@@ -14,9 +14,6 @@ final class SignPresenter extends SecuredPresenter
     /** @var string @persistent */
     public $backlink;
 
-    /** @var FormFactory @inject */
-    public $formFactory;
-
 
     public function checkRequirements($element): void
     {

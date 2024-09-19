@@ -9,11 +9,12 @@ use app\Services\ImageService;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
 use app\Services\TempDir;
+use Nette\Application\LinkGenerator;
 
 readonly class StageFactory
 {
 
-    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService, protected readonly LinkGenerator $linkGenerator)
     {
     }
 
@@ -39,7 +40,7 @@ readonly class StageFactory
 
     public function createDuplicityStage(): DuplicityStage
     {
-        return new DuplicityStage($this->entityManager);
+        return new DuplicityStage($this->entityManager, $this->linkGenerator);
     }
 
     public function createTransferStage(): TransferStage

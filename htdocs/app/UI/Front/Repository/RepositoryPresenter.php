@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Front\Repository;
 
+use app\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
 use app\Services\S3Service;
 use app\Services\StorageConfiguration;
@@ -31,16 +32,20 @@ final class RepositoryPresenter extends UnsecuredPresenter
         parent::startup();
     }
 
-    public function actionArchiveImage($id)
+    public function actionArchiveImage(int $id)
     {
+        //TODO - preselect photos according to status -
+        $photo = $this->photosRepository->getById($id);
+        /** @var Photos $photo */
+        $filename = $photo->getArchiveFilename();
         $bucket = $this->configuration->getArchiveBucket();
-        if ($this->s3Service->objectExists($bucket, $id)) {
-            $head = $this->s3Service->headObject($bucket, $id);
-            $stream = $this->s3Service->getStreamOfObject($bucket, $id);
+        if ($this->s3Service->objectExists($bucket, $filename)) {
+            $head = $this->s3Service->headObject($bucket, $filename);
+            $stream = $this->s3Service->getStreamOfObject($bucket, $filename);
 
-            $callback = function (Request $httpRequest, Response $httpResponse) use ($id, $head, $stream) {
+            $callback = function (Request $httpRequest, Response $httpResponse) use ($filename, $head, $stream) {
                 $httpResponse->setHeader("Content-Type", $head['ContentType']);
-                $httpResponse->setHeader('Content-Disposition', "inline; filename" . $id);
+                $httpResponse->setHeader('Content-Disposition', "inline; filename" . $filename);
                 fpassthru($stream);
                 fclose($stream);
             };
