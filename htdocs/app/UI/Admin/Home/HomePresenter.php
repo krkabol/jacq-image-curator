@@ -8,6 +8,7 @@ use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
 use app\UI\Base\SecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
+
 final class HomePresenter extends SecuredPresenter
 {
 
@@ -25,9 +26,9 @@ final class HomePresenter extends SecuredPresenter
     public function renderUpload()
     {
         $this->template->title = 'New Files';
-        $files = $this->curatorService->getAllCuratorBucketFiles($this->getUser()->getIdentity()->herbarium);
+        $files = $this->curatorService->getAllCuratorBucketFiles($this->herbarium);
         $this->template->files = $files;
-        $this->template->orphanedItems = $this->curatorService->getOrphanedItems($this->getUser()->getIdentity()->herbarium);
+        $this->template->orphanedItems = $this->curatorService->getOrphanedItems($this->herbarium);
         $this->template->eligible = count(array_filter($files, function ($item) {
             return $item->isEligibleToBeImported() === true;
         }));
@@ -43,7 +44,7 @@ final class HomePresenter extends SecuredPresenter
 
     }
 
-    public function actionThumbnail($id)
+    public function actionThumbnail(int $id)
     {
         $thumb = $this->entityManager->getPhotosRepository()->find($id)->getThumbnail();
         if ($thumb !== null) {
@@ -58,26 +59,61 @@ final class HomePresenter extends SecuredPresenter
 
     }
 
-    public function renderRevise($id)
-    {
-       $this->template->photo = $this->entityManager->getPhotosRepository()->find($id);
 
+    public function renderRevise(int $id)
+    {
+        //tODO - find etc has to be moved into service to facilitate "my herbarium" restrictions!
+        $photo = $this->curatorService->getPhotoWithError($this->herbarium, $id);
+        if ($photo === null) {
+            $this->error('Photo not found');
+        }
+        $this->template->photo = $photo;
     }
 
     public function renderOverview()
     {
-        $files = $this->curatorService->getLatestImports($this->getUser()->getIdentity()->herbarium);
+        $files = $this->curatorService->getLatestImports($this->herbarium);
         $this->template->files = $files;
     }
 
     public function actionPrimaryImport()
     {
         try {
-            $this->curatorService->registerNewFiles($this->getUser()->getIdentity()->herbarium);
+            $this->curatorService->registerNewFiles($this->herbarium);
             $this->flashMessage("Files successfully marked to be processed", "success");
         } catch (\Exception $exception) {
             $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
         }
         $this->redirect("upload");
+    }
+
+    public function actionReimport(int $id)
+    {
+        try {
+            $photo = $this->curatorService->getPhotoWithError($this->herbarium, $id);
+            if ($photo === null) {
+                $this->error('Photo not found');
+            }
+            $this->curatorService->reimportPhoto($this->herbarium, $photo);
+            $this->flashMessage("File successfully marked to be re-processed", "success");
+        } catch (\Exception $exception) {
+            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
+        }
+        $this->redirect("upload");
+    }
+
+    public function actionDelete(int $id)
+    {
+        try {
+            $photo = $this->curatorService->getPhotoWithError($this->herbarium, $id);
+            if ($photo === null) {
+                $this->error('Photo not found');
+            }
+            $this->curatorService->deleteNotImportedPhoto($this->herbarium, $photo);
+            $this->flashMessage("Photo deleted", "success");
+        } catch (\Exception $exception) {
+            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
+        }
+        $this->redirect(":upload");
     }
 }

@@ -8,6 +8,12 @@
 <div class="col-md-8"><img src="{link :thumbnail $photo->getId()}" class="img-fluid"></div>
         <div class="col-md-4">
             <p><b>error:</b> {$photo->getMessage()}</p>
+            <p>Please decide what to do with this image: </p>
+
+                <p><a n:href=":reimport $photo->getId()" id="reupload" class="btn btn-primary btn-sm" role="button">Repeat processing</a> - the file is ok and error
+                    reported looks like temporal error of the repository.</p>
+            <p><a n:href=":delete $photo->getId()" id="delete" class="btn btn-warning btn-sm" role="button">Delete</a> - delete the file from my bucket and erase the information about its processing.</p>
+            <p><a n:href=":primaryImport" id="setid" class="btn btn-secondary btn-sm" role="button">Insert ID manually</a> - the file is ok but the automatic barcode processing failed. It will be reprocessed.</p>
         </div>
     </div>
 

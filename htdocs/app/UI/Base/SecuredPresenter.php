@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 namespace app\UI\Base;
-use Nette\Application\UI\Presenter;
+use app\Model\Database\Entity\Herbaria;
 use Nette\Security\User;
 
 
 abstract class SecuredPresenter extends BasePresenter
 {
+    protected Herbaria $herbarium;
+
     public function checkRequirements($element): void
     {
         if (!$this->user->isLoggedIn()) {
@@ -20,6 +22,12 @@ abstract class SecuredPresenter extends BasePresenter
                 ['backlink' => $this->storeRequest()]
             );
         }
+    }
+
+    public function startup()
+    {
+        $this->herbarium = $this->entityManager->getReference(Herbaria::class, $this->getUser()->getIdentity()->herbarium);
+        parent::startup();
     }
 
 }
