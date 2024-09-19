@@ -26,14 +26,16 @@ latte:
 
 application:
 	catchExceptions: %productionMode%
+    # Error presenters to handle application errors
 	errorPresenter:
 		4xx: Base:Error:Error4xx
 		5xx: Base:Error:Error5xx
+
+	# Presenter to class name mapping pattern
 	mapping:
 		Admin: App\UI\Admin\**Presenter
 		Front: App\UI\Front\**Presenter
-		Base: App\UI\Base\**Presenter
-
+		Base: App\UI\Base\*\**Presenter
 
 di:
 	debugger: true
