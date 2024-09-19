@@ -34,8 +34,11 @@ final class RepositoryPresenter extends UnsecuredPresenter
 
     public function actionArchiveImage(int $id)
     {
-        //TODO - preselect photos according to status -
-        $photo = $this->photosRepository->getById($id);
+        //TODO - preselect photos according to status !!
+        $photo = $this->photosRepository->find($id);
+        if($photo === null) {
+            $this->error("The requested photo does not exists.");
+        }
         /** @var Photos $photo */
         $filename = $photo->getArchiveFilename();
         $bucket = $this->configuration->getArchiveBucket();
