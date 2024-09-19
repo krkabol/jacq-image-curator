@@ -31,9 +31,12 @@ class BarcodeStage implements StageInterface
             $this->item = $payload;
             $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
             $this->readDimensions($imagick);
-            $this->createContrastedImage($imagick);
-            $this->detectCodes();
-            $this->harvestCodes();
+            /** skip detection when manually inserted */
+            if ($this->item->getSpecimenId() === NULL) {
+                $this->createContrastedImage($imagick);
+                $this->detectCodes();
+                $this->harvestCodes();
+            }
             return $this->item;
         } catch (BarcodeStageException $e) {
             throw $e;
@@ -42,6 +45,7 @@ class BarcodeStage implements StageInterface
         }
     }
 
+    //TODO isolate to stage? - requires double imagick creation..
     protected function readDimensions(Imagick $imagick): Imagick
     {
         $this->item->setWidth($imagick->getImageWidth());
@@ -51,7 +55,7 @@ class BarcodeStage implements StageInterface
 
     protected function createContrastedImage(Imagick $imagick): void
     {
-       $imagick = $this->imageService->resizeImage($imagick, $this->storageConfiguration->getZbarImageSize());
+        $imagick = $this->imageService->resizeImage($imagick, $this->storageConfiguration->getZbarImageSize());
         $imagick->modulateImage(100, 0, 100);
 //        $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('png');

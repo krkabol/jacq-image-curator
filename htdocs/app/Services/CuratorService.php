@@ -119,12 +119,13 @@ readonly class CuratorService
 
     }
 
-    public function reimportPhoto(Herbaria $herbarium, Photos $photo): void
+    public function reimportPhoto(Herbaria $herbarium, Photos $photo, ?int $manualSpecimenId = NULL): void
     {
         if ($herbarium->getId() === $photo->getHerbarium()->getId()) {
             $photo
                 ->setLastEditAt()
                 ->setMessage(NULL)
+                ->setSpecimenId((string) $manualSpecimenId)
                 ->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::WAITING));
             $this->entityManager->flush();
             return;

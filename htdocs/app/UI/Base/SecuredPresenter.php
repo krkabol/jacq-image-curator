@@ -30,4 +30,10 @@ abstract class SecuredPresenter extends BasePresenter
         parent::startup();
     }
 
+    public function beforeRender(): void
+    {
+        $this->template->herbarium = $this->herbarium;
+        parent::beforeRender();
+    }
+
 }

@@ -1,19 +1,48 @@
 {block content}
 <div class="container">
-<h2>Detail of import task {$photo->getId()}</h2>
+    <h2>Detail of file <em>{$photo->getOriginalFilename()}</em> [task {$photo->getId()}]</h2>
 
-<a n:href=":upload">back to upload results</a>
+    <a n:href=":upload">back to upload results</a>
 
     <div class="row">
-<div class="col-md-8"><img src="{link :thumbnail $photo->getId()}" class="img-fluid"></div>
+        <div class="col-md-8"><img src="{link :thumbnail $photo->getId()}" class="img-fluid"></div>
         <div class="col-md-4">
             <p><b>error:</b> {$photo->getMessage()}</p>
             <p>Please decide what to do with this image: </p>
 
-                <p><a n:href=":reimport $photo->getId()" id="reupload" class="btn btn-primary btn-sm" role="button">Repeat processing</a> - the file is ok and error
-                    reported looks like temporal error of the repository.</p>
-            <p><a n:href=":delete $photo->getId()" id="delete" class="btn btn-warning btn-sm" role="button">Delete</a> - delete the file from my bucket and erase the information about its processing.</p>
-            <p><a n:href=":primaryImport" id="setid" class="btn btn-secondary btn-sm" role="button">Insert ID manually</a> - the file is ok but the automatic barcode processing failed. It will be reprocessed.</p>
+            <p><a n:href=":reimport $photo->getId()" id="reupload" class="btn btn-primary btn-sm" role="button">Repeat
+                processing</a> - the file is ok and the error reported looks like temporal error of the repository.</p>
+            <p><a n:href=":delete $photo->getId()" id="delete" class="btn btn-warning btn-sm" role="button">Delete</a> -
+                delete the file from my bucket and erase the information about its processing.</p>
+            <hr width="70%">
+            <p>The file could be ok but the automatic barcode processing failed. If so, enter the numeric part of
+                specimen ID. The image will be reprocessed skipping the barcode detection. </p>
+
+
+            <form n:name=specimenIdForm class=form>
+                <ul class="errors" n:ifcontent>
+                    <li n:foreach="$form->getOwnErrors() as $error">{$error}</li>
+                </ul>
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label n:name=specimen class="form-label">{$herbarium->getAcronym()}-</label>
+                    </div>
+                    <div class="col-auto">
+                       <input n:name=specimen  type="number" style=" width: 8em;" class="form-control" aria-describedby="helpInline" autofocus placeholder="12345">
+                    </div>
+                    <div class="col-auto">
+                    <span n:ifcontent{inputError specimen} id="helpInline" class="form-text error"></span>
+                    </div>
+                </div>
+                <div class="row mt-3 align-items-center">
+                    <div class="col-auto">
+                    </div>
+                    <div class="col-auto">
+                        <input n:name=submit class="btn btn-secondary btn-sm" role="button">
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
 

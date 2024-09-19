@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\UI\Admin\Home;
 
+use app\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
 use app\UI\Base\SecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
+use Nette\Application\UI\Form;
 
 final class HomePresenter extends SecuredPresenter
 {
@@ -16,6 +18,8 @@ final class HomePresenter extends SecuredPresenter
     public CuratorService $curatorService;
     /** @inject */
     public EntityManager $entityManager;
+
+    public $photo;
 
     public function renderDefault()
     {
@@ -60,7 +64,7 @@ final class HomePresenter extends SecuredPresenter
     }
 
 
-    public function renderRevise(int $id)
+    public function actionRevise(int $id)
     {
         //tODO - find etc has to be moved into service to facilitate "my herbarium" restrictions!
         $photo = $this->curatorService->getPhotoWithError($this->herbarium, $id);
@@ -68,6 +72,7 @@ final class HomePresenter extends SecuredPresenter
             $this->error('Photo not found');
         }
         $this->template->photo = $photo;
+        $this->photo = $photo;
     }
 
     public function renderOverview()
@@ -82,7 +87,7 @@ final class HomePresenter extends SecuredPresenter
             $this->curatorService->registerNewFiles($this->herbarium);
             $this->flashMessage("Files successfully marked to be processed", "success");
         } catch (\Exception $exception) {
-            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
+            $this->flashMessage("An error occurred: " . $exception->getMessage(), "danger");
         }
         $this->redirect("upload");
     }
@@ -97,7 +102,7 @@ final class HomePresenter extends SecuredPresenter
             $this->curatorService->reimportPhoto($this->herbarium, $photo);
             $this->flashMessage("File successfully marked to be re-processed", "success");
         } catch (\Exception $exception) {
-            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
+            $this->flashMessage("An error occurred: " . $exception->getMessage(), "danger");
         }
         $this->redirect("upload");
     }
@@ -109,11 +114,39 @@ final class HomePresenter extends SecuredPresenter
             if ($photo === null) {
                 $this->error('Photo not found');
             }
+            $name = $photo->getOriginalFilename();
             $this->curatorService->deleteNotImportedPhoto($this->herbarium, $photo);
-            $this->flashMessage("Photo deleted", "success");
+            $this->flashMessage("Photo " . $name . " deleted.", "success");
         } catch (\Exception $exception) {
-            $this->flashMessage("An error occured: " . $exception->getMessage(), "danger");
+            $this->flashMessage("An error occurred: " . $exception->getMessage(), "danger");
         }
         $this->redirect(":upload");
+    }
+
+    public function specimenIdFormSucceeded(Form $form, \stdClass $values): void
+    {
+        try {
+            $this->curatorService->getPhotoWithError($this->herbarium, (int) $values->photoId);
+            $this->curatorService->reimportPhoto($this->herbarium, $this->entityManager->getReference(Photos::class, $values->photoId), $values->specimen);
+
+            $fullID = $this->herbarium->getAcronym() . "-" . $values->specimen;
+            $this->flashMessage("File successfully marked to be re-processed with ID " . $fullID, "success");
+        } catch (\Exception $exception) {
+            $this->flashMessage("An error occurred: " . $exception->getMessage(), "danger");
+        }
+        $this->redirect(':upload');
+    }
+
+    protected function createComponentSpecimenIdForm(): Form
+    {
+        $form = new Form;
+        $form->addInteger('specimen', 'ID:')
+            ->setRequired('Please insert only number.')
+            ->addRule($form::Integer, 'It must be integer');
+        $form->addHidden("photoId", $this->photo->getId());
+        $form->addSubmit('submit', 'Import with this ID');
+        $form->onSuccess[] = [$this, 'specimenIdFormSucceeded'];
+
+        return $form;
     }
 }

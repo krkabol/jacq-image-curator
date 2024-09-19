@@ -121,7 +121,9 @@ class Photos
 
     public function setSpecimenId(?string $specimenId): Photos
     {
-        $this->specimenId = ltrim($specimenId, '0');
+        if($specimenId !== NULL){
+            $this->specimenId = ltrim($specimenId, '0');
+        }
         return $this;
     }
 
