@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\Model\ImportStages;
+namespace App\Model\ImportStages;
 
-use app\Model\Database\Entity\Photos;
-use app\Services\ImageService;
-use app\Services\StorageConfiguration;
+use App\Model\Database\Entity\Photos;
+use App\Services\ImageService;
+use App\Services\StorageConfiguration;
 use Exception;
 use Imagick;
 use League\Pipeline\StageInterface;

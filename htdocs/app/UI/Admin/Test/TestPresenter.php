@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\UI\Admin\Test;
 
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TestService;
-use app\UI\Base\BasePresenter;
-use app\UI\Base\SecuredPresenter;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TestService;
+use App\UI\Base\BasePresenter;
+use App\UI\Base\SecuredPresenter;
 
 
 final class TestPresenter extends SecuredPresenter

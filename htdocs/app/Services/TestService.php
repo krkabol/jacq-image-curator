@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\Services;
+namespace App\Services;
 
 use App\Model\Database\EntityManager;
-use app\Model\PhotoOfSpecimenFactory;
-use app\Model\MigrationStages\StageFactory;
+use App\Model\PhotoOfSpecimenFactory;
+use App\Model\MigrationStages\StageFactory;
 use App\UI\Admin\Test\TestPresenter;
 use League\Pipeline\Pipeline;
 use Nette\Neon\Exception;

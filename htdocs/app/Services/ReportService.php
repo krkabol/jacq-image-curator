@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use app\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
 
 final class ReportService

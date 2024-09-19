@@ -6,8 +6,8 @@ namespace App\UI\Front\Iiif;
 
 use App\Model\Database\EntityManager;
 use App\Model\IIIF\ManifestFactory;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
 use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request;

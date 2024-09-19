@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use app\Model\Database\Entity\Herbaria;
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Entity\PhotosStatus;
+use App\Model\Database\Entity\Herbaria;
+use App\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use App\Model\FileManagement\FileInsideCuratorBucket;
-use app\Model\ImportStages\StageFactory;
+use App\Model\ImportStages\StageFactory;
 use Doctrine\Common\Collections\Criteria;
 use League\Pipeline\Pipeline;
 use Nette\Security\AuthenticationException;

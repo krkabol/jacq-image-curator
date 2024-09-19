@@ -4,10 +4,10 @@ namespace App\Console;
 
 use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
-use app\Services\ImageService;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TempDir;
+use App\Services\ImageService;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TempDir;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

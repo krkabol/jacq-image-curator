@@ -2,10 +2,10 @@
 
 namespace App\Console;
 
-use app\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -2,13 +2,13 @@
 
 namespace App\Console;
 
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Entity\PhotosStatus;
+use App\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
-use app\Model\ImportStages\ImportStageException;
+use App\Model\ImportStages\ImportStageException;
 use App\Services\CuratorService;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\Console\Command\Command;
@@ -71,7 +71,7 @@ class ProceedCuratorImage extends Command
     public function getPhoto(): ?Photos
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
-        $rsm->addRootEntityFromClassMetadata('app\Model\Database\Entity\Photos', 'p');
+        $rsm->addRootEntityFromClassMetadata('App\Model\Database\Entity\Photos', 'p');
         $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id = ? ORDER BY id asc FOR UPDATE SKIP LOCKED LIMIT 1 ', $rsm);
         $query->setParameter(1, PhotosStatus::WAITING);
         /** @var Photos $photo */

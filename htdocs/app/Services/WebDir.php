@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace app\Services;
+namespace App\Services;
 
 readonly class WebDir
 {

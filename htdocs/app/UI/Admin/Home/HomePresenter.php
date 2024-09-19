@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\UI\Admin\Home;
 
-use app\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
-use app\UI\Base\SecuredPresenter;
+use App\UI\Base\SecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Application\UI\Form;
 

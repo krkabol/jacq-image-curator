@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace app\Model\ImportStages;
+namespace App\Model\ImportStages;
 
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Entity\PhotosStatus;
+use App\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use League\Pipeline\StageInterface;
 use Nette\Application\LinkGenerator;

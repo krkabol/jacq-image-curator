@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\IIIF;
 
 use App\Model\Database\EntityManager;
-use app\Services\StorageConfiguration;
+use App\Services\StorageConfiguration;
 use Nette\Application\LinkGenerator;
 
 class ManifestFactory

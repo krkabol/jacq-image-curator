@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace app\Model\MigrationStages;
+namespace App\Model\MigrationStages;
 
-use app\Model\Database\Entity\Herbaria;
-use app\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\Herbaria;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
-use app\Services\StorageConfiguration;
+use App\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
 
 

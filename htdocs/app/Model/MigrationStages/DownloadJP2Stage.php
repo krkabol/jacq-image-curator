@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace app\Model\MigrationStages;
+namespace App\Model\MigrationStages;
 
-use app\Model\Database\Entity\Photos;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TempDir;
+use App\Model\Database\Entity\Photos;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TempDir;
 use Exception;
 use League\Pipeline\StageInterface;
 

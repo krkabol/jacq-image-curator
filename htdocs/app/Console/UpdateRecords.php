@@ -2,12 +2,12 @@
 
 namespace App\Console;
 
-use app\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\EntityManager;
 use App\Model\MigrationStages\BaseStageException;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TestService;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TestService;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

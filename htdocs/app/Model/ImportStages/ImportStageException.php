@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Model\ImportStages;
+namespace App\Model\ImportStages;
 
 use Nette\Neon\Exception;
 

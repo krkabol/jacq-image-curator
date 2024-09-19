@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace app\Model\Database\Repository;
+namespace App\Model\Database\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Core;
+namespace App\Core;
 
 use Nette;
 use Nette\Application\Routers\Route;

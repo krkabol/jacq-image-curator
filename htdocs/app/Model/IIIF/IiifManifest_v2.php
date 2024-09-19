@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\IIIF;
 
-use app\Model\Database\Entity\Herbaria;
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Repository\PhotosRepository;
-use app\Services\StorageConfiguration;
+use App\Model\Database\Entity\Herbaria;
+use App\Model\Database\Entity\Photos;
+use App\Model\Database\Repository\PhotosRepository;
+use App\Services\StorageConfiguration;
 use Nette\Application\LinkGenerator;
 class IiifManifest_v2
 {
@@ -27,7 +27,7 @@ class IiifManifest_v2
         $this->photosRepository = $repository;
         $this->linkGenerator = $linkGenerator;
         $this->storageConfiguration = $configuration;
-        $filePath = '../app/Model/IIIF/v2.json'; //https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
+        $filePath = '../App/Model/IIIF/v2.json'; //https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
 //        https://iiif.jacq.org/b/?manifest=https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
         $this->default = json_decode(file_get_contents($filePath), true);
     }

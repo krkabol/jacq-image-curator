@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Base;
-use app\Model\Database\Entity\Herbaria;
+namespace App\UI\Base;
+use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\EntityManager;
 use App\UI\Base\Form\FormFactory;
 use Nette\Security\User;

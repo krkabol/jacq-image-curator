@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\UI\Base;
+namespace App\UI\Base;
 
 use App\Services\AppConfiguration;
 use Nette\Application\UI\Presenter;

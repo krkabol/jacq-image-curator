@@ -1,9 +1,9 @@
 <?php
 
-namespace app\Model\Database\Entity;
+namespace App\Model\Database\Entity;
 
-use app\Model\Database\Entity\Attributes\TId;
-use app\Model\Database\Repository\HerbariaRepository;
+use App\Model\Database\Entity\Attributes\TId;
+use App\Model\Database\Repository\HerbariaRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HerbariaRepository::class)]

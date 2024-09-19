@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace app\Model\Database\Entity\Attributes;
+namespace App\Model\Database\Entity\Attributes;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

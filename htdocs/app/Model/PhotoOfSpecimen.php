@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\Model;
+namespace App\Model;
 
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TempDir;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TempDir;
 use Imagick;
 
 

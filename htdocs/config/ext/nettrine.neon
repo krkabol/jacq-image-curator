@@ -25,7 +25,7 @@ nettrine.dbal:
 
 nettrine.orm.attributes:
   mapping:
-   app\Model\Database: %appDir%/Model/Database
+   App\Model\Database: %appDir%/Model/Database
 
 nettrine.orm:
 	entityManagerDecoratorClass: App\Model\Database\EntityManager

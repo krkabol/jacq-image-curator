@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace app\Model\ImportStages;
+namespace App\Model\ImportStages;
 
 use App\Model\Database\EntityManager;
-use app\Services\ImageService;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\Services\TempDir;
+use App\Services\ImageService;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\Services\TempDir;
 use Nette\Application\LinkGenerator;
 
 readonly class StageFactory

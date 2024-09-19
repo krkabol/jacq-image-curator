@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace app\Services;
+namespace App\Services;
 
 
-use app\Model\Database\Entity\Photos;
-use app\Model\MigrationStages\FilenameControlException;
+use App\Model\Database\Entity\Photos;
+use App\Model\MigrationStages\FilenameControlException;
 
 final readonly class StorageConfiguration
 {

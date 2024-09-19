@@ -2,9 +2,9 @@
 
 namespace App\UI\Admin\Sign;
 
-use app\UI\Base\BasePresenter;
+use App\UI\Base\BasePresenter;
 use App\UI\Base\Form\FormFactory;
-use app\UI\Base\SecuredPresenter;
+use App\UI\Base\SecuredPresenter;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;
 

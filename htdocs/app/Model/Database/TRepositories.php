@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace app\Model\Database;
-use app\Model\Database\Entity\Herbaria;
-use app\Model\Database\Entity\Photos;
-use app\Model\Database\Entity\PhotosStatus;
-use app\Model\Database\Entity\User;
+namespace App\Model\Database;
+use App\Model\Database\Entity\Herbaria;
+use App\Model\Database\Entity\Photos;
+use App\Model\Database\Entity\PhotosStatus;
+use App\Model\Database\Entity\User;
 
 /**
  * @mixin EntityManager

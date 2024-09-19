@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Admin\Report;
 
 use App\Services\ReportService;
-use app\Services\S3Service;
-use app\Services\StorageConfiguration;
-use app\UI\Base\SecuredPresenter;
+use App\Services\S3Service;
+use App\Services\StorageConfiguration;
+use App\UI\Base\SecuredPresenter;
 
 
 final class ReportPresenter extends SecuredPresenter

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace app\Model\Database\Repository;
+namespace App\Model\Database\Repository;
 
-use app\Model\Database\Entity\Herbaria;
+use App\Model\Database\Entity\Herbaria;
 
 /**
  * @method Herbaria|NULL find($id, ?int $lockMode = NULL, ?int $lockVersion = NULL)
