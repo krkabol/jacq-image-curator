@@ -124,10 +124,10 @@ final readonly class StorageConfiguration
 
     public function createS3JP2Name(Photos $photo): string
     {
-        return strtolower($photo->getHerbarium()->getAcronym())."/".$photo->getFullSpecimenId()."_".$photo->getId().".jp2";
+        return $photo->getFullSpecimenId()."_".$photo->getId().".jp2";
     }
     public function createS3TIFName(Photos $photo): string
     {
-        return strtolower($photo->getHerbarium()->getAcronym())."/".$photo->getFullSpecimenId()."_".$photo->getId().".tif";
+        return $photo->getFullSpecimenId()."_".$photo->getId().".tif";
     }
 }
