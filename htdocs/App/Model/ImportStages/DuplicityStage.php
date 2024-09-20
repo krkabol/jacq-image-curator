@@ -30,7 +30,7 @@ class DuplicityStage implements StageInterface
         $duplicity = $this->entityManager->getPhotosRepository()->findOneBy(["specimenId" => $payload->getSpecimenId(), "archiveFileSize" => $payload->getArchiveFileSize(), "status" => [PhotosStatus::CONTROL_OK]]);
         if ($duplicity !== NULL) {
             /** @var Photos $duplicity */
-            $link = $this->linkGenerator->link(":Front:Repository:specimen", [$duplicity->getFullSpecimenId()]);
+            $link = $this->linkGenerator->link(":Front:Repository:specimen", [$duplicity->getFullSpecimenId()], NULL, 'link');
             throw new DuplicityStageException("suspicious similarity with file " . $duplicity->getArchiveFilename(). " already imported to the specimen <a href=\"".$link."\">".$payload->getFullSpecimenId()."</a>");
         }
         return $payload;
