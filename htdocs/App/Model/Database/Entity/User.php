@@ -31,17 +31,17 @@ class User
     protected string $email;
 
     #[ORM\ManyToOne(targetEntity: "Herbaria", inversedBy: "users")]
-    #[ORM\JoinColumn(name: "herbarium_id", referencedColumnName: "id", nullable: false, options: ["comment" => "Herbarium"], )]
+    #[ORM\JoinColumn(name: "herbarium_id", referencedColumnName: "id", nullable: false, options: ["comment" => "Herbarium"],)]
     protected Herbaria $herbarium;
 
     #[ORM\ManyToOne(targetEntity: "UserRole")]
-    #[ORM\JoinColumn(name: "role_id", referencedColumnName: "id",  nullable: false, options: ["comment" => "Role for ACL"])]
+    #[ORM\JoinColumn(name: "role_id", referencedColumnName: "id", nullable: false, options: ["comment" => "Role for ACL"])]
     protected UserRole $role;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ["comment" => "Option to disable access for a specific user"])]
     protected bool $active = true;
 
-    #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "additional information about user"])]
+    #[ORM\Column(type: Types::TEXT, length: 60000, nullable: true, options: ["comment" => "additional information about user"])]
     protected ?string $comment;
 
     public function getUsername(): string
@@ -63,28 +63,6 @@ class User
     public function setPassword(string $password): User
     {
         $this->password = $password;
-        return $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): User
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getSurname(): string
-    {
-        return $this->surname;
-    }
-
-    public function setSurname(string $surname): User
-    {
-        $this->surname = $surname;
         return $this;
     }
 
@@ -143,9 +121,31 @@ class User
         return $this;
     }
 
-    public function getFullname():string
+    public function getFullname(): string
     {
-        return $this->getName()." ".$this->getSurname();
+        return $this->getName() . " " . $this->getSurname();
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): User
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): User
+    {
+        $this->surname = $surname;
+        return $this;
     }
 
 }

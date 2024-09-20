@@ -15,4 +15,3 @@ parameters:
         iiif: https://herbarium-iiif.dyn.cloud.e-infra.cz/iiif/3/
         zbarImageHeight: 3000  #px size of image used for zbar barcode recognition
         thumbImageWidth: 400  #px size of image used for manifest thumbnail
-        zbarThreshold: #a9a9a9

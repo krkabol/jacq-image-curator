@@ -6,6 +6,7 @@ namespace App\Model\MigrationStages;
 
 use App\Model\Database\Entity\Photos;
 use App\Services\StorageConfiguration;
+use Exception;
 use GuzzleHttp\Client;
 use League\Pipeline\StageInterface;
 
@@ -60,7 +61,7 @@ class DimensionsStage implements StageInterface
             return $data;
         } catch (DimensionStageException $e) {
             throw $e;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new DimensionStageException("Problem to detect JP2 dimensions: " . $e->getMessage());
         }
     }

@@ -76,6 +76,7 @@ readonly class CuratorService
         return (new Pipeline())
             ->pipe($this->stageFactory->createDownloadStage())
             ->pipe($this->stageFactory->createThumbnailStage())
+            ->pipe($this->stageFactory->createDimensionsStage())
             ->pipe($this->stageFactory->createBarcodeStage())
             ->pipe($this->stageFactory->createDuplicityStage())
             ->pipe($this->stageFactory->createConvertStage())
@@ -85,7 +86,7 @@ readonly class CuratorService
     public function getOrphanedItems(Herbaria $herbarium): array
     {
         $files = [];
-        $dbItems = $this->entityManager->getPhotosRepository()->findBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium]);
+        $dbItems = $this->entityManager->getPhotosRepository()->getOrphananble($herbarium);
         foreach ($dbItems as $photo) {
             /** @var Photos $photo */
             if (!$this->s3Service->objectExists($herbarium->getBucket(), $photo->getOriginalFilename())) {
@@ -110,9 +111,9 @@ readonly class CuratorService
     public function deleteNotImportedPhoto(Herbaria $herbarium, Photos $photo): void
     {
         if ($herbarium->getId() === $photo->getHerbarium()->getId()) {
+            $this->s3Service->deleteObject($photo->getHerbarium()->getBucket(), $photo->getOriginalFilename());
             $this->entityManager->remove($photo);
             $this->entityManager->flush();
-            $this->s3Service->deleteObject($this->storageConfiguration->getCuratorBucket(), $photo->getOriginalFilename());
             return;
         }
         throw new AuthenticationException("Not allowed to delete photo.");

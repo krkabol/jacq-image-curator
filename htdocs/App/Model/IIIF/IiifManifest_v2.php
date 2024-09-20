@@ -9,6 +9,7 @@ use App\Model\Database\Entity\Photos;
 use App\Model\Database\Repository\PhotosRepository;
 use App\Services\StorageConfiguration;
 use Nette\Application\LinkGenerator;
+
 class IiifManifest_v2
 {
     protected $default;
@@ -19,14 +20,11 @@ class IiifManifest_v2
 
     /** @var PhotosRepository */
     protected $photosRepository;
-    protected StorageConfiguration $storageConfiguration;
-    protected LinkGenerator $linkGenerator;
 
-    public function __construct($repository, StorageConfiguration $configuration, LinkGenerator $linkGenerator)
+    //TODO rewrite and use https://github.com/yale-web-technologies/IIIF-Manifest-Generator
+    public function __construct($repository, protected readonly StorageConfiguration $storageConfiguration, protected readonly LinkGenerator $linkGenerator)
     {
         $this->photosRepository = $repository;
-        $this->linkGenerator = $linkGenerator;
-        $this->storageConfiguration = $configuration;
         $filePath = '../App/Model/IIIF/v2.json'; //https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
 //        https://iiif.jacq.org/b/?manifest=https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
         $this->default = json_decode(file_get_contents($filePath), true);
@@ -50,8 +48,6 @@ class IiifManifest_v2
         return $this;
     }
 
-
-
     public function getCompleted()
     {
         $this->completed = $this->getDefault();
@@ -64,12 +60,6 @@ class IiifManifest_v2
     public function getDefault()
     {
         return $this->default;
-    }
-
-    protected function addTiffLink():IiifManifest_v2
-    {
-        $this->completed["rendering"]=array("@id"=>$this->storageConfiguration, "label"=>"download full TIFF scan", "format"=>"image/tiff");
-        return $this;
     }
 
     protected function addThumbnail(): IiifManifest_v2
@@ -87,7 +77,7 @@ class IiifManifest_v2
 
     protected function prepareCanvases(): array
     {
-        $canvases=[];
+        $canvases = [];
         $images = $this->getImages();
         foreach ($images as $image) {
             $canvases[] = $this->mapCanvasObject($image);
@@ -100,19 +90,6 @@ class IiifManifest_v2
         return $this->photosRepository->findBy(['specimenId' => $this->specimenId, 'herbarium' => $this->herbarium]);
     }
 
-    protected function mapImageObject(Photos $photo)
-    {
-        $imageObject = $this->getJSONImagePrototype();
-        $imageObject["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#image";
-        $imageObject["on"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#canvas";
-        $imageObject["resource"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
-        $imageObject["resource"]["service"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
-        $imageObject["resource"]["height"] = $photo->getHeight();
-        $imageObject["resource"]["width"] = $photo->getWidth();
-        $imageObject["metadata"][] = ["label"=>"Archive Master file (TIFF)", "value"=>"<a href='".$this->linkGenerator->link("Front:Repository:archiveImage", [$photo->getId()])."'>download original</a>"];
-        return $imageObject;
-    }
-
     protected function mapCanvasObject(Photos $photo)
     {
         $canvasObject = $this->getJSONCanvasPrototype();
@@ -122,6 +99,30 @@ class IiifManifest_v2
         $canvasObject["width"] = $photo->getWidth();
         $canvasObject["images"][] = $this->mapImageObject($photo);
         return $canvasObject;
+    }
+
+    protected function getJSONCanvasPrototype()
+    {
+        return json_decode('{"@id": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/c/dr_047922_0",
+          "@type": "sc:Canvas",
+          "label": "dr_047922",
+          "height": 5391,
+          "width": 4146,
+          "images": []
+          }', true);
+    }
+
+    protected function mapImageObject(Photos $photo)
+    {
+        $imageObject = $this->getJSONImagePrototype();
+        $imageObject["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#image";
+        $imageObject["on"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . "#canvas";
+        $imageObject["resource"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
+        $imageObject["resource"]["service"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
+        $imageObject["resource"]["height"] = $photo->getHeight();
+        $imageObject["resource"]["width"] = $photo->getWidth();
+        $imageObject["metadata"][] = ["label" => "Archive Master file (TIFF)", "value" => "<a href='" . $this->linkGenerator->link("Front:Repository:archiveImage", [$photo->getId()]) . "'>download original</a>"];
+        return $imageObject;
     }
 
     protected function getJSONImagePrototype()
@@ -147,21 +148,16 @@ class IiifManifest_v2
             }', true);
     }
 
-    protected function getJSONCanvasPrototype()
+    public function updateSelfReferencingURL(): IiifManifest_v2
     {
-        return json_decode('{"@id": "https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047/c/dr_047922_0",
-          "@type": "sc:Canvas",
-          "label": "dr_047922",
-          "height": 5391,
-          "width": 4146,
-          "images": []
-          }', true);
+        $this->completed["sequences"][0]["@id"] = $this->selfReferencingURL . "#sequence-1";
+        $this->completed["@id"] = $this->selfReferencingURL;
+        return $this;
     }
 
-    public function updateSelfReferencingURL()
+    protected function addTiffLink(): IiifManifest_v2
     {
-        $this->completed["sequences"][0]["@id"] = $this->selfReferencingURL."#sequence-1";
-        $this->completed["@id"] = $this->selfReferencingURL;
+        $this->completed["rendering"] = array("@id" => $this->storageConfiguration, "label" => "download full TIFF scan", "format" => "image/tiff");
         return $this;
     }
 }

@@ -11,12 +11,12 @@ use Exception;
 use Imagick;
 use League\Pipeline\StageInterface;
 
-class ThumbnailStageException extends ImportStageException
+class DimensionsStageException extends ImportStageException
 {
 
 }
 
-class ThumbnailStage implements StageInterface
+class DimensionsStage implements StageInterface
 {
     protected Photos $item;
 
@@ -29,21 +29,20 @@ class ThumbnailStage implements StageInterface
         try {
             $this->item = $payload;
             $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
-            $this->createThumbnail($imagick);
+            $this->readDimensions($imagick);
+            $imagick->destroy();
+            unset($imagick);
             return $this->item;
         } catch (Exception $e) {
-            throw new ThumbnailStageException('thumbnail error: ' . $e->getMessage());
+            throw new DimensionsStageException('problem with dimensions: ' . $e->getMessage());
         }
     }
 
-    protected function createThumbnail(Imagick $imagick): void
-    {//TODO compression as config
-        $imagick = $this->imageService->resizeImage($imagick, 1800);
-        $imagick->setImageFormat('jpg');
-        $imagick->setImageCompressionQuality(80);
-        $this->item->setThumbnail($imagick->getImagesBlob());
-        $imagick->destroy();
-        unset($imagick);
+    protected function readDimensions(Imagick $imagick): Imagick
+    {
+        $this->item->setWidth($imagick->getImageWidth());
+        $this->item->setHeight($imagick->getImageHeight());
+        return $imagick;
     }
 
 }

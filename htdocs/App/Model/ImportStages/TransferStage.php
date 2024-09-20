@@ -7,8 +7,8 @@ namespace App\Model\ImportStages;
 use App\Model\Database\Entity\Photos;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;
-use League\Pipeline\StageInterface;
 use Exception;
+use League\Pipeline\StageInterface;
 
 class TransferStageException extends ImportStageException
 {
@@ -56,7 +56,7 @@ class TransferStage implements StageInterface
     protected function deleteTIFfromCuratorBucket()
     {
         try {
-            $this->s3Service->deleteObject($this->storageConfiguration->getCuratorBucket(),  $this->item->getOriginalFilename());
+            $this->s3Service->deleteObject($this->item->getHerbarium()->getBucket(), $this->item->getOriginalFilename());
         } catch (Exception $exception) {
             throw new TransferStageException("deleting tif from curatorBucket error (" . $exception->getMessage() . ")");
         }

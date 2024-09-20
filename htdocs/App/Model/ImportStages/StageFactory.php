@@ -14,7 +14,7 @@ use Nette\Application\LinkGenerator;
 readonly class StageFactory
 {
 
-    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected ImageService $imageService, protected LinkGenerator $linkGenerator)
     {
     }
 
@@ -26,6 +26,11 @@ readonly class StageFactory
     public function createBarcodeStage(): BarcodeStage
     {
         return new BarcodeStage($this->storageConfiguration, $this->imageService);
+    }
+
+    public function createDimensionsStage(): DimensionsStage
+    {
+        return new DimensionsStage($this->storageConfiguration, $this->imageService);
     }
 
     public function createThumbnailStage(): ThumbnailStage

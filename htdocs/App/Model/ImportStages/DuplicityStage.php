@@ -15,10 +15,10 @@ class DuplicityStageException extends ImportStageException
 
 }
 
-class DuplicityStage implements StageInterface
+readonly class DuplicityStage implements StageInterface
 {
 
-    public function __construct(protected readonly EntityManager $entityManager, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected EntityManager $entityManager, protected LinkGenerator $linkGenerator)
     {
     }
 
@@ -31,7 +31,7 @@ class DuplicityStage implements StageInterface
         if ($duplicity !== NULL) {
             /** @var Photos $duplicity */
             $link = $this->linkGenerator->link(":Front:Repository:specimen", [$duplicity->getFullSpecimenId()], NULL, 'link');
-            throw new DuplicityStageException("suspicious similarity with file " . $duplicity->getArchiveFilename(). " already imported to the specimen <a href=\"".$link."\">".$payload->getFullSpecimenId()."</a>");
+            throw new DuplicityStageException("suspicious similarity with file " . $duplicity->getArchiveFilename() . " already imported to the specimen <a href=\"" . $link . "\">" . $payload->getFullSpecimenId() . "</a>");
         }
         return $payload;
     }

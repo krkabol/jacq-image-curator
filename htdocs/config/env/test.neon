@@ -10,4 +10,5 @@ parameters:
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif
-        newBucket: herbarium-test
+
+# //TODO https://forum.nette.org/en/36020-nette-v3-redirect-http-to-https  + https://doc.nette.org/en/http/configuration#toc-http-proxy

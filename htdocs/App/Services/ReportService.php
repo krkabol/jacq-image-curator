@@ -49,10 +49,6 @@ final class ReportService
         return $missing;
     }
 
-    public function unprocessedNewFiles(): array
-    {
-        return $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getCuratorBucket());
-    }
 
     public function TIFFsWithoutJP2(): array
     {

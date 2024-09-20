@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use App\Model\Entity\User;
 use Nette\Security\User as NetteUser;
 
 /**
@@ -11,9 +10,5 @@ use Nette\Security\User as NetteUser;
 final class SecurityUser extends NetteUser
 {
 
-	public function isAdmin(): bool
-	{
-		return $this->isInRole(User::ROLE_ADMIN);
-	}
 
 }

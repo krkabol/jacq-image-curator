@@ -2,6 +2,7 @@
 
 namespace App\Model\Database\Entity\Attributes;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +10,7 @@ trait TOriginalFileAt
 {
 
     #[ORM\Column(name: "original_file_timestamp", type: Types::DATETIME_IMMUTABLE, nullable: true, options: ["comment" => "Timestamp of original file creation"])]
-    protected \DateTimeImmutable $originalFileTimestamp;
+    protected DateTimeImmutable $originalFileTimestamp;
 
     public function getOriginalFileAt()
     {

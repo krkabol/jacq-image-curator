@@ -2,6 +2,7 @@
 
 namespace App\Model\Database\Entity\Attributes;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +10,7 @@ trait TCreatedAt
 {
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
-    protected \DateTimeImmutable $createdAt;
+    protected DateTimeImmutable $createdAt;
 
     public function getCreatedAt()
     {
@@ -18,7 +19,7 @@ trait TCreatedAt
 
     public function setCreatedAt()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
         return $this;
     }
 

@@ -34,8 +34,6 @@ final class TestPresenter extends SecuredPresenter
 
     public function renderDefault()
     {
-        $this->s3Service->bucketsExists($this->configuration->getAllBuckets()) ? $this->template->bucketsOK = true : $this->template->bucketsOK = false;
-        $this->s3Service->objectsExists($this->configuration->getCuratorBucket(), self::TEST_FILES) ? $this->template->tiffOK = true : $this->template->tiffOK = false;
 
         $this->template->buckets = $this->s3Service->listBuckets();
     }

@@ -5,24 +5,18 @@ declare(strict_types=1);
 namespace App\Model\IIIF;
 
 use App\Model\Database\EntityManager;
+use App\Model\Database\Repository\PhotosRepository;
 use App\Services\StorageConfiguration;
 use Nette\Application\LinkGenerator;
 
 class ManifestFactory
 {
 
-    protected $photosRepository;
-    protected EntityManager $entityManager;
-    protected StorageConfiguration $configuration;
-    protected LinkGenerator $linkGenerator;
+    protected PhotosRepository $photosRepository;
 
-    public function __construct(EntityManager $entityManager, StorageConfiguration $configuration, LinkGenerator $linkGenerator)
+    public function __construct(protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $configuration, protected readonly LinkGenerator $linkGenerator)
     {
-        $this->entityManager = $entityManager;
         $this->photosRepository = $this->entityManager->getPhotosRepository();
-        $this->configuration = $configuration;
-        $this->linkGenerator = $linkGenerator;
-
     }
 
     public function prototype_v2($specimenId, $herbariumAcronym, $selfReferencingURL): IiifManifest_v2
@@ -32,11 +26,6 @@ class ManifestFactory
             ->setSpecimenId($specimenId)
             ->setHerbarium($herbarium)
             ->setSelfReferencingURL($selfReferencingURL);
-    }
-
-    public function prototype_v3(): IiifManifest_v3
-    {
-        return new IiifManifest_v3();
     }
 
 }

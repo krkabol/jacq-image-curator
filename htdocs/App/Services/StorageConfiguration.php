@@ -14,16 +14,6 @@ final readonly class StorageConfiguration
     public function __construct(protected array $config, protected TempDir $tempDir)
     {
     }
-    public function getAllBuckets(): array
-    {
-        return [$this->getCuratorBucket(), $this->getArchiveBucket(), $this->getJP2Bucket()];
-    }
-
-    public function getCuratorBucket(): string
-    {
-        return $this->config['newBucket'];
-    }
-
     public function getArchiveBucket(): string
     {
         return $this->config['archiveBucket'];
@@ -67,11 +57,6 @@ final readonly class StorageConfiguration
     public function getImageIIIFURL4Thumbnail($jp2ObjectName): string
     {
         return $this->getIIIFBaseUrl() . $jp2ObjectName . "/full/".$this->config['thumbImageWidth'].",/0/default.jpg";
-    }
-
-    public function getZbarThreshold()
-    {
-        return $this->config["zbarThreshold"];
     }
 
     protected function getIIIFBaseUrl(): string

@@ -16,7 +16,8 @@ class DownloadJP2StageException extends BaseStageException
 {
 
 }
-/** @deprecated  */
+
+/** @deprecated */
 class DownloadJP2Stage implements StageInterface
 {
     protected S3Service $s3Service;
@@ -37,7 +38,7 @@ class DownloadJP2Stage implements StageInterface
             $this->s3Service->getObject($this->configuration->getJP2Bucket(), $payload->getJp2Filename(), $this->tempDir->getPath($payload->getJp2Filename()));
 
         } catch (Exception $exception) {
-            throw new DownloadJP2StageException("download temp file error (" . $exception->getMessage().")");
+            throw new DownloadJP2StageException("download temp file error (" . $exception->getMessage() . ")");
         }
         return $payload;
     }

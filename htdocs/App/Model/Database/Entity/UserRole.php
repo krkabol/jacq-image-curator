@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'usersrole', options: ["comment" => "List of available roles for users"])]
 class UserRole
 {
+    const int SUPER_ADMIN = 1;
+    const int ADMIN = 2;
+    const int USER = 3;
     use TId;
+
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "name of the role"])]
     protected string $name;
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "short description"])]

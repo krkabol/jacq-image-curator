@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Herbaria
 {
     use TId;
+
     #[ORM\Column(unique: true, nullable: false, options: ["comment" => "Acronym of herbarium according to Index Herbariorum"])]
     protected string $acronym;
 

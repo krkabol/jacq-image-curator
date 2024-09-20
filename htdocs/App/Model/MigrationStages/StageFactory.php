@@ -10,23 +10,11 @@ use App\Services\StorageConfiguration;
 use App\Services\TempDir;
 use GuzzleHttp\Client;
 
-class StageFactory
+readonly class StageFactory
 {
 
-    protected S3Service $s3Service;
-    protected TempDir $tempDir;
-    protected EntityManager $entityManager;
-    protected StorageConfiguration $storageConfiguration;
-    protected Client $client;
-
-
-    public function __construct(S3Service $s3Service, TempDir $tempDir, EntityManager $entityManager, StorageConfiguration $storageConfiguration, Client $client)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected Client $client)
     {
-        $this->s3Service = $s3Service;
-        $this->tempDir = $tempDir;
-        $this->entityManager = $entityManager;
-        $this->storageConfiguration = $storageConfiguration;
-        $this->client = $client;
     }
 
 
@@ -39,11 +27,6 @@ class StageFactory
     {
         return new UpdateRecordStage($this->entityManager, $this->storageConfiguration, $this->s3Service);
     }
-/** @deprecated  */
-    public function createCleanupStage(): CleanupStage
-    {
-        return new CleanupStage($this->tempDir);
-    }
 
     public function createDimensionsStage(): DimensionsStage
     {
@@ -55,11 +38,7 @@ class StageFactory
         return new FilenameControlStage($this->entityManager, $this->storageConfiguration);
     }
 
-    public function createBarcodeStage(): BarcodeStage
-    {
-        return new BarcodeStage($this->tempDir, $this->storageConfiguration, $this->client);
-    }
-/** @deprecated  */
+    /** @deprecated */
     public function createDownloadJP2Stage(): DownloadJP2Stage
     {
         return new DownloadJP2Stage($this->s3Service, $this->storageConfiguration, $this->tempDir);

@@ -50,7 +50,7 @@ class FilenameControlStage implements StageInterface
     {
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($acronym);
         if ($herbarium === null) {
-            throw new FilenameControlException("unknown herbarium: ".$acronym);
+            throw new FilenameControlException("unknown herbarium: " . $acronym);
         }
         return $herbarium;
     }

@@ -28,8 +28,8 @@ readonly class DownloadStage implements StageInterface
     {
         try {
             /** @var Photos $payload */
-            $this->s3Service->getObject($this->configuration->getCuratorBucket(), $payload->getOriginalFilename(), $this->configuration->getImportTempPath($payload));
-            $payload->setOriginalFileAt($this->s3Service->getObjectOriginalTimestamp($this->configuration->getCuratorBucket(), $payload->getOriginalFilename()));
+            $this->s3Service->getObject($payload->getHerbarium()->getBucket(), $payload->getOriginalFilename(), $this->configuration->getImportTempPath($payload));
+            $payload->setOriginalFileAt($this->s3Service->getObjectOriginalTimestamp($payload->getHerbarium()->getBucket(), $payload->getOriginalFilename()));
 
         } catch (Exception $exception) {
             throw new DownloadStageException("download original file error (" . $exception->getMessage() . ")");

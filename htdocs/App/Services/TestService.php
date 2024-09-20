@@ -25,14 +25,7 @@ class TestService
     {
         throw new Exception("do not initialize repository!");
 
-        foreach ($this->storageConfiguration->getAllBuckets() as $bucket) {
-            $this->S3Service->createBucket($bucket);
-        }
 
-        $testDataDir = $this->webDir->getPath('data');
-        foreach (TestPresenter::TEST_FILES as $file) {
-            $this->S3Service->putTiffIfNotExists($this->storageConfiguration->getCuratorBucket(), strtolower($file), $testDataDir . DIRECTORY_SEPARATOR . $file);
-        }
     }
 
      public function migrationPipeline(): Pipeline

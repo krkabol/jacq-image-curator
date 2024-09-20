@@ -8,6 +8,7 @@ use App\Model\Database\Entity\Photos;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;
 use Exception;
+use Imagick;
 use League\Pipeline\StageInterface;
 
 class ConvertStageException extends ImportStageException
@@ -15,24 +16,23 @@ class ConvertStageException extends ImportStageException
 
 }
 
-class ConvertStage implements StageInterface
+readonly class ConvertStage implements StageInterface
 {
 
-    public function __construct(protected readonly S3Service $s3Service, protected readonly StorageConfiguration $storageConfiguration)
+    public function __construct(protected S3Service $s3Service, protected StorageConfiguration $storageConfiguration)
     {
     }
 
 
     public function __invoke($payload)
-    {
+    {//TODO compression as config
         /** @var Photos $payload */
         try {
-            $imagick = new \Imagick($this->storageConfiguration->getImportTempPath($payload));
+            $imagick = new Imagick($this->storageConfiguration->getImportTempPath($payload));
             $imagick->setImageFormat('jp2');
             $imagick->setImageCompressionQuality(100);//$this->storageConfiguration->getJP2Quality());
             $imagick->writeImage($this->storageConfiguration->getImportTempJP2Path($payload));
             $imagick->destroy();
-            $imagick->clear();
             unset($imagick);
             $payload->setJP2FileSize(filesize($this->storageConfiguration->getImportTempJP2Path($payload)));
         } catch (Exception $exception) {
