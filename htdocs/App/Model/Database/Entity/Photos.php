@@ -51,10 +51,10 @@ class Photos
     #[ORM\Column(type: Types::BIGINT, nullable: true, options: ["comment" => "Filesize of converted JP2 file in bytes"])]
     protected ?int $JP2FileSize;
 
-    #[ORM\Column(type: Types::TEXT, length: 60000,nullable: true, options: ["comment" => "Result of migration"])]
+    #[ORM\Column(type: Types::TEXT, length: 60000, nullable: true, options: ["comment" => "Result of migration"])]
     protected ?string $message;
 
-    #[ORM\Column(type: Types::BLOB,nullable: true, options: ["comment" => "Thumbnail during import phase"])]
+    #[ORM\Column(type: Types::BLOB, nullable: true, options: ["comment" => "Thumbnail during import phase"])]
     protected $thumbnail;
 
     public function getArchiveFilename(): ?string
@@ -79,19 +79,6 @@ class Photos
         return $this;
     }
 
-
-
-    public function getHerbarium(): Herbaria
-    {
-        return $this->herbarium;
-    }
-
-    public function setHerbarium(Herbaria $herbarium): Photos
-    {
-        $this->herbarium = $herbarium;
-        return $this;
-    }
-
     public function getWidth(): ?int
     {
         return $this->width;
@@ -111,19 +98,6 @@ class Photos
     public function setHeight(?int $height): Photos
     {
         $this->height = $height;
-        return $this;
-    }
-
-    public function getSpecimenId(): ?string
-    {
-        return $this->specimenId;
-    }
-
-    public function setSpecimenId(?string $specimenId): Photos
-    {
-        if($specimenId !== NULL){
-            $this->specimenId = ltrim($specimenId, '0');
-        }
         return $this;
     }
 
@@ -162,12 +136,38 @@ class Photos
 
     public function getFullSpecimenId(): string
     {
-        return strtoupper($this->getHerbarium()->getAcronym())."_".sprintf('%06d', $this->getSpecimenId());
+        return strtoupper($this->getHerbarium()->getAcronym()) . "_" . sprintf('%06d', $this->getSpecimenId());
     }
 
-    public function getJACQs_PID():string
+    public function getHerbarium(): Herbaria
     {
-        return "https://".strtolower($this->getHerbarium()->getAcronym()).".jacq.org/".strtoupper($this->getHerbarium()->getAcronym()).$this->getSpecimenId();
+        return $this->herbarium;
+    }
+
+    public function setHerbarium(Herbaria $herbarium): Photos
+    {
+        $this->herbarium = $herbarium;
+        return $this;
+    }
+
+    public function getSpecimenId(): ?string
+    {
+        return $this->specimenId;
+    }
+
+    public function setSpecimenId(?string $specimenId): Photos
+    {
+        if ($specimenId === NULL || $specimenId == "") {
+            $this->specimenId = NULL;
+        } else {
+            $this->specimenId = ltrim($specimenId, '0');
+        }
+        return $this;
+    }
+
+    public function getJACQs_PID(): string
+    {
+        return "https://" . strtolower($this->getHerbarium()->getAcronym()) . ".jacq.org/" . strtoupper($this->getHerbarium()->getAcronym()) . $this->getSpecimenId();
     }
 
     public function getStatus(): PhotosStatus
