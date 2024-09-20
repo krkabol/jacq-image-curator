@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\UI\Admin\Home;
 
 use App\Model\Database\Entity\Photos;
-use App\Model\Database\EntityManager;
 use App\Services\CuratorService;
 use App\UI\Base\SecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
@@ -128,7 +127,7 @@ final class HomePresenter extends SecuredPresenter
             if ($photo === null) {
                 $this->error('Photo not found');
             }
-            $this->curatorService->reimportPhoto($this->herbarium, $this->entityManager->getReference(Photos::class, $values->photoId), $values->specimen);
+            $this->curatorService->reimportPhoto($this->herbarium, $this->entityManager->getReference(Photos::class, $values->photoId), (string)$values->specimen);
 
             $fullID = $this->herbarium->getAcronym() . "-" . $values->specimen;
             $this->flashMessage("File successfully marked to be re-processed with ID " . $fullID, "success");

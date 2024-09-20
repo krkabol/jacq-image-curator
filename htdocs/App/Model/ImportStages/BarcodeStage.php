@@ -81,7 +81,7 @@ class BarcodeStage implements StageInterface
             case 2:
                 throw new BarcodeStageException("zbar script error: " . $info);
             case 4:
-                throw new BarcodeStageException("No barcode was detected");
+                throw new BarcodeStageException("No barcode detected");
         }
         $this->barcodes = $output;
     }
