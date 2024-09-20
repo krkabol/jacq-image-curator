@@ -109,7 +109,7 @@ class IiifManifest_v2
         $imageObject["resource"]["service"]["@id"] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
         $imageObject["resource"]["height"] = $photo->getHeight();
         $imageObject["resource"]["width"] = $photo->getWidth();
-        $imageObject["metadata"][] = ["label"=>"Archive Master file (TIFF)", "value"=>"<a href='".$this->linkGenerator->link("Front:Repository:archiveImage", [$photo->getArchiveFilename()])."'>download original</a>"];
+        $imageObject["metadata"][] = ["label"=>"Archive Master file (TIFF)", "value"=>"<a href='".$this->linkGenerator->link("Front:Repository:archiveImage", [$photo->getId()])."'>download original</a>"];
         return $imageObject;
     }
 
