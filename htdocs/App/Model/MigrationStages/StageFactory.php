@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\MigrationStages;
 
@@ -17,8 +15,7 @@ readonly class StageFactory
     {
     }
 
-
-    public function createJP2ExistsStage(): JP2ExistsStage
+    public function createJp2ExistsStage(): JP2ExistsStage
     {
         return new JP2ExistsStage($this->storageConfiguration, $this->client);
     }
@@ -33,14 +30,17 @@ readonly class StageFactory
         return new DimensionsStage($this->client, $this->storageConfiguration);
     }
 
-    public function createFilenameControlStage(): FilenameControlStage
+    public function createFilenameControlStage(): FilenameStage
     {
-        return new FilenameControlStage($this->entityManager, $this->storageConfiguration);
+        return new FilenameStage($this->entityManager, $this->storageConfiguration);
     }
 
-    /** @deprecated */
-    public function createDownloadJP2Stage(): DownloadJP2Stage
+    /** @deprecated
+     * used only once
+     */
+    public function createDownloadJp2Stage(): DownloadJP2Stage
     {
         return new DownloadJP2Stage($this->s3Service, $this->storageConfiguration, $this->tempDir);
     }
+
 }

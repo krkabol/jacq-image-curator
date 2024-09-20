@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\ImportStages;
 
@@ -52,4 +50,5 @@ readonly class StageFactory
     {
         return new TransferStage($this->s3Service, $this->storageConfiguration);
     }
+
 }

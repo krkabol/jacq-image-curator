@@ -9,16 +9,15 @@ use Nettrine\ORM\EntityManagerDecorator;
 class EntityManager extends EntityManagerDecorator
 {
 
-	use TRepositories;
+    use TRepositories;
 
-	/**
-	 * @param string $entityName
-	 * @return AbstractRepository<T>|ObjectRepository<T>
-	 * @internal
-	 */
-	public function getRepository($entityName): ObjectRepository
-	{
-		return parent::getRepository($entityName);
-	}
+    /**
+     * @return AbstractRepository<T>|ObjectRepository<T>
+     * @internal
+     */
+    public function getRepository(string $entityName): ObjectRepository
+    {
+        return parent::getRepository($entityName);
+    }
 
 }

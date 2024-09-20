@@ -14,5 +14,4 @@ use App\Model\Database\Entity\User;
 class UserRepository extends AbstractRepository
 {
 
-
 }

@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\IIIF;
 
@@ -19,13 +17,14 @@ class ManifestFactory
         $this->photosRepository = $this->entityManager->getPhotosRepository();
     }
 
-    public function prototype_v2($specimenId, $herbariumAcronym, $selfReferencingURL): IiifManifest_v2
+    public function prototypeV2(int $specimenId, string $herbariumAcronym, string $selfReferencingURL): IiifManifest
     {
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneBy(['acronym' => $herbariumAcronym]);
-        return (new IiifManifest_v2($this->photosRepository, $this->configuration, $this->linkGenerator))
+
+        return (new IiifManifest($this->photosRepository, $this->configuration, $this->linkGenerator))
             ->setSpecimenId($specimenId)
             ->setHerbarium($herbarium)
-            ->setSelfReferencingURL($selfReferencingURL);
+            ->setSelfReferencingUrl($selfReferencingURL);
     }
 
 }

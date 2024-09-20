@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\ImportStages;
 
@@ -22,17 +20,19 @@ readonly class DuplicityStage implements StageInterface
     {
     }
 
-
     public function __invoke($payload)
     {
         //TODO - preselect those with correct status - not only OK !!
         /** @var Photos $payload */
-        $duplicity = $this->entityManager->getPhotosRepository()->findOneBy(["specimenId" => $payload->getSpecimenId(), "archiveFileSize" => $payload->getArchiveFileSize(), "status" => [PhotosStatus::CONTROL_OK]]);
-        if ($duplicity !== NULL) {
+        $duplicity = $this->entityManager->getPhotosRepository()->findOneBy(['specimenId' => $payload->getSpecimenId(), 'archiveFileSize' => $payload->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK]]);
+        if ($duplicity !== null) {
             /** @var Photos $duplicity */
-            $link = $this->linkGenerator->link(":Front:Repository:specimen", [$duplicity->getFullSpecimenId()], NULL, 'link');
-            throw new DuplicityStageException("suspicious similarity with file " . $duplicity->getArchiveFilename() . " already imported to the specimen <a href=\"" . $link . "\">" . $payload->getFullSpecimenId() . "</a>");
+            $link = $this->linkGenerator->link(':Front:Repository:specimen', [$duplicity->getFullSpecimenId()], null, 'link');
+
+            throw new DuplicityStageException('suspicious similarity with file ' . $duplicity->getArchiveFilename() . ' already imported to the specimen <a href="' . $link . '">' . $payload->getFullSpecimenId() . '</a>');
         }
+
         return $payload;
     }
+
 }

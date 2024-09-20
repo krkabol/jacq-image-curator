@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -12,9 +10,10 @@ class PhotoOfSpecimenFactory
 {
 
     protected S3Service $s3Service;
-    protected TempDir $tempDir;
-    protected StorageConfiguration $storageConfiguration;
 
+    protected TempDir $tempDir;
+
+    protected StorageConfiguration $storageConfiguration;
 
     public function __construct(S3Service $s3Service, TempDir $tempDir, StorageConfiguration $storageConfiguration)
     {

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\UI\Front\Sign;
 
@@ -11,14 +11,14 @@ final class SignPresenter extends BasePresenter
 {
 
     /** @var string @persistent */
-    public $backlink;
+    public string $backlink;
 
     /** @var FormFactory @inject */
     public FormFactory $formFactory;
 
     public function actionIn(): void
     {
-          if ($this->user->isLoggedIn()) {
+        if ($this->user->isLoggedIn()) {
             $this->redirect(BasePresenter::DESTINATION_AFTER_SIGN_IN);
         }
     }
@@ -42,10 +42,12 @@ final class SignPresenter extends BasePresenter
 
             return;
         }
+
         if ($this->backlink !== null) {
 
             $this->restoreRequest($this->backlink);
         }
+
         $this->redirect(BasePresenter::DESTINATION_AFTER_SIGN_IN);
     }
 

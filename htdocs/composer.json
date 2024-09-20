@@ -34,7 +34,8 @@
   },
 	"require-dev": {
 		"nette/tester": "^2.5",
-		"symfony/thanks": "^1"
+		"symfony/thanks": "^1",
+    "contributte/qa": "v0.3"
 	},
 	"autoload": {
 		"psr-4": {
@@ -49,7 +50,8 @@
       "ext-intl": "3.0"
     },
 		"allow-plugins": {
-			"symfony/thanks": true
+			"symfony/thanks": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	}
 }

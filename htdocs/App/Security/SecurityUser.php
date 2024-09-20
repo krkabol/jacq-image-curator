@@ -10,5 +10,4 @@ use Nette\Security\User as NetteUser;
 final class SecurityUser extends NetteUser
 {
 
-
 }

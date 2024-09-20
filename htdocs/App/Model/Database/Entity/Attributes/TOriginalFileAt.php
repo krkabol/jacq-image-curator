@@ -1,25 +1,26 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\Database\Entity\Attributes;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 
 trait TOriginalFileAt
 {
 
-    #[ORM\Column(name: "original_file_timestamp", type: Types::DATETIME_IMMUTABLE, nullable: true, options: ["comment" => "Timestamp of original file creation"])]
+    #[Column(name: 'original_file_timestamp', type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['comment' => 'Timestamp of original file creation'])]
     protected DateTimeImmutable $originalFileTimestamp;
 
-    public function getOriginalFileAt()
+    public function getOriginalFileAt(): DateTimeImmutable
     {
         return $this->originalFileTimestamp;
     }
 
-    public function setOriginalFileAt($timestamp)
+    public function setOriginalFileAt(DateTimeImmutable $timestamp): mixed
     {
         $this->originalFileTimestamp = $timestamp;
+
         return $this;
     }
 

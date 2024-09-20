@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -9,6 +7,7 @@ use App\Model\Database\EntityManager;
 
 final class ReportService
 {
+
     protected $photosRepository;
 
     protected $dbRecords;
@@ -26,15 +25,8 @@ final class ReportService
                 $missing[] = $item;
             }
         }
-        return $missing;
-    }
 
-    protected function getDbRecords()
-    {
-        if ($this->dbRecords === null) {
-            $this->dbRecords = $this->photosRepository->findAll();
-        }
-        return $this->dbRecords;
+        return $missing;
     }
 
     public function dbRecordsMissingWithinIIIF(): array
@@ -46,36 +38,21 @@ final class ReportService
                 $missing[] = $item;
             }
         }
+
         return $missing;
     }
-
 
     public function TIFFsWithoutJP2(): array
     {
         $jp2s = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getJP2Bucket());
+
         return $this->findMissingObjects($this->getConvertedTiffsToJP2Names(), $jp2s);
-    }
-
-    protected function findMissingObjects($needle, $haystack)
-    {
-        $missingElements = array_filter($needle, function ($value) use ($haystack) {
-            return !in_array($value, $haystack);
-        });
-        return $missingElements;
-    }
-
-    protected function getConvertedTiffsToJP2Names()
-    {
-        $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
-        $mapper = $this->storageConfiguration;
-        return array_map(function ($value) use ($mapper) {
-            return $mapper->getJP2ObjectKey($value);
-        }, $tiffs);
     }
 
     public function JP2sWithoutTIFF(): array
     {
         $jp2s = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getJP2Bucket());
+
         return $this->findMissingObjects($jp2s, $this->getConvertedTiffsToJP2Names());
     }
 
@@ -84,10 +61,34 @@ final class ReportService
         $missing = [];
         $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
         foreach ($tiffs as $tiff) {
-            if($this->photosRepository->findOneBy(["archiveFilename"=>$tiff]) === null){
+            if ($this->photosRepository->findOneBy(['archiveFilename' => $tiff]) === null) {
                 $missing[] = $tiff;
             }
         }
+
         return $missing;
     }
+
+    protected function getDbRecords()
+    {
+        if ($this->dbRecords === null) {
+            $this->dbRecords = $this->photosRepository->findAll();
+        }
+
+        return $this->dbRecords;
+    }
+
+    protected function findMissingObjects($needle, $haystack)
+    {
+        return array_filter($needle, fn ($value) => !in_array($value, $haystack));
+    }
+
+    protected function getConvertedTiffsToJP2Names()
+    {
+        $tiffs = $this->S3Service->listObjectsNamesOnly($this->storageConfiguration->getArchiveBucket());
+        $mapper = $this->storageConfiguration;
+
+        return array_map(fn ($value) => $mapper->getJP2ObjectKey($value), $tiffs);
+    }
+
 }

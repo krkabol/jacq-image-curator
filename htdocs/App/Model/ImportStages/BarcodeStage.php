@@ -1,13 +1,10 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
 use App\Services\ImageService;
 use App\Services\StorageConfiguration;
-use Exception;
 use Imagick;
 use League\Pipeline\StageInterface;
 
@@ -18,30 +15,13 @@ class BarcodeStageException extends ImportStageException
 
 class BarcodeStage implements StageInterface
 {
+
     protected Photos $item;
+
     protected array $barcodes;
 
     public function __construct(protected readonly StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
     {
-    }
-
-    public function __invoke($payload)
-    {
-        try {
-            $this->item = $payload;
-            /** skip detection when manually inserted id */
-            if ($this->item->getSpecimenId() === NULL) {
-                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
-                $this->createContrastedImage($imagick);
-                $this->detectCodes();
-                $this->harvestCodes();
-            }
-            return $this->item;
-        } catch (BarcodeStageException $e) {
-            throw $e;
-        } catch (Exception $e) {
-            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
-        }
     }
 
     protected function createContrastedImage(Imagick $imagick): void
@@ -60,21 +40,23 @@ class BarcodeStage implements StageInterface
 
     /**
      * use Zbar to detect Barcodes
+     *
      * @link https://manpages.ubuntu.com/manpages/jammy/man1/zbarimg.1.html
      */
     protected function detectCodes(): void
     {
         $output = [];
         $returnVar = 0;
-        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->storageConfiguration->getImportTempZbarPath($this->item)), $output, $returnVar);
+        $info = exec('zbarimg --quiet --raw ' . escapeshellarg($this->storageConfiguration->getImportTempZbarPath($this->item)), $output, $returnVar);
 
         switch ($returnVar) {
             case 1:
             case 2:
-                throw new BarcodeStageException("zbar script error: " . $info);
+                throw new BarcodeStageException('zbar script error: ' . $info);
             case 4:
-                throw new BarcodeStageException("No barcode detected");
+                throw new BarcodeStageException('No barcode detected');
         }
+
         $this->barcodes = $output;
     }
 
@@ -84,14 +66,35 @@ class BarcodeStage implements StageInterface
         foreach ($this->barcodes as $code) {
             $parts = [];
             if (preg_match($this->storageConfiguration->getBarcodeRegex(), $code, $parts)) {
-                if ($this->item->getHerbarium()->getAcronym() === strtoupper($parts['herbarium']) && $parts['specimenId'] != "") {
+                if ($this->item->getHerbarium()->getAcronym() === strtoupper($parts['herbarium']) && $parts['specimenId'] !== '') {
                     $isValid = true;
                     $this->item->setSpecimenId($parts['specimenId']);
                 }
             }
         }
+
         if (!$isValid) {
-            throw new BarcodeStageException("Invalid barcode. Detected code(s): " . implode($this->barcodes));
+            throw new BarcodeStageException('Invalid barcode. Detected code(s): ' . implode($this->barcodes));
+        }
+    }
+
+    public function __invoke($payload)
+    {
+        try {
+            $this->item = $payload;
+            /** skip detection when manually inserted id */
+            if ($this->item->getSpecimenId() === null) {
+                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+                $this->createContrastedImage($imagick);
+                $this->detectCodes();
+                $this->harvestCodes();
+            }
+
+            return $this->item;
+        } catch (BarcodeStageException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
         }
     }
 

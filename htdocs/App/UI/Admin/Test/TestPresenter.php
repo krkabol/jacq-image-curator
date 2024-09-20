@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\UI\Admin\Test;
 
@@ -10,10 +8,10 @@ use App\Services\TestService;
 use App\UI\Base\BasePresenter;
 use App\UI\Base\SecuredPresenter;
 
-
 final class TestPresenter extends SecuredPresenter
 {
-    public const TEST_FILES = ["prc_407087.tif", "prc_407135.tif"];
+
+    public const TEST_FILES = ['prc_407087.tif', 'prc_407135.tif'];
 
     /** @inject */
     public S3Service $s3Service;
@@ -24,27 +22,27 @@ final class TestPresenter extends SecuredPresenter
     /** @inject */
     public TestService $testService;
 
-   public function checkRequirements($element): void
-   {
-       if($this->user->getId()!=="admin" ||  getenv('NETTE_ENV', true) == "production"){
-           $this->redirect(BasePresenter::DESTINATION_AFTER_SIGN_IN);
-       }
-       parent::checkRequirements($element);
-   }
-
-    public function renderDefault()
+    public function checkRequirements(\ReflectionClass|\ReflectionMethod $element): void
     {
+        if ($this->user->getId() !== 'admin' || getenv('NETTE_ENV', true) === 'production') {
+            $this->redirect(BasePresenter::DESTINATION_AFTER_SIGN_IN);
+        }
 
+        parent::checkRequirements($element);
+    }
+
+    public function renderDefault(): void
+    {
         $this->template->buckets = $this->s3Service->listBuckets();
     }
 
-    public function actionInitialize()
+    public function actionInitialize(): void
     {
         $this->testService->initialize();
-        $this->redirect(":default");
+        $this->redirect(':default');
     }
 
-    public function renderProceed()
+    public function renderProceed(): void
     {
         $result = $this->testService->proceedNewImages();
         $this->template->success = $result[0];

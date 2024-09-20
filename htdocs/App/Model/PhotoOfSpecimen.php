@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -9,27 +7,34 @@ use App\Services\StorageConfiguration;
 use App\Services\TempDir;
 use Imagick;
 
-
 class PhotoOfSpecimen
 {
 
     protected string $sourceBucket;
+
     protected string $objectKey;
+
     protected S3Service $s3Service;
+
     protected TempDir $tempDir;
 
     protected StorageConfiguration $storageConfiguration;
 
     protected bool $isDownloaded = false;
+
     protected ?Imagick $imagick = null;
 
     protected int $height;
-    protected int $width;
-    protected int $jp2Size;
-    protected int $tiffSize;
-    protected string $herbariumAcronym;
-    protected string $specimenId;
 
+    protected int $width;
+
+    protected int $jp2Size;
+
+    protected int $tiffSize;
+
+    protected string $herbariumAcronym;
+
+    protected string $specimenId;
 
     public function __construct(string $bucket, string $objectKey, S3Service $s3Service, TempDir $tempDir, StorageConfiguration $storageConfiguration)
     {
@@ -49,24 +54,11 @@ class PhotoOfSpecimen
         return $this->imagick;
     }
 
-    public function getTempfile()
+    public function getTempfile(): string
     {
         $this->downloadFromS3();
+
         return $this->getTempfileName();
-    }
-
-    protected function downloadFromS3(): PhotoOfSpecimen
-    {
-        if (!$this->isDownloaded) {
-            $this->s3Service->getObject($this->sourceBucket, $this->objectKey, $this->getTempfileName());
-            $this->isDownloaded = true;
-        }
-        return $this;
-    }
-
-    protected function getTempfileName()
-    {
-        return $this->tempDir->getPath($this->getObjectKey());
     }
 
     public function getObjectKey(): string
@@ -74,7 +66,7 @@ class PhotoOfSpecimen
         return $this->objectKey;
     }
 
-    public function getJP2Fullname(): string
+    public function getJp2Fullname(): string
     {
         return $this->tempDir->getPath($this->storageConfiguration->getJP2ObjectKey($this->getObjectKey()));
     }
@@ -87,6 +79,7 @@ class PhotoOfSpecimen
     public function setHeight(int $height): PhotoOfSpecimen
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -98,9 +91,9 @@ class PhotoOfSpecimen
     public function setWidth(int $width): PhotoOfSpecimen
     {
         $this->width = $width;
+
         return $this;
     }
-
 
     public function getHerbariumAcronym(): string
     {
@@ -110,6 +103,7 @@ class PhotoOfSpecimen
     public function setHerbariumAcronym(string $acronym): PhotoOfSpecimen
     {
         $this->herbariumAcronym = $acronym;
+
         return $this;
     }
 
@@ -121,12 +115,14 @@ class PhotoOfSpecimen
     public function setSpecimenId(string $id): PhotoOfSpecimen
     {
         $this->specimenId = $id;
+
         return $this;
     }
 
-    public function unsetImagick()
+    public function unsetImagick(): PhotoOfSpecimen
     {
         unset($this->imagick);
+
         return $this;
     }
 
@@ -138,6 +134,7 @@ class PhotoOfSpecimen
     public function setJp2Size(int $jp2Size): PhotoOfSpecimen
     {
         $this->jp2Size = $jp2Size;
+
         return $this;
     }
 
@@ -149,8 +146,23 @@ class PhotoOfSpecimen
     public function setTiffSize(int $tiffSize): PhotoOfSpecimen
     {
         $this->tiffSize = $tiffSize;
+
         return $this;
     }
 
+    protected function downloadFromS3(): PhotoOfSpecimen
+    {
+        if (!$this->isDownloaded) {
+            $this->s3Service->getObject($this->sourceBucket, $this->objectKey, $this->getTempfileName());
+            $this->isDownloaded = true;
+        }
+
+        return $this;
+    }
+
+    protected function getTempfileName(): string
+    {
+        return $this->tempDir->getPath($this->getObjectKey());
+    }
 
 }

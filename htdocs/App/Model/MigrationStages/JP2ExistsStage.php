@@ -1,25 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\MigrationStages;
 
-use App\Model\Database\Entity\Photos;
+use App\Model\MigrationStages\Exceptions\Jp2ExistsException;
 use App\Services\StorageConfiguration;
-use Exception;
 use GuzzleHttp\Client;
 use League\Pipeline\StageInterface;
-
-
-class JP2ExistsException extends BaseStageException
-{
-
-}
 
 class JP2ExistsStage implements StageInterface
 {
 
     protected StorageConfiguration $configuration;
+
     protected Client $client;
 
     public function __construct(StorageConfiguration $configuration, Client $client)
@@ -28,25 +20,26 @@ class JP2ExistsStage implements StageInterface
         $this->client = $client;
     }
 
-    public function __invoke($payload)
-    {
-        /** @var Photos $payload */
-        $this->checkJP2fromImageServer($payload->getJp2Filename());
-        return $payload;
-    }
-
-    protected function checkJP2fromImageServer($url)
+    protected function checkJp2fromImageServer(string $url): void
     {
         try {
             $response = $this->client->request('GET', $this->configuration->getImageIIIFInfoURL($url));
             $statusCode = $response->getStatusCode();
-            if ($statusCode != 200) {
-                throw new JP2ExistsException("Expected JP2 file is missing");
+            if ($statusCode !== 200) {
+                throw new Jp2ExistsException('Expected JP2 file is missing');
             }
-        } catch (JP2ExistsException $e) {
+        } catch (Jp2ExistsException $e) {
             throw $e;
-        } catch (Exception $e) {
-            throw new JP2ExistsException("Problem to detect JP2 presence: " . $e->getMessage());
+        } catch (\Throwable $e) {
+            throw new Jp2ExistsException('Problem to detect JP2 presence: ' . $e->getMessage());
         }
     }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        $this->checkJp2fromImageServer($payload->getJp2Filename());
+
+        return $payload;
+    }
+
 }

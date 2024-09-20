@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -14,7 +14,6 @@ use Nette\Security\AuthenticationException;
 
 readonly class CuratorService
 {
-
 
     public function __construct(protected readonly EntityManager $entityManager, protected readonly S3Service $s3Service, protected readonly StageFactory $stageFactory, protected readonly StorageConfiguration $storageConfiguration)
     {
@@ -42,14 +41,8 @@ readonly class CuratorService
                 ->setArchiveFileSize($file->size);
             $this->entityManager->persist($entity);
         }
-        $this->entityManager->flush();
-    }
 
-    protected function getEligibleCuratorBucketFiles(Herbaria $herbarium): array
-    {
-        return array_filter($this->getAllCuratorBucketFiles($herbarium), function ($item) {
-            return $item->isEligibleToBeImported() === true;
-        });
+        $this->entityManager->flush();
     }
 
     public function getAllCuratorBucketFiles(Herbaria $herbarium): array
@@ -58,16 +51,18 @@ readonly class CuratorService
 
         foreach ($this->s3Service->listObjects($herbarium->getBucket()) as $filename) {
             /** @var Photos $entity */
-            $entity = $this->entityManager->getPhotosRepository()->findOneBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium, "originalFilename" => $filename["Key"]]);
-            if ($entity === NULL) {
-                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], false, false, NULL, NULL);
+            $entity = $this->entityManager->getPhotosRepository()->findOneBy(['status' => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], 'herbarium' => $herbarium, 'originalFilename' => $filename['Key']]);
+            if ($entity === null) {
+                $file = new FileInsideCuratorBucket($filename['Key'], (int) $filename['Size'], $filename['LastModified'], false, false, null, null);
             } else {
                 $alreadyWaiting = $entity->getStatus()->getId() === PhotosStatus::WAITING;
                 $hasControlError = $entity->getStatus()->getId() === PhotosStatus::CONTROL_ERROR;
-                $file = new FileInsideCuratorBucket($filename["Key"], (int)$filename["Size"], $filename["LastModified"], $alreadyWaiting, $hasControlError, $entity->getId(), $entity->getMessage());
+                $file = new FileInsideCuratorBucket($filename['Key'], (int) $filename['Size'], $filename['LastModified'], $alreadyWaiting, $hasControlError, $entity->getId(), $entity->getMessage());
             }
+
             $files[] = $file;
         }
+
         return $files;
     }
 
@@ -93,19 +88,18 @@ readonly class CuratorService
                 $files[] = $photo;
             }
         }
+
         return $files;
     }
 
-
     public function getLatestImports(Herbaria $herbarium): array
     {
-        return $this->entityManager->getPhotosRepository()->findBy(["herbarium" => $herbarium, "status" => [3, 4, 5]], ["lastEdit" => Criteria::DESC], 30);
-
+        return $this->entityManager->getPhotosRepository()->findBy(['herbarium' => $herbarium, 'status' => [3, 4, 5]], ['lastEdit' => Criteria::DESC], 30);
     }
 
     public function getPhotoWithError(Herbaria $herbarium, int $photoId): ?Photos
     {
-        return $this->entityManager->getPhotosRepository()->findOneBy(["id" => $photoId, "herbarium" => $herbarium, "status" => $this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_ERROR)]);
+        return $this->entityManager->getPhotosRepository()->findOneBy(['id' => $photoId, 'herbarium' => $herbarium, 'status' => $this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_ERROR)]);
     }
 
     public function deleteNotImportedPhoto(Herbaria $herbarium, Photos $photo): void
@@ -114,26 +108,32 @@ readonly class CuratorService
             $this->s3Service->deleteObject($photo->getHerbarium()->getBucket(), $photo->getOriginalFilename());
             $this->entityManager->remove($photo);
             $this->entityManager->flush();
+
             return;
         }
-        throw new AuthenticationException("Not allowed to delete photo.");
 
+        throw new AuthenticationException('Not allowed to delete photo.');
     }
 
-    public function reimportPhoto(Herbaria $herbarium, Photos $photo, ?string $manualSpecimenId = NULL): void
+    public function reimportPhoto(Herbaria $herbarium, Photos $photo, ?string $manualSpecimenId = null): void
     {
-
         if ($herbarium->getId() === $photo->getHerbarium()->getId()) {
             $photo
                 ->setLastEditAt()
-                ->setMessage(NULL)
+                ->setMessage(null)
                 ->setSpecimenId($manualSpecimenId)
                 ->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::WAITING));
             $this->entityManager->flush();
+
             return;
         }
-        throw new AuthenticationException("Not allowed to delete photo.");
 
+        throw new AuthenticationException('Not allowed to delete photo.');
+    }
+
+    protected function getEligibleCuratorBucketFiles(Herbaria $herbarium): array
+    {
+        return array_filter($this->getAllCuratorBucketFiles($herbarium), fn ($item) => $item->isEligibleToBeImported() === true);
     }
 
 }

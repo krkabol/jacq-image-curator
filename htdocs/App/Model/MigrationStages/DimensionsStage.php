@@ -1,24 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\MigrationStages;
 
-use App\Model\Database\Entity\Photos;
+use App\Model\MigrationStages\Exceptions\DimensionsException;
 use App\Services\StorageConfiguration;
-use Exception;
 use GuzzleHttp\Client;
 use League\Pipeline\StageInterface;
 
-
-class DimensionStageException extends BaseStageException
-{
-
-}
-
 class DimensionsStage implements StageInterface
 {
+
     protected Client $client;
+
     protected StorageConfiguration $configuration;
 
     public function __construct(Client $client, StorageConfiguration $configuration)
@@ -27,42 +20,46 @@ class DimensionsStage implements StageInterface
         $this->configuration = $configuration;
     }
 
-    public function __invoke($payload)
+    protected function getInfoFromImageServer(string $url): mixed
     {
-        /** @var Photos $payload */
+        try {
+            $response = $this->client->request('GET', $this->configuration->getImageIIIFInfoURL($url));
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                throw new DimensionsException('Expected JP2 file is missing');
+            }
+
+            $body = (string) $response->getBody();
+            $data = json_decode($body, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new DimensionsException('Error during decoding JSON response: ' . json_last_error_msg());
+            }
+
+            return $data;
+        } catch (DimensionsException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            throw new DimensionsException('Problem to detect JP2 dimensions: ' . $e->getMessage());
+        }
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
         $data = $this->getInfoFromImageServer($payload->getJp2Filename());
 
         if (isset($data['width'])) {
             $payload->setWidth($data['width']);
         } else {
-            throw new DimensionStageException('Parameter "width" not found.');
+            throw new DimensionsException('Parameter "width" not found.');
         }
+
         if (isset($data['height'])) {
             $payload->setHeight($data['height']);
         } else {
-            throw new DimensionStageException('Parameter "height" not found.');
+            throw new DimensionsException('Parameter "height" not found.');
         }
+
         return $payload;
     }
 
-    protected function getInfoFromImageServer($url): array
-    {
-        try {
-            $response = $this->client->request('GET', $this->configuration->getImageIIIFInfoURL($url));
-            $statusCode = $response->getStatusCode();
-            if ($statusCode != 200) {
-                throw new DimensionStageException("Expected JP2 file is missing");
-            }
-            $body = (string)$response->getBody();
-            $data = json_decode($body, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new DimensionStageException("Error during decoding JSON response: " . json_last_error_msg());
-            }
-            return $data;
-        } catch (DimensionStageException $e) {
-            throw $e;
-        } catch (Exception $e) {
-            throw new DimensionStageException("Problem to detect JP2 dimensions: " . $e->getMessage());
-        }
-    }
 }

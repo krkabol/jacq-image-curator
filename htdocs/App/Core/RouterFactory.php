@@ -1,24 +1,22 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Core;
 
-use Nette;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
-
+use Nette\StaticClass;
 
 final class RouterFactory
 {
-	use Nette\StaticClass;
+
+    use StaticClass;
 
     public static function createRouter(): RouteList
     {
         $router = new RouteList();
 
-        RouterFactory::buildAdmin($router);
-        RouterFactory::buildFront($router);
+        self::buildAdmin($router);
+        self::buildFront($router);
 
         return $router;
     }
@@ -38,4 +36,5 @@ final class RouterFactory
 
         return $router;
     }
+
 }

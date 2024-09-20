@@ -1,16 +1,18 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\Database\Entity\Attributes;
 
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
 
 trait TId
 {
 
-    #[ORM\Column(type: Types::INTEGER, unique: true, nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected $id;
+    #[Column(type: Types::INTEGER, unique: true, nullable: false)]
+    #[Id, GeneratedValue(strategy: 'IDENTITY')]
+    protected int $id;
 
     public function getId(): int
     {
@@ -21,4 +23,5 @@ trait TId
     {
         $this->id = null;
     }
+
 }

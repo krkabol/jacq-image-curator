@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -17,6 +15,7 @@ class S3Exception extends Exception
 
 readonly class S3Service
 {
+
     public function __construct(protected S3Client $s3)
     {
     }
@@ -28,6 +27,7 @@ readonly class S3Service
                 return false;
             }
         }
+
         return true;
     }
 
@@ -43,6 +43,7 @@ readonly class S3Service
                 return false;
             }
         }
+
         return true;
     }
 
@@ -50,9 +51,9 @@ readonly class S3Service
     {
         if (!$this->s3->doesBucketExist($name)) {
             try {
-                $result = $this->s3->createBucket(['Bucket' => $name,]);
+                $result = $this->s3->createBucket(['Bucket' => $name]);
             } catch (AwsException $e) {
-                die("Error during bucket create: " . $e->getMessage() . "\n");
+                die('Error during bucket create: ' . $e->getMessage() . "\n");
             }
         }
     }
@@ -71,20 +72,24 @@ readonly class S3Service
                 'SourceFile' => $path,
                 'ContentType' => 'image/tiff']);
         }
+
         throw new S3Exception("Tif file {$key} already exists");
     }
 
     public function copyObjectIfNotExists(string $objectKey, string $sourceBucket, string $targetBucket): bool
     {
-        throw new \Exception("readonly S3 operations allowed only");
+        throw new \Exception('readonly S3 operations allowed only');
+
         if (!$this->s3->doesObjectExist($targetBucket, $objectKey)) {
             $this->s3->copyObject([
                 'Bucket' => $targetBucket,
                 'Key' => $objectKey,
                 'CopySource' => "{$sourceBucket}/{$objectKey}",
             ]);
+
             return true;
         }
+
         return false;
     }
 
@@ -94,6 +99,7 @@ readonly class S3Service
             'Bucket' => $bucket,
             'Key' => $key,
         ]);
+
         return $result['ContentLength'];
     }
 
@@ -111,10 +117,11 @@ readonly class S3Service
             'Bucket' => $bucket,
             'Key' => $key,
         ]);
-        $data = $result->get("Metadata");
-        if (isset($data["origin-date-iso8601"])) {
-            return new \DateTimeImmutable($data["origin-date-iso8601"]);
+        $data = $result->get('Metadata');
+        if (isset($data['origin-date-iso8601'])) {
+            return new \DateTimeImmutable($data['origin-date-iso8601']);
         }
+
         return null;
     }
 
@@ -135,8 +142,8 @@ readonly class S3Service
                 'SourceFile' => $path,
                 'ContentType' => 'image/jp2']);
         }
-        throw new S3Exception("JP2 file {$key} already exists");
 
+        throw new S3Exception("JP2 file {$key} already exists");
     }
 
     public function getObject(string $bucket, string $key, string $path): Result
@@ -150,29 +157,32 @@ readonly class S3Service
     public function listObjectsNamesOnly(string $bucket): array
     {
         $objects = [];
-        $result = $this->s3->getIterator('ListObjects', array(
-            "Bucket" => $bucket,
+        $result = $this->s3->getIterator('ListObjects', [
+            'Bucket' => $bucket,
             // "Prefix" => 'some_folder/'
-        ));
+        ]);
         foreach ($result as $object) {
             $objects[] = $object['Key'];
         }
+
         return $objects;
     }
 
     public function listObjects(string $bucket): \Iterator
     {
         $objects = [];
-        $result = $this->s3->getIterator('ListObjects', array(
-            "Bucket" => $bucket,
+
+        return $this->s3->getIterator('ListObjects', [
+            'Bucket' => $bucket,
             // "Prefix" => 'some_folder/'
-        ));
-        return $result;
+        ]);
     }
 
     public function getStreamOfObject($bucket, $key)
     {
         $this->s3->registerStreamWrapper();
+
         return fopen("s3://{$bucket}/{$key}", 'r');
     }
+
 }

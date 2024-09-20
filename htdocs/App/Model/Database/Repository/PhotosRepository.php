@@ -11,22 +11,24 @@ use App\Model\Database\Entity\PhotosStatus;
  * @method Photos|NULL findOneBy(array $criteria, array $orderBy = NULL)
  * @method Photos[] findAll()
  * @method Photos[] findBy(array $criteria, array $orderBy = NULL, ?int $limit = NULL, ?int $offset = NULL)
- * @extends AbstractRepository<\App\Model\Database\Entity\Photos>
+ * @extends AbstractRepository<Photos>
  */
 class PhotosRepository extends AbstractRepository
 {
 
-	public function findOneByArchiveFilename(string $archiveFilename): ?Photos
-	{
-		return $this->findOneBy(['archiveFilename' => $archiveFilename]);
-	}
+    public function findOneByArchiveFilename(string $archiveFilename): ?Photos
+    {
+        return $this->findOneBy(['archiveFilename' => $archiveFilename]);
+    }
 
     /**
      * if curator deletes a file in his bucket and the image i) is processed or ii) has Import error, then we have an "orphaned" row.
+     *
+     * @return Photos[]
      */
     public function getOrphananble(Herbaria $herbarium): array
     {
-        return $this->findBy(["status" => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], "herbarium" => $herbarium]);
+        return $this->findBy(['status' => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], 'herbarium' => $herbarium]);
     }
 
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Console;
 
@@ -29,7 +29,7 @@ class Test extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
-        $imagick = $this->imageService->createImagick($this->tempDir->getPath("test-archive/test_5.tif"));
+        $imagick = $this->imageService->createImagick($this->tempDir->getPath('test-archive/test_5.tif'));
 
         $limit = 3000;
         $imagick = $this->imageService->resizeImage($imagick, $limit);
@@ -38,19 +38,19 @@ class Test extends Command
 //        $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('png');
         $imagick->setImageCompressionQuality(100);
-        $imagick->writeImage($this->tempDir->getPath("output.png"));
+        $imagick->writeImage($this->tempDir->getPath('output.png'));
         $output->writeln(sprintf("\n Conversion time: %.2f sec", (microtime(true) - $startTime)));
-
 
         $outputZbar = [];
         $returnVar = 0;
-        $info = exec("zbarimg --quiet --raw " . escapeshellarg($this->tempDir->getPath("output.png")), $outputZbar, $returnVar);
+        $info = exec('zbarimg --quiet --raw ' . escapeshellarg($this->tempDir->getPath('output.png')), $outputZbar, $returnVar);
+        var_dump($info);
         var_dump($returnVar);
 
         var_dump($outputZbar);
 
-
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
+
         return Command::SUCCESS;
     }
 

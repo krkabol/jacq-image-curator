@@ -1,5 +1,4 @@
-<?php declare(strict_types=1);
-
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -10,7 +9,7 @@ readonly class WebDir
     {
     }
 
-    public function getPath($fromBaseDir = '')
+    public function getPath(string $fromBaseDir = ''): string
     {
         return $this->wwwDir . DIRECTORY_SEPARATOR . $fromBaseDir;
     }

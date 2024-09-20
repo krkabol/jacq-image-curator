@@ -1,22 +1,27 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Model\Database\Entity;
 
 use App\Model\Database\Entity\Attributes\TId;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
 
-#[ORM\Entity()]
-#[ORM\Table(name: 'photos_status', options: ["comment" => "List of allowed photo statuses"])]
+#[Entity()]
+#[Table(name: 'photos_status', options: ['comment' => 'List of allowed photo statuses'])]
 class PhotosStatus
 {
-    const int WAITING = 1;
-    const int CONTROL_ERROR = 2;
-    const int CONTROL_OK = 3;
+
     use TId;
 
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "name of the status"])]
+    public const int WAITING = 1;
+    public const int CONTROL_ERROR = 2;
+    public const int CONTROL_OK = 3;
+
+    #[Column(unique: true, nullable: false, options: ['comment' => 'name of the status'])]
     protected string $name;
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "short description"])]
+
+    #[Column(unique: true, nullable: false, options: ['comment' => 'short description'])]
     protected string $description;
 
     public function getName(): string
@@ -29,6 +34,4 @@ class PhotosStatus
         return $this->description;
     }
 
-
 }
-
