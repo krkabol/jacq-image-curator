@@ -124,7 +124,10 @@ final class HomePresenter extends SecuredPresenter
     public function specimenIdFormSucceeded(Form $form, \stdClass $values): void
     {
         try {
-            $this->curatorService->getPhotoWithError($this->herbarium, (int) $values->photoId);
+            $photo = $this->curatorService->getPhotoWithError($this->herbarium, (int) $values->photoId);
+            if ($photo === null) {
+                $this->error('Photo not found');
+            }
             $this->curatorService->reimportPhoto($this->herbarium, $this->entityManager->getReference(Photos::class, $values->photoId), $values->specimen);
 
             $fullID = $this->herbarium->getAcronym() . "-" . $values->specimen;
