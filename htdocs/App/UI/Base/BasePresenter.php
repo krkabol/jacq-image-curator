@@ -10,8 +10,9 @@ use Nette\Application\UI\Presenter;
 
 abstract class BasePresenter extends Presenter
 {
-    const DESTINATION_AFTER_SIGN_IN = ":Admin:Home:";
-    const DESTINATION_AFTER_SIGN_OUT = ":Front:Home:";
+    const string DESTINATION_AFTER_SIGN_IN = ":Admin:Home:";
+    const string DESTINATION_AFTER_SIGN_OUT = ":Front:Home:";
+    const string DESTINATION_LOG_IN = ":Front:Sign:in";
     /** @inject */
     public AppConfiguration $appConfiguration;
 

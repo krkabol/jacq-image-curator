@@ -25,7 +25,7 @@ abstract class SecuredPresenter extends BasePresenter
             }
 
             $this->redirect(
-                "Sign:in",
+                BasePresenter::DESTINATION_LOG_IN,
                 ['backlink' => $this->storeRequest()]
             );
         }

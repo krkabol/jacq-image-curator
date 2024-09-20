@@ -1,23 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Admin\Sign;
+namespace App\UI\Front\Sign;
 
 use App\UI\Base\BasePresenter;
 use App\UI\Base\Form\FormFactory;
-use App\UI\Base\SecuredPresenter;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;
 
-final class SignPresenter extends SecuredPresenter
+final class SignPresenter extends BasePresenter
 {
 
     /** @var string @persistent */
     public $backlink;
 
-
-    public function checkRequirements($element): void
-    {
-    }
+    /** @var FormFactory @inject */
+    public FormFactory $formFactory;
 
     public function actionIn(): void
     {
