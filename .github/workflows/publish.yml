@@ -4,6 +4,7 @@ on:
         tags: [ '*' ]
         branches:
             - test
+    workflow_dispatch:  # Manual run
 
 env:
     REGISTRY: ghcr.io
