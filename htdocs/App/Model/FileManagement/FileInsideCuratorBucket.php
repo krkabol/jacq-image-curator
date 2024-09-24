@@ -22,12 +22,12 @@ readonly class FileInsideCuratorBucket
         return $this->timestamp->format('j. F Y');
     }
 
-    public function isSizeOK(): bool
+    public function isSizeOk(): bool
     {
         return $this->size >= self::MIN_FILESIZE && $this->size <= self::MAX_FILESIZE;
     }
 
-    public function isTypeOK(): bool
+    public function isTypeOk(): bool
     {
         return pathinfo($this->name, PATHINFO_EXTENSION) === self::EXTENSION;
     }
@@ -49,7 +49,7 @@ readonly class FileInsideCuratorBucket
 
     public function isEligibleToBeImported(): bool
     {
-        return $this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting() && !$this->hasControlError();
+        return $this->isSizeOk() && $this->isTypeOk() && !$this->isAlreadyWaiting() && !$this->hasControlError();
     }
 
 }

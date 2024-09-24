@@ -3,35 +3,52 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\BarcodeStageException;
 use App\Services\ImageService;
 use App\Services\StorageConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
-
-class BarcodeStageException extends ImportStageException
-{
-
-}
+use Throwable;
 
 class BarcodeStage implements StageInterface
 {
 
     protected Photos $item;
 
+    /** @var string [] */
     protected array $barcodes;
 
     public function __construct(protected readonly StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
     {
     }
 
+    public function __invoke(mixed $payload): mixed
+    {
+        try {
+            $this->item = $payload;
+            /**
+             * skip detection when manually inserted id
+             */
+            if ($this->item->getSpecimenId() === null) {
+                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+                $this->createContrastedImage($imagick);
+                $this->detectCodes();
+                $this->harvestCodes();
+            }
+
+            return $this->item;
+        } catch (BarcodeStageException $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
+        }
+    }
+
     protected function createContrastedImage(Imagick $imagick): void
     {
         $imagick = $this->imageService->resizeImage($imagick, $this->storageConfiguration->getZbarImageSize());
         $imagick->modulateImage(100, 0, 100);
-        /**
-         * adaptive threshold had worse results than unmodified image
-         * $imagick->adaptiveThresholdImage(150, 150, 1);
-         */
+        // adaptive threshold had worse results than unmodified image        * $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('png');
         $imagick->writeImage($this->storageConfiguration->getImportTempZbarPath($this->item));
         $imagick->destroy();
@@ -75,26 +92,6 @@ class BarcodeStage implements StageInterface
 
         if (!$isValid) {
             throw new BarcodeStageException('Invalid barcode. Detected code(s): ' . implode($this->barcodes));
-        }
-    }
-
-    public function __invoke($payload)
-    {
-        try {
-            $this->item = $payload;
-            /** skip detection when manually inserted id */
-            if ($this->item->getSpecimenId() === null) {
-                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
-                $this->createContrastedImage($imagick);
-                $this->detectCodes();
-                $this->harvestCodes();
-            }
-
-            return $this->item;
-        } catch (BarcodeStageException $e) {
-            throw $e;
-        } catch (\Throwable $e) {
-            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
         }
     }
 

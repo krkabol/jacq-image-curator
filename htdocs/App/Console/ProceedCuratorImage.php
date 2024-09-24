@@ -5,7 +5,7 @@ namespace App\Console;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
-use App\Model\ImportStages\ImportStageException;
+use App\Model\ImportStages\Exceptions\ImportStageException;
 use App\Services\CuratorService;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;

@@ -7,7 +7,9 @@ use Aws\Result;
 readonly class File
 {
 
-/** @deprecated */
+/** @deprecated
+ * used only during migration
+ */
     public function __construct(public readonly string $name, public readonly Result $info, public readonly bool $alreadyWaiting)
     {
     }
@@ -39,7 +41,7 @@ readonly class File
         return null;
     }
 
-    public function isSizeOK(): bool
+    public function isSizeOk(): bool
     {
         return $this->getSize() >= FileInsideCuratorBucket::MIN_FILESIZE && $this->getSize() <= FileInsideCuratorBucket::MAX_FILESIZE;
     }
@@ -49,7 +51,7 @@ readonly class File
         return (int) $this->info->get('ContentLength');
     }
 
-    public function isTypeOK(): bool
+    public function isTypeOk(): bool
     {
         return $this->info->get('ContentType') === FileInsideCuratorBucket::MIME_TYPE;
     }
@@ -61,7 +63,7 @@ readonly class File
 
     public function isEligibleToBeImported(): bool
     {
-        return $this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting();
+        return $this->isSizeOk() && $this->isTypeOk() && !$this->isAlreadyWaiting();
     }
 
 }

@@ -3,15 +3,11 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\ThumbnailStageException;
 use App\Services\ImageService;
 use App\Services\StorageConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
-
-class ThumbnailStageException extends ImportStageException
-{
-
-}
 
 class ThumbnailStage implements StageInterface
 {
@@ -33,7 +29,7 @@ class ThumbnailStage implements StageInterface
         unset($imagick);
     }
 
-    public function __invoke($payload)
+    public function __invoke(mixed $payload): mixed
     {
         try {
             $this->item = $payload;

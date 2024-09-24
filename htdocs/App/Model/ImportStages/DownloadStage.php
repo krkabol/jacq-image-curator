@@ -2,15 +2,10 @@
 
 namespace App\Model\ImportStages;
 
-use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\DownloadStageException;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
-
-class DownloadStageException extends ImportStageException
-{
-
-}
 
 readonly class DownloadStage implements StageInterface
 {
@@ -19,10 +14,9 @@ readonly class DownloadStage implements StageInterface
     {
     }
 
-    public function __invoke($payload)
+    public function __invoke(mixed $payload): mixed
     {
         try {
-            /** @var Photos $payload */
             $this->s3Service->getObject($payload->getHerbarium()->getBucket(), $payload->getOriginalFilename(), $this->configuration->getImportTempPath($payload));
             $payload->setOriginalFileAt($this->s3Service->getObjectOriginalTimestamp($payload->getHerbarium()->getBucket(), $payload->getOriginalFilename()));
 

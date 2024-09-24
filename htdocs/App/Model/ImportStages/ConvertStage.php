@@ -2,16 +2,11 @@
 
 namespace App\Model\ImportStages;
 
-use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\ConvertStageException;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
-
-class ConvertStageException extends ImportStageException
-{
-
-}
 
 readonly class ConvertStage implements StageInterface
 {
@@ -20,10 +15,9 @@ readonly class ConvertStage implements StageInterface
     {
     }
 
-    public function __invoke($payload)
+    public function __invoke(mixed $payload): mixed
     {
-//TODO compression as config
-        /** @var Photos $payload */
+//TODO compression ratio as config
         try {
             $imagick = new Imagick($this->storageConfiguration->getImportTempPath($payload));
             $imagick->setImageFormat('jp2');

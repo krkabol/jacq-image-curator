@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Model\ImportStages;
+namespace App\Model\ImportStages\Exceptions;
 
 use Nette\Neon\Exception;
 

@@ -3,14 +3,10 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\TransferStageException;
 use App\Services\S3Service;
 use App\Services\StorageConfiguration;
 use League\Pipeline\StageInterface;
-
-class TransferStageException extends ImportStageException
-{
-
-}
 
 class TransferStage implements StageInterface
 {
@@ -21,7 +17,7 @@ class TransferStage implements StageInterface
     {
     }
 
-    protected function uploadJP2toRepository(): void
+    protected function uploadJp2toRepository(): void
     {
         try {
             $this->s3Service->putJP2IfNotExists($this->storageConfiguration->getJP2Bucket(), $this->storageConfiguration->createS3JP2Name($this->item), $this->storageConfiguration->getImportTempJP2Path($this->item));
@@ -31,7 +27,7 @@ class TransferStage implements StageInterface
         }
     }
 
-    protected function uploadTIFtoRepository(): void
+    protected function uploadTiftoRepository(): void
     {
         try {
             $this->s3Service->putTiffIfNotExists($this->storageConfiguration->getArchiveBucket(), $this->storageConfiguration->createS3TIFName($this->item), $this->storageConfiguration->getImportTempPath($this->item));
@@ -41,7 +37,7 @@ class TransferStage implements StageInterface
         }
     }
 
-    protected function deleteTIFfromCuratorBucket(): void
+    protected function deleteTiffromCuratorBucket(): void
     {
         try {
             $this->s3Service->deleteObject($this->item->getHerbarium()->getBucket(), $this->item->getOriginalFilename());
@@ -50,11 +46,11 @@ class TransferStage implements StageInterface
         }
     }
 
-    public function __invoke($payload)
+    public function __invoke(mixed $payload): mixed
     {
         $this->item = $payload;
-        $this->uploadJP2toRepository();
-        $this->uploadTIFtoRepository();
+        $this->uploadJp2toRepository();
+        $this->uploadTiftoRepository();
 
 //        $this->deleteTIFfromCuratorBucket();
         return $payload;

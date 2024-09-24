@@ -3,15 +3,11 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
+use App\Model\ImportStages\Exceptions\DimensionsStageException;
 use App\Services\ImageService;
 use App\Services\StorageConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
-
-class DimensionsStageException extends ImportStageException
-{
-
-}
 
 class DimensionsStage implements StageInterface
 {
@@ -30,7 +26,7 @@ class DimensionsStage implements StageInterface
         return $imagick;
     }
 
-    public function __invoke($payload)
+    public function __invoke(mixed $payload): mixed
     {
         try {
             $this->item = $payload;
