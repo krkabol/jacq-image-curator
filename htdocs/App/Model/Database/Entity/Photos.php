@@ -60,7 +60,7 @@ class Photos
     protected ?string $message;
 
     #[Column(type: Types::BLOB, nullable: true, options: ['comment' => 'Thumbnail during import phase'])]
-    protected string $thumbnail;
+    protected mixed $thumbnail;
 
     public function getArchiveFilename(): ?string
     {
@@ -204,12 +204,12 @@ class Photos
         return $this;
     }
 
-    public function getThumbnail(): ?string
+    public function getThumbnail(): mixed
     {
         return $this->thumbnail;
     }
 
-    public function setThumbnail(?string $thumbnail): Photos
+    public function setThumbnail(mixed $thumbnail): Photos
     {
         $this->thumbnail = $thumbnail;
 

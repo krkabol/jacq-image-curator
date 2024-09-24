@@ -6,10 +6,10 @@ use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\Entity\User;
-use App\Model\Database\Repository\AbstractRepository;
 use App\Model\Database\Repository\HerbariaRepository;
 use App\Model\Database\Repository\PhotosRepository;
 use App\Model\Database\Repository\UserRepository;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * @mixin EntityManager
@@ -32,7 +32,7 @@ trait TRepositories
         return $this->getRepository(User::class);
     }
 
-    public function getPhotosStatusRepository(): AbstractRepository
+    public function getPhotosStatusRepository(): EntityRepository
     {
         return $this->getRepository(PhotosStatus::class);
     }

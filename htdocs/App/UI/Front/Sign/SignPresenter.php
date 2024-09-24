@@ -11,7 +11,7 @@ final class SignPresenter extends BasePresenter
 {
 
     /** @var string @persistent */
-    public string $backlink;
+    public ?string $backlink;
 
     /** @var FormFactory @inject */
     public FormFactory $formFactory;

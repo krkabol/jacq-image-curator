@@ -13,11 +13,12 @@ class EntityManager extends EntityManagerDecorator
 
     /**
      * @return AbstractRepository<T>|ObjectRepository<T>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
      * @internal
      */
-    public function getRepository(string $entityName): ObjectRepository
+    public function getRepository($className): ObjectRepository
     {
-        return parent::getRepository($entityName);
+        return parent::getRepository($className);
     }
 
 }

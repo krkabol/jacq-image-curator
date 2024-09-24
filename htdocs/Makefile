@@ -22,8 +22,7 @@ build:
 
 # analysis of old data
 data_migration:
-	NETTE_DEBUG=1 bin/console app:readBucketToDb
-	NETTE_DEBUG=1 bin/console app:updateRecords & disown ## as it is time consuming
+	NETTE_DEBUG=1 bin/console app:readBucketToDb & disown ## as it is time consuming
 
 data_processing:
 	NETTE_DEBUG=1 bin/console curator:importImage

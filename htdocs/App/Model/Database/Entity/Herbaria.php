@@ -4,11 +4,11 @@ namespace App\Model\Database\Entity;
 
 use App\Model\Database\Entity\Attributes\TId;
 use App\Model\Database\Repository\HerbariaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\PersistentCollection;
 
 #[Entity(repositoryClass: HerbariaRepository::class)]
 #[Table(name: 'herbaria', options: ['comment' => 'List of involved herbaria'])]
@@ -24,10 +24,10 @@ class Herbaria
     protected string $bucket;
 
     #[OneToMany(mappedBy: 'herbarium', targetEntity: 'Photos')]
-    protected ArrayCollection $photos;
+    protected PersistentCollection $photos;
 
     #[OneToMany(mappedBy: 'herbarium', targetEntity: 'User')]
-    protected ArrayCollection $users;
+    protected PersistentCollection $users;
 
     public function getAcronym(): string
     {

@@ -24,10 +24,10 @@ final class LatteExtension extends Extension
         return [];
     }
 
-    public function status(bool $status): Html
+    public function status(mixed $status): Html
     {
         $el = Html::el('b');
-        if ($status === true) {
+        if ((bool) $status === true) {
             $el->style['color'] = 'green';
             $el->setText('✓');
         } else {
