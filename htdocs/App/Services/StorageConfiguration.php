@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Model\Database\Entity\Photos;
-use App\Model\MigrationStages\FilenameControlException;
+use Nette\Neon\Exception;
 
 final readonly class StorageConfiguration
 {
@@ -116,7 +116,7 @@ final readonly class StorageConfiguration
         if (preg_match($this->getSpecimenNameRegex(), $specimenId, $parts)) {
             return $parts;
         } else {
-            throw new FilenameControlException('invalid name format: ' . $specimenId);
+            throw new Exception('invalid name format: ' . $specimenId);
         }
     }
 

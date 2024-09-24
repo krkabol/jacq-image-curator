@@ -5,6 +5,7 @@ namespace App\Model\Database\Entity\Attributes;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\PreUpdate;
 
 trait TLastEditAt
 {

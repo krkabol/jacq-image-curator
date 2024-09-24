@@ -12,7 +12,7 @@ trait TId
 
     #[Column(type: Types::INTEGER, unique: true, nullable: false)]
     #[Id, GeneratedValue(strategy: 'IDENTITY')]
-    protected int $id;
+    protected ?int $id;
 
     public function getId(): int
     {

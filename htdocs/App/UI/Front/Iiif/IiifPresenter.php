@@ -52,16 +52,4 @@ final class IiifPresenter extends UnsecuredPresenter
         $this->sendJson($manifest);
     }
 
-    public function actionManifestv3(): void
-    {
-        $model = $this->manifestFactory->prototype_v3();
-        $relativeLink = $this->link('this');
-        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
-        $httpBaseUrl = preg_replace('/^http:/', 'https:', $baseUrl);
-        $absoluteLink = $httpBaseUrl . ltrim($relativeLink, '/');
-        $model['id'] = $absoluteLink;
-
-        $this->sendJson($model);
-    }
-
 }

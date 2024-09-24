@@ -1,0 +1,76 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$entityManager\\.$#"
+			count: 1
+			path: App/Console/ReadBucketToDatabase.php
+
+		-
+			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$name\\.$#"
+			count: 1
+			path: App/Console/ReadBucketToDatabase.php
+
+		-
+			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$s3Service\\.$#"
+			count: 1
+			path: App/Console/ReadBucketToDatabase.php
+
+		-
+			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$storageConfiguration\\.$#"
+			count: 1
+			path: App/Console/ReadBucketToDatabase.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getHerbariaRepository\\(\\) should return App\\\\Model\\\\Database\\\\Repository\\\\HerbariaRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getPhotosRepository\\(\\) should return App\\\\Model\\\\Database\\\\Repository\\\\PhotosRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getPhotosStatusRepository\\(\\) should return Doctrine\\\\ORM\\\\EntityRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getRepository\\(\\) has invalid return type App\\\\Model\\\\Database\\\\T\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getUserRepository\\(\\) should return App\\\\Model\\\\Database\\\\Repository\\\\UserRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Type mixed in generic type Doctrine\\\\ORM\\\\EntityRepository\\<mixed\\> in PHPDoc tag @extends is not subtype of template type T of object of class Doctrine\\\\ORM\\\\EntityRepository\\.$#"
+			count: 1
+			path: App/Model/Database/Repository/AbstractRepository.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Model\\\\Database\\\\Repository\\\\UserRepository\\:\\:findOneByUsername\\(\\)\\.$#"
+			count: 1
+			path: App/Security/UserAuthenticator.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Cannot assign offset 'color' to string\\.$#"
+			count: 2
+			path: App/UI/Base/Accessory/LatteExtension.php
+
+		-
+			message: "#^Access to an undefined property Nette\\\\Security\\\\IIdentity\\:\\:\\$herbarium\\.$#"
+			count: 1
+			path: App/UI/Base/SecuredPresenter.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of class Nette\\\\Application\\\\Responses\\\\CallbackResponse constructor expects callable\\(Nette\\\\Http\\\\IRequest, Nette\\\\Http\\\\Response\\)\\: void, Closure\\(Nette\\\\Http\\\\Request, Nette\\\\Http\\\\Response\\)\\: void given\\.$#"
+			count: 1
+			path: App/UI/Front/Repository/RepositoryPresenter.php

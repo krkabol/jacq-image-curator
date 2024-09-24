@@ -50,7 +50,7 @@ readonly class CuratorService
         $files = [];
 
         foreach ($this->s3Service->listObjects($herbarium->getBucket()) as $filename) {
-            /** @var Photos $entity */
+            /** @var ?Photos $entity */
             $entity = $this->entityManager->getPhotosRepository()->findOneBy(['status' => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], 'herbarium' => $herbarium, 'originalFilename' => $filename['Key']]);
             if ($entity === null) {
                 $file = new FileInsideCuratorBucket($filename['Key'], (int) $filename['Size'], $filename['LastModified'], false, false, null, null);

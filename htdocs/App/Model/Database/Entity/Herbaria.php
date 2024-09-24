@@ -23,10 +23,16 @@ class Herbaria
     #[Column(unique: true, nullable: false, options: ['comment' => 'S3 bucket where are stored new images before imported to the repository'])]
     protected string $bucket;
 
-    #[OneToMany(mappedBy: 'herbarium', targetEntity: 'Photos')]
+    /**
+     * @var PersistentCollection<int, Photos>
+     */
+    #[OneToMany(mappedBy: 'herbarium', targetEntity: Photos::class)]
     protected PersistentCollection $photos;
 
-    #[OneToMany(mappedBy: 'herbarium', targetEntity: 'User')]
+    /**
+     * @var PersistentCollection<int, User>
+     */
+    #[OneToMany(mappedBy: 'herbarium', targetEntity: User::class)]
     protected PersistentCollection $users;
 
     public function getAcronym(): string

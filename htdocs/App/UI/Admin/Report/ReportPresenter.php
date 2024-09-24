@@ -21,7 +21,6 @@ final class ReportPresenter extends SecuredPresenter
 
     public function renderIntegrity(): void
     {
-        $this->s3Service->bucketsExists($this->configuration->getAllBuckets()) ? $this->template->bucketsOK = true : $this->template->bucketsOK = false;
         $this->template->dbRecordsMissingWithinArchive = $this->reportService->dbRecordsMissingWithinArchive();
         $this->template->dbRecordsMissingWithinIIIF = $this->reportService->dbRecordsMissingWithinIIIF();
         $this->template->TIFFsWithoutJP2 = $this->reportService->TIFFsWithoutJP2();

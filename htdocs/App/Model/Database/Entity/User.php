@@ -37,11 +37,11 @@ class User
     #[Column(nullable: false, options: ['comment' => 'User email address'])]
     protected string $email;
 
-    #[ManyToOne(targetEntity: 'Herbaria', inversedBy: 'users')]
+    #[ManyToOne(targetEntity: Herbaria::class, inversedBy: 'users')]
     #[JoinColumn(name: 'herbarium_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'Herbarium'],)]
     protected Herbaria $herbarium;
 
-    #[ManyToOne(targetEntity: 'UserRole')]
+    #[ManyToOne(targetEntity: UserRole::class)]
     #[JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'Role for ACL'])]
     protected UserRole $role;
 
