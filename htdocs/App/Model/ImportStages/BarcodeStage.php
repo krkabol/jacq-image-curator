@@ -22,28 +22,6 @@ class BarcodeStage implements StageInterface
     {
     }
 
-    public function __invoke(mixed $payload): mixed
-    {
-        try {
-            $this->item = $payload;
-            /**
-             * skip detection when manually inserted id
-             */
-            if ($this->item->getSpecimenId() === null) {
-                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
-                $this->createContrastedImage($imagick);
-                $this->detectCodes();
-                $this->harvestCodes();
-            }
-
-            return $this->item;
-        } catch (BarcodeStageException $e) {
-            throw $e;
-        } catch (Throwable $e) {
-            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
-        }
-    }
-
     protected function createContrastedImage(Imagick $imagick): void
     {
         $imagick = $this->imageService->resizeImage($imagick, $this->storageConfiguration->getZbarImageSize());
@@ -92,6 +70,28 @@ class BarcodeStage implements StageInterface
 
         if (!$isValid) {
             throw new BarcodeStageException('Invalid barcode. Detected code(s): ' . implode($this->barcodes));
+        }
+    }
+
+    public function __invoke(mixed $payload): mixed
+    {
+        try {
+            $this->item = $payload;
+            /**
+             * skip detection when manually inserted id
+             */
+            if ($this->item->getSpecimenId() === null) {
+                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+                $this->createContrastedImage($imagick);
+                $this->detectCodes();
+                $this->harvestCodes();
+            }
+
+            return $this->item;
+        } catch (BarcodeStageException $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            throw new BarcodeStageException('problem with barcode processing: ' . $e->getMessage());
         }
     }
 

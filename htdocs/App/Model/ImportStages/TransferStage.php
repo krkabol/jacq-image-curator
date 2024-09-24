@@ -37,7 +37,7 @@ class TransferStage implements StageInterface
         }
     }
 
-    protected function deleteTiffromCuratorBucket(): void
+    protected function deleteTifFromCuratorBucket(): void
     {
         try {
             $this->s3Service->deleteObject($this->item->getHerbarium()->getBucket(), $this->item->getOriginalFilename());
@@ -52,7 +52,7 @@ class TransferStage implements StageInterface
         $this->uploadJp2toRepository();
         $this->uploadTiftoRepository();
 
-//        $this->deleteTIFfromCuratorBucket();
+//        $this->deleteTifFromCuratorBucket();
         return $payload;
     }
 

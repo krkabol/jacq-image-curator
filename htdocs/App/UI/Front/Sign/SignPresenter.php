@@ -10,8 +10,11 @@ use Nette\Security\AuthenticationException;
 final class SignPresenter extends BasePresenter
 {
 
-    /** @var string @persistent */
-    public ?string $backlink;
+    /**
+     * @persistent
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingAnyTypeHint
+     */
+    public $backlink;
 
     /** @var FormFactory @inject */
     public FormFactory $formFactory;
