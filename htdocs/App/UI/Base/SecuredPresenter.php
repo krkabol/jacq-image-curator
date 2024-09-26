@@ -3,15 +3,12 @@
 namespace App\UI\Base;
 
 use App\Model\Database\Entity\Herbaria;
-use App\Model\Database\EntityManager;
-use App\UI\Base\Form\FormFactory;
+use App\Services\EntityServices\HerbariumService;
 
 abstract class SecuredPresenter extends BasePresenter
 {
 
-    /** @inject */ public FormFactory $formFactory;
-
-    /** @inject */ public EntityManager $entityManager;
+    /** @inject */ public HerbariumService $herbariumService;
 
     protected Herbaria $herbarium;
 
@@ -29,7 +26,7 @@ abstract class SecuredPresenter extends BasePresenter
 
     public function startup(): void
     {
-        $this->herbarium = $this->entityManager->getReference(Herbaria::class, $this->getUser()->getIdentity()->herbarium);
+        $this->herbarium = $this->herbariumService->getCurrentUserHerbarium();
 
         parent::startup();
     }

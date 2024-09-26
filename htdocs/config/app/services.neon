@@ -9,6 +9,7 @@ services:
     - App\Services\StorageConfiguration(%storage%)
     - App\Services\AppConfiguration(@container::getParameters())
     - App\Services\CuratorService
+    - App\Services\EntityServices\HerbariumService
     - App\Model\PhotoOfSpecimenFactory
     - App\Model\ImportStages\StageFactory
     - App\Model\IIIF\ManifestFactory
