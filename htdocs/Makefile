@@ -6,7 +6,8 @@ code_management:
 	vendor/bin/phpstan analyse --level 3 App # analyze errors with PHPStan
 	vendor/bin/phpstan analyse --level 3 --configuration phpstan.neon App --generate-baseline # https://phpstan.org/user-guide/baseline
 
-
+tests:
+	vendor/bin/tester -s -p php --colors 1 -C tests
 
 build:
  	NETTE_DEBUG=1 bin/console migrations:generate #  generate empty migration class
@@ -21,11 +22,6 @@ build:
 #	NETTE_DEBUG=1 bin/console orm:schema-tool:update --dump-sql --complete
 
 	NETTE_DEBUG=1 bin/console orm:generate-proxies # keep proxies in VCS
-
-
-# analysis of old data
-data_migration:
-	NETTE_DEBUG=1 bin/console app:readBucketToDb & disown ## as it is time consuming
 
 data_processing:
 	NETTE_DEBUG=1 bin/console curator:importImage
