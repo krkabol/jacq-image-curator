@@ -2,11 +2,11 @@
 
 namespace App\Console;
 
+use App\Facades\CuratorFacade;
 use App\Model\Database\EntityManager;
-use App\Services\CuratorService;
 use App\Services\ImageService;
+use App\Services\RepositoryConfiguration;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
 use App\Services\TempDir;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Test extends Command
 {
 
-    public function __construct(protected readonly TempDir $tempDir, protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorService $curatorService, protected readonly ImageService $imageService, ?string $name = null)
+    public function __construct(protected readonly TempDir $tempDir, protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorFacade $curatorService, protected readonly ImageService $imageService, ?string $name = null)
     {
         parent::__construct($name);
     }

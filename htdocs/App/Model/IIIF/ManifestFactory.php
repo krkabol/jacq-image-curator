@@ -4,7 +4,7 @@ namespace App\Model\IIIF;
 
 use App\Model\Database\EntityManager;
 use App\Model\Database\Repository\PhotosRepository;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;
 
 class ManifestFactory
@@ -12,7 +12,7 @@ class ManifestFactory
 
     protected PhotosRepository $photosRepository;
 
-    public function __construct(protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $configuration, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $configuration, protected readonly LinkGenerator $linkGenerator)
     {
         $this->photosRepository = $this->entityManager->getPhotosRepository();
     }

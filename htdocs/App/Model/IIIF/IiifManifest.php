@@ -5,7 +5,7 @@ namespace App\Model\IIIF;
 use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Repository\PhotosRepository;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;
 
 class IiifManifest
@@ -26,7 +26,7 @@ class IiifManifest
      * https://iiif.jacq.org/b/?manifest=https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
      * TODO rewrite and use https://github.com/yale-web-technologies/IIIF-Manifest-Generator
      */
-    public function __construct(protected readonly PhotosRepository $photosRepository, protected readonly StorageConfiguration $storageConfiguration, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected readonly PhotosRepository $photosRepository, protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly LinkGenerator $linkGenerator)
     {
         $filePath = '../App/Model/IIIF/v2.json';
         $this->default = json_decode(file_get_contents($filePath), true);
@@ -79,8 +79,8 @@ class IiifManifest
     protected function addThumbnail(): IiifManifest
     {
         $image = $this->getFirstImage();
-        $this->completed['thumbnail']['@id'] = $this->storageConfiguration->getImageIIIFURL4Thumbnail($image->getJp2Filename());
-        $this->completed['thumbnail']['service']['@id'] = $this->storageConfiguration->getImageIIIFInfoURL($image->getJp2Filename());
+        $this->completed['thumbnail']['@id'] = $this->repositoryConfiguration->getImageServerUrlThumbnail($image->getJp2Filename());
+        $this->completed['thumbnail']['service']['@id'] = $this->repositoryConfiguration->getImageServerInfoURL($image->getJp2Filename());
 
         return $this;
     }
@@ -115,7 +115,7 @@ class IiifManifest
     protected function mapCanvasObject(Photos $photo): mixed
     {
         $canvasObject = $this->getJsonCanvasPrototype();
-        $canvasObject['@id'] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . '#canvas';
+        $canvasObject['@id'] = $this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#canvas';
         $canvasObject['label'] = $photo->getJp2Filename();
         $canvasObject['height'] = $photo->getHeight();
         $canvasObject['width'] = $photo->getWidth();
@@ -138,10 +138,10 @@ class IiifManifest
     protected function mapImageObject(Photos $photo): mixed
     {
         $imageObject = $this->getJsonImagePrototype();
-        $imageObject['@id'] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . '#image';
-        $imageObject['on'] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename()) . '#canvas';
-        $imageObject['resource']['@id'] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
-        $imageObject['resource']['service']['@id'] = $this->storageConfiguration->getImageIIIFInfoURL($photo->getJp2Filename());
+        $imageObject['@id'] = $this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#image';
+        $imageObject['on'] = $this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#canvas';
+        $imageObject['resource']['@id'] = $this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename());
+        $imageObject['resource']['service']['@id'] = $this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename());
         $imageObject['resource']['height'] = $photo->getHeight();
         $imageObject['resource']['width'] = $photo->getWidth();
         $imageObject['metadata'][] = ['label' => 'Archive Master file (TIFF)', 'value' => "<a href='" . $this->linkGenerator->link('Front:Repository:archiveImage', [$photo->getId()]) . "'>download original</a>"];
@@ -174,7 +174,7 @@ class IiifManifest
 
     protected function addTiffLink(): IiifManifest
     {
-        $this->completed['rendering'] = ['@id' => $this->storageConfiguration, 'label' => 'download full TIFF scan', 'format' => 'image/tiff'];
+        $this->completed['rendering'] = ['@id' => $this->repositoryConfiguration, 'label' => 'download full TIFF scan', 'format' => 'image/tiff'];
 
         return $this;
     }

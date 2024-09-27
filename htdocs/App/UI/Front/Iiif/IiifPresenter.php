@@ -2,9 +2,9 @@
 
 namespace App\UI\Front\Iiif;
 
+use App\Exceptions\SpecimenIdException;
 use App\Model\IIIF\ManifestFactory;
 use App\Model\SpecimenFactory;
-use App\Model\SpecimenIdException;
 use App\Services\EntityServices\PhotoService;
 use App\UI\Base\UnsecuredPresenter;
 

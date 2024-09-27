@@ -5,7 +5,7 @@ namespace App\Model\ImportStages;
 use App\Model\Database\Entity\Photos;
 use App\Model\ImportStages\Exceptions\DimensionsStageException;
 use App\Services\ImageService;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
 
@@ -14,7 +14,7 @@ class DimensionsStage implements StageInterface
 
     protected Photos $item;
 
-    public function __construct(protected readonly StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected readonly RepositoryConfiguration $storageConfiguration, protected readonly ImageService $imageService)
     {
     }
 

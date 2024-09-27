@@ -5,14 +5,14 @@ namespace App\Model\ImportStages;
 use App\Model\Database\EntityManager;
 use App\Services\ImageService;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use App\Services\TempDir;
 use Nette\Application\LinkGenerator;
 
 readonly class StageFactory
 {
 
-    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected StorageConfiguration $storageConfiguration, protected ImageService $imageService, protected LinkGenerator $linkGenerator)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected RepositoryConfiguration $storageConfiguration, protected ImageService $imageService, protected LinkGenerator $linkGenerator)
     {
     }
 

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Services;
 
@@ -7,10 +7,15 @@ use Imagick;
 class ImageService
 {
 
-    public function __construct(protected readonly S3Service $S3Service, protected readonly StorageConfiguration $storageConfiguration)
+    public function __construct(protected readonly S3Service $S3Service, protected readonly RepositoryConfiguration $storageConfiguration)
     {
     }
 
+    /**
+     * in case the image is "mulipage", like a TIF containing a thumb,
+     * this helps to find the largest
+     * and returns index that Imagick need to be set to.
+     */
     public function getLargestImageIndex(Imagick $imagick): int
     {
         $numberOfImages = $imagick->getNumberImages();
@@ -56,7 +61,7 @@ class ImageService
                 $newWidth = intval(($maxEdgeLength / $height) * $width);
             }
 
-            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
         }
 
         return $imagick;

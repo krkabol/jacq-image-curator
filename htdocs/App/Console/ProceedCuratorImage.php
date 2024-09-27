@@ -2,13 +2,13 @@
 
 namespace App\Console;
 
+use App\Facades\CuratorFacade;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use App\Model\ImportStages\Exceptions\ImportStageException;
-use App\Services\CuratorService;
+use App\Services\RepositoryConfiguration;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +21,7 @@ class ProceedCuratorImage extends Command
     /**
      * Running as a CronJob - process images from curatorBucket to the repository waiting room
      */
-    public function __construct(protected readonly EntityManager $entityManager, protected readonly StorageConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorService $curatorService, ?string $name = null)
+    public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $storageConfiguration, protected readonly S3Service $s3Service, protected readonly CuratorFacade $curatorService, ?string $name = null)
     {
         parent::__construct($name);
     }

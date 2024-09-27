@@ -2,8 +2,8 @@
 
 namespace App\UI\Front\Repository;
 
+use App\Exceptions\SpecimenIdException;
 use App\Model\SpecimenFactory;
-use App\Model\SpecimenIdException;
 use App\Services\EntityServices\PhotoService;
 use App\Services\S3Service;
 use App\UI\Base\UnsecuredPresenter;

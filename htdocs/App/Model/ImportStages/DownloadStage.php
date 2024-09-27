@@ -4,13 +4,13 @@ namespace App\Model\ImportStages;
 
 use App\Model\ImportStages\Exceptions\DownloadStageException;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use League\Pipeline\StageInterface;
 
 readonly class DownloadStage implements StageInterface
 {
 
-    public function __construct(protected S3Service $s3Service, protected StorageConfiguration $configuration)
+    public function __construct(protected S3Service $s3Service, protected RepositoryConfiguration $configuration)
     {
     }
 

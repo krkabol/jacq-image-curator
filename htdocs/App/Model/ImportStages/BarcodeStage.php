@@ -5,7 +5,7 @@ namespace App\Model\ImportStages;
 use App\Model\Database\Entity\Photos;
 use App\Model\ImportStages\Exceptions\BarcodeStageException;
 use App\Services\ImageService;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
 use Throwable;
@@ -18,7 +18,7 @@ class BarcodeStage implements StageInterface
     /** @var string [] */
     protected array $barcodes;
 
-    public function __construct(protected readonly StorageConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected readonly RepositoryConfiguration $storageConfiguration, protected readonly ImageService $imageService)
     {
     }
 

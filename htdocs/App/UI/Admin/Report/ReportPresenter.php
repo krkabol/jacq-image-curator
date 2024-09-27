@@ -4,7 +4,7 @@ namespace App\UI\Admin\Report;
 
 use App\Services\ReportService;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
+use App\Services\RepositoryConfiguration;
 use App\UI\Base\SecuredPresenter;
 
 final class ReportPresenter extends SecuredPresenter
@@ -14,18 +14,7 @@ final class ReportPresenter extends SecuredPresenter
     public ReportService $reportService;
 
     /** @inject */
-    public S3Service $s3Service;
+    public RepositoryConfiguration $repositoryConfiguration;
 
-    /** @inject */
-    public StorageConfiguration $configuration;
-
-    public function renderIntegrity(): void
-    {
-        $this->template->dbRecordsMissingWithinArchive = $this->reportService->dbRecordsMissingWithinArchive();
-        $this->template->dbRecordsMissingWithinIIIF = $this->reportService->dbRecordsMissingWithinIIIF();
-        $this->template->TIFFsWithoutJP2 = $this->reportService->TIFFsWithoutJP2();
-        $this->template->JP2sWithoutTIFF = $this->reportService->JP2sWithoutTIFF();
-        $this->template->TIFFsWithoutDbRecord = $this->reportService->TIFFsWithoutDbRecord();
-    }
 
 }
