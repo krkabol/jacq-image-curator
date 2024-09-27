@@ -3,7 +3,6 @@
 namespace Tests\Cases\E2E\Latte;
 
 use App\Bootstrap;
-use Contributte\Tester\Toolkit;
 use Nette\Bridges\ApplicationLatte\Template;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\Utils\Finder;
@@ -14,7 +13,7 @@ use Throwable;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-Toolkit::test(function (): void {
+test('Latte',function (): void {
 	$container = Bootstrap::boot()->createContainer();
 
 	/** @var TemplateFactory $templateFactory */

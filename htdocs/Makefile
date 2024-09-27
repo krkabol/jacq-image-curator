@@ -8,6 +8,8 @@ code_management:
 
 tests:
 	vendor/bin/tester -s -p php --colors 1 -C tests
+	vendor/bin/tester -s -p php --colors 1 -C tests --coverage tests/coverage.html --coverage-src App  # HTML report
+	vendor/bin/tester -s -p php --colors 1 -C tests --coverage coverage.xml --coverage-src App # Clover XML report
 
 build:
  	NETTE_DEBUG=1 bin/console migrations:generate #  generate empty migration class

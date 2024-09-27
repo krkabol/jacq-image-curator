@@ -36,8 +36,7 @@
 		"nette/tester": "^2.5",
 		"symfony/thanks": "^1",
     "contributte/qa": "v0.3",
-		"phpstan/phpstan": "^1.12",
-    "contributte/tester": "v0.3"
+		"phpstan/phpstan": "^1.12"
 	},
 	"autoload": {
 		"psr-4": {
