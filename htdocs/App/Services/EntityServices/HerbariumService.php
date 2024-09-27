@@ -13,4 +13,9 @@ class HerbariumService extends BaseEntityService
         return $this->entityManager->getReference($this->entityName, $this->user->getIdentity()->herbarium);
     }
 
+    public function findOneWithAcronym(string $acronym): ?Herbaria
+    {
+        return $this->repository->findOneWithAcronym($acronym);
+    }
+
 }

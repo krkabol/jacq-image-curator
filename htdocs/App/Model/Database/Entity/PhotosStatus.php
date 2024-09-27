@@ -17,6 +17,7 @@ class PhotosStatus
     public const int WAITING = 1;
     public const int CONTROL_ERROR = 2;
     public const int CONTROL_OK = 3;
+    public const int PUBLIC = 4;
 
     #[Column(unique: true, nullable: false, options: ['comment' => 'name of the status'])]
     protected string $name;

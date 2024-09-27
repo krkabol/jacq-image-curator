@@ -1,12 +1,11 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\UI\Front\Repository;
 
-use App\Model\Database\Entity\Photos;
-use App\Model\Database\EntityManager;
-use App\Model\Database\Repository\PhotosRepository;
+use App\Model\SpecimenFactory;
+use App\Model\SpecimenIdException;
+use App\Services\EntityServices\PhotoService;
 use App\Services\S3Service;
-use App\Services\StorageConfiguration;
 use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request;
@@ -15,36 +14,19 @@ use Nette\Http\Response;
 final class RepositoryPresenter extends UnsecuredPresenter
 {
 
-    /** @inject */
-    public S3Service $s3Service;
+    /** @inject */ public S3Service $s3Service;
+    /** @inject */ public SpecimenFactory $specimenFactory;
+    /** @inject */ public PhotoService $photoService;
 
-    /** @inject */
-    public StorageConfiguration $configuration;
-
-    /** @inject */
-    public EntityManager $entityManager;
-
-    protected PhotosRepository $photosRepository;
-
-    public function startup(): void
+    public function renderArchiveImage(int $id): void
     {
-        $this->photosRepository = $this->entityManager->getPhotosRepository();
-
-        parent::startup();
-    }
-
-    public function actionArchiveImage(int $id): void
-    {
-        //TODO - preselect photos according to status !!
-        /** @var ?Photos $photo */
-        $photo = $this->photosRepository->find($id);
+        $photo = $this->photoService->getPublicPhoto($id);
         if ($photo === null) {
             $this->error('The requested photo does not exists.');
         }
-
-        $filename = $photo->getArchiveFilename();
-        $bucket = $this->configuration->getArchiveBucket();
-        if ($this->s3Service->objectExists($bucket, $filename)) {
+        $bucket = $photo->getHerbarium()->getBucket();
+        $filename =  $photo->getArchiveFilename();
+        if ($this->s3Service->objectExists($bucket,$filename)) {
             $head = $this->s3Service->headObject($bucket, $filename);
             $stream = $this->s3Service->getStreamOfObject($bucket, $filename);
 
@@ -62,22 +44,21 @@ final class RepositoryPresenter extends UnsecuredPresenter
         $this->error('The requested image does not exists.');
     }
 
-    public function actionSpecimen(?string $specimenFullId): void
+    public function renderSpecimen(?string $specimenFullId): void
     {
-        if ($specimenFullId === '') {
+        try {
+            $specimen = $this->specimenFactory->create($specimenFullId);
+        } catch (SpecimenIdException $exception) {
+            $this->flashMessage($exception->getMessage(), 'error');
             $this->redirect('Home:');
         }
 
-        $acronym = $this->configuration->getHerbariumAcronymFromId($specimenFullId);
-        $specimenId = $this->configuration->getSpecimenIdFromId($specimenFullId);
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneWithAcronym($acronym);
-        $images = $this->photosRepository->findBy(['herbarium' => $herbarium, 'specimenId' => $specimenId]);
-        if (count($images) === 0) {
+        if (!$this->photoService->specimenHasPublicPhotos($specimen)) {
             $this->error('Specimen ' . $specimenFullId . 'not in evidence.');
         }
 
-        $this->template->images = $images;
         $this->template->id = $specimenFullId;
+        $this->template->images = $this->photoService->getPublicPhotosOfSpecimen($specimen);
 
         $relativeLink = $this->link('Iiif:manifest', $specimenFullId);
         $this->template->manifestAbsoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
