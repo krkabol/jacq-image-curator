@@ -16,7 +16,7 @@
   "devDependencies": {
     "core-js": "^3",
     "mini-css-extract-plugin": "^2",
-    "node-sass": "^9",
+    "sass": "^1",
     "postcss-loader": "^7",
     "postcss-preset-env": "^9",
     "sass-loader": "^14",
