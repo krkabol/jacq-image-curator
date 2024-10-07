@@ -52,7 +52,7 @@ class PhotoService extends BaseEntityService
 
     public function getPhotoWithError(int $id): ?Photos
     {
-        return $this->repository->findOneBy(['specimenId' => $id, 'herbarium' => $this->user->getIdentity()->herbarium, 'status' => $this->getControlErrorStatus()]);
+        return $this->repository->findOneBy(['id' => $id, 'herbarium' => $this->user->getIdentity()->herbarium, 'status' => $this->getControlErrorStatus()]);
     }
 
     public function findUnprocessedPhotoByOriginalFilename($filename): ?Photos

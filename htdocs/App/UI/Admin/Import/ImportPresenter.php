@@ -65,7 +65,7 @@ final class ImportPresenter extends SecuredPresenter
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
         }
 
-        $this->redirect('upload');
+        $this->redirect('default');
     }
 
     public function actionReimport(int $id): void
@@ -81,7 +81,7 @@ final class ImportPresenter extends SecuredPresenter
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
         }
 
-        $this->redirect('upload');
+        $this->redirect('default');
     }
 
     public function actionDelete(int $id): void
@@ -99,7 +99,7 @@ final class ImportPresenter extends SecuredPresenter
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
         }
 
-        $this->redirect(':upload');
+        $this->redirect(':default');
     }
 
     public function specimenIdFormSucceeded(Form $form, \stdClass $values): void
@@ -118,7 +118,7 @@ final class ImportPresenter extends SecuredPresenter
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
         }
 
-        $this->redirect(':upload');
+        $this->redirect(':default');
     }
 
     protected function createComponentSpecimenIdForm(): Form

@@ -10,14 +10,14 @@ trait TOriginalFileAt
 {
 
     #[Column(name: 'original_file_timestamp', type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['comment' => 'Timestamp of original file creation'])]
-    protected DateTimeImmutable $originalFileTimestamp;
+    protected ?DateTimeImmutable $originalFileTimestamp;
 
-    public function getOriginalFileAt(): DateTimeImmutable
+    public function getOriginalFileAt(): ?DateTimeImmutable
     {
         return $this->originalFileTimestamp;
     }
 
-    public function setOriginalFileAt(DateTimeImmutable $timestamp): mixed
+    public function setOriginalFileAt(?DateTimeImmutable $timestamp): mixed
     {
         $this->originalFileTimestamp = $timestamp;
 
