@@ -52,7 +52,7 @@ class TransferStage implements StageInterface
         $this->uploadJp2toRepository();
         $this->uploadTiftoRepository();
 
-//        $this->deleteTifFromCuratorBucket();
+        $this->deleteTifFromCuratorBucket();
         return $payload;
     }
 
