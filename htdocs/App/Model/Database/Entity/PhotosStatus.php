@@ -19,6 +19,8 @@ class PhotosStatus
     public const int CONTROL_OK = 3;
     public const int PUBLIC = 4;
     public const int PRIVATE = 5;
+    public const array PASSED = [self::CONTROL_OK, self::PUBLIC, self::PRIVATE];
+    public const array PASSED_PUBLIC = [self::CONTROL_OK, self::PUBLIC];
 
     #[Column(unique: true, nullable: false, options: ['comment' => 'name of the status'])]
     protected string $name;

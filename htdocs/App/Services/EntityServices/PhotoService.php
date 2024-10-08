@@ -22,7 +22,7 @@ class PhotoService extends BaseEntityService
 
     public function getPublicPhotosOfSpecimen(Specimen $specimen): array
     {
-        return $this->repository->findBy(['specimenId' => $specimen->specimenId, 'herbarium' => $specimen->herbarium, 'status' => $this->getPublicStatus()]);
+        return $this->repository->findBy(['specimenId' => $specimen->specimenId, 'herbarium' => $specimen->herbarium, 'status' => PhotosStatus::PASSED_PUBLIC]);
     }
 
     public function getPhotoReference(int $id): Photos
@@ -32,7 +32,7 @@ class PhotoService extends BaseEntityService
 
     public function getPublicPhoto(int $id): Photos
     {
-        return $this->repository->findOneBy(['id' => $id, 'status' => $this->getPublicStatus()]);
+        return $this->repository->findOneBy(['id' => $id, 'status' => PhotosStatus::PASSED_PUBLIC]);
     }
 
     public function getPublicStatus(): PhotosStatus
@@ -66,5 +66,10 @@ class PhotoService extends BaseEntityService
     public function findLastImported(): array
     {
         return $this->repository->findBy(['herbarium' => $this->user->getIdentity()->herbarium, 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::PRIVATE]], ['lastEdit' => Criteria::DESC], 30);
+    }
+
+    public function findPotentialDuplicate(Photos $photo): ?Photos
+    {
+        return $this->repository->findOneBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::PRIVATE]]);
     }
 }

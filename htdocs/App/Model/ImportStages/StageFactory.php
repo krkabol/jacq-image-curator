@@ -3,6 +3,7 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\EntityManager;
+use App\Services\EntityServices\PhotoService;
 use App\Services\ImageService;
 use App\Services\S3Service;
 use App\Services\RepositoryConfiguration;
@@ -12,7 +13,7 @@ use Nette\Application\LinkGenerator;
 readonly class StageFactory
 {
 
-    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected RepositoryConfiguration $storageConfiguration, protected ImageService $imageService, protected LinkGenerator $linkGenerator)
+    public function __construct(protected S3Service $s3Service, protected TempDir $tempDir, protected EntityManager $entityManager, protected RepositoryConfiguration $storageConfiguration, protected ImageService $imageService, protected LinkGenerator $linkGenerator, protected PhotoService $photoService)
     {
     }
 
@@ -43,7 +44,7 @@ readonly class StageFactory
 
     public function createDuplicityStage(): DuplicityStage
     {
-        return new DuplicityStage($this->entityManager, $this->linkGenerator);
+        return new DuplicityStage($this->photoService, $this->linkGenerator);
     }
 
     public function createTransferStage(): TransferStage

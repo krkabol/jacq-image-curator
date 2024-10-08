@@ -5,6 +5,7 @@ namespace App\UI\Front\Repository;
 use App\Exceptions\SpecimenIdException;
 use App\Model\SpecimenFactory;
 use App\Services\EntityServices\PhotoService;
+use App\Services\RepositoryConfiguration;
 use App\Services\S3Service;
 use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
@@ -17,14 +18,15 @@ final class RepositoryPresenter extends UnsecuredPresenter
     /** @inject */ public S3Service $s3Service;
     /** @inject */ public SpecimenFactory $specimenFactory;
     /** @inject */ public PhotoService $photoService;
+    /** @inject */ public RepositoryConfiguration $repositoryConfiguration;
 
     public function renderArchiveImage(int $id): void
-    {
+    { //TODO refactor to facade
         $photo = $this->photoService->getPublicPhoto($id);
         if ($photo === null) {
             $this->error('The requested photo does not exists.');
         }
-        $bucket = $photo->getHerbarium()->getBucket();
+        $bucket = $this->repositoryConfiguration->getArchiveBucket();
         $filename =  $photo->getArchiveFilename();
         if ($this->s3Service->objectExists($bucket,$filename)) {
             $head = $this->s3Service->headObject($bucket, $filename);
@@ -40,8 +42,10 @@ final class RepositoryPresenter extends UnsecuredPresenter
             $response = new CallbackResponse($callback);
             $this->sendResponse($response);
         }
+        else {
+            $this->error('The requested image does not exists.');
+        }
 
-        $this->error('The requested image does not exists.');
     }
 
     public function renderSpecimen(?string $specimenFullId): void
@@ -54,7 +58,7 @@ final class RepositoryPresenter extends UnsecuredPresenter
         }
 
         if (!$this->photoService->specimenHasPublicPhotos($specimen)) {
-            $this->error('Specimen ' . $specimenFullId . 'not in evidence.');
+            $this->error('Specimen ' . $specimenFullId . ' not in evidence.');
         }
 
         $this->template->id = $specimenFullId;
