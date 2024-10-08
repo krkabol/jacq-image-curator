@@ -18,4 +18,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
+    //autorefresh page
+    const element = document.getElementById('autorefresh');
+    if (element) {
+        setInterval(function() {
+            location.reload();
+        }, 20000); // 20 000 ms = 20 sec
+    }
+
 });
