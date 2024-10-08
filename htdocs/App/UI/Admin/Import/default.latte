@@ -70,7 +70,7 @@
                         {else}
                         {if $file->isAlreadyWaiting()}🕑 in processing{else}
                         {if $file->hasControlError()}control error <a n:href=":revise $file->rowId">revise</a>{else}
-                        {0|status} is ignored{/if}{/if}{/if}
+                        {0|status} is ignored <a n:href=":deleteJustFile $file->name">delete</a>{/if}{/if}{/if}
                     </td>
                     <td>{$file->getControlMsg()|noescape}</td>
                 </tr>

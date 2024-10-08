@@ -11,12 +11,12 @@
             <p>Please decide what to do with this image: </p>
 
             <p><a n:href=":reimport $photo->getId()" id="reupload" class="btn btn-primary btn-sm" role="button">Repeat
-                processing</a> - the file is ok and the error reported looks like temporal error of the repository.</p>
+                processing</a> - the file is ok and the error reported looks like a temporal error of the repository.</p>
             <p><a n:href=":delete $photo->getId()" id="delete" class="btn btn-warning btn-sm" role="button">Delete</a> -
                 delete the file from my bucket and erase the information about its processing.</p>
             <hr width="70%">
-            <p>The file could be ok but the automatic barcode processing failed. If so, enter the numeric part of
-                specimen ID. The image will be reprocessed skipping the barcode detection. </p>
+            <p>The file could be fine, but the automatic barcode processing failed. If so, enter the numeric part of
+                specimen ID. The image will be reprocessed, skipping the barcode detection. </p>
 
 
             <form n:name=specimenIdForm class=form>

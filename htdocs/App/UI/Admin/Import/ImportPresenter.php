@@ -13,7 +13,7 @@ final class ImportPresenter extends SecuredPresenter
 {
 
     /** @inject */
-    public CuratorFacade $curatorService;
+    public CuratorFacade $curatorFacade;
     /** @inject  */
     public PhotoService $photoService;
 
@@ -22,9 +22,9 @@ final class ImportPresenter extends SecuredPresenter
     public function renderDefault(): void
     {
         $this->template->title = 'New Files';
-        $files = $this->curatorService->getAllCuratorBucketFiles();
+        $files = $this->curatorFacade->getAllCuratorBucketFiles();
         $this->template->files = $files;
-        $this->template->orphanedItems = $this->curatorService->getOrphanedItems($this->herbarium);
+        $this->template->orphanedItems = $this->curatorFacade->getOrphanedItems($this->herbarium);
         $this->template->eligible = count(array_filter($files, fn ($item) => $item->isEligibleToBeImported() === true));
         $this->template->erroneous = count(array_filter($files, fn ($item) => $item->hasControlError() === true));
         $this->template->waiting = count(array_filter($files, fn ($item) => $item->isAlreadyWaiting() === true));
@@ -59,7 +59,7 @@ final class ImportPresenter extends SecuredPresenter
       public function actionPrimaryImport(): void
     {
         try {
-            $this->curatorService->registerNewFiles();
+            $this->curatorFacade->registerNewFiles();
             $this->flashMessage('Files successfully marked to be processed', 'success');
         } catch (\Throwable $exception) {
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
@@ -75,7 +75,7 @@ final class ImportPresenter extends SecuredPresenter
             if ($photo === null) {
                 $this->error('Photo not found');
             }
-            $this->curatorService->reimportPhoto($this->herbarium, $photo);
+            $this->curatorFacade->reimportPhoto($photo);
             $this->flashMessage('File successfully marked to be re-processed', 'success');
         } catch (\Throwable $exception) {
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
@@ -93,8 +93,20 @@ final class ImportPresenter extends SecuredPresenter
             }
 
             $name = $photo->getOriginalFilename();
-            $this->curatorService->deleteNotImportedPhoto($photo);
+            $this->curatorFacade->deleteNotImportedPhoto($photo);
             $this->flashMessage('Photo ' . $name . ' deleted.', 'success');
+        } catch (\Throwable $exception) {
+            $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
+        }
+
+        $this->redirect(':default');
+    }
+
+    public function actionDeleteJustFile(string $id): void
+    {
+        try {
+            $this->curatorFacade->deleteJustFile($id);
+            $this->flashMessage('File ' . $id . ' deleted.', 'success');
         } catch (\Throwable $exception) {
             $this->flashMessage('An error occurred: ' . $exception->getMessage(), 'danger');
         }
@@ -110,7 +122,7 @@ final class ImportPresenter extends SecuredPresenter
                 $this->error('Photo not found');
             }
 
-            $this->curatorService->reimportPhoto($this->photoService->getPhotoReference($values->photoId), (string) $values->specimen);
+            $this->curatorFacade->reimportPhoto($this->photoService->getPhotoReference((int) $values->photoId), (string) $values->specimen);
 
             $fullID = $this->herbarium->getAcronym() . '-' . $values->specimen;
             $this->flashMessage('File successfully marked to be re-processed with ID ' . $fullID, 'success');
