@@ -1,17 +1,21 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Services;
 
-use \Imagick;
+use Imagick;
+
 class ImageService
 {
 
-    public function __construct(protected readonly S3Service $S3Service,  protected readonly StorageConfiguration $storageConfiguration)
+    public function __construct(protected readonly S3Service $S3Service, protected readonly RepositoryConfiguration $storageConfiguration)
     {
     }
 
+    /**
+     * in case the image is "mulipage", like a TIF containing a thumb,
+     * this helps to find the largest
+     * and returns index that Imagick need to be set to.
+     */
     public function getLargestImageIndex(Imagick $imagick): int
     {
         $numberOfImages = $imagick->getNumberImages();
@@ -29,16 +33,18 @@ class ImageService
                 $largestImageIndex = $i;
             }
         }
+
         return $largestImageIndex;
     }
 
     /**
      * creates Imagick instance with the largest page of file activated
      */
-    public function createImagick($path): Imagick
+    public function createImagick(string $path): Imagick
     {
         $imagick = new Imagick($path);
         $imagick->setIteratorIndex($this->getLargestImageIndex($imagick));
+
         return $imagick;
     }
 
@@ -54,10 +60,11 @@ class ImageService
                 $newHeight = $maxEdgeLength;
                 $newWidth = intval(($maxEdgeLength / $height) * $width);
             }
-            $imagick->resizeImage($newWidth, $newHeight, \Imagick::FILTER_GAUSSIAN, 1);
+
+            $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_GAUSSIAN, 1);
         }
+
         return $imagick;
     }
-
 
 }

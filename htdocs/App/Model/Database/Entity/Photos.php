@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Model\Database\Entity;
 
@@ -8,10 +8,14 @@ use App\Model\Database\Entity\Attributes\TLastEditAt;
 use App\Model\Database\Entity\Attributes\TOriginalFileAt;
 use App\Model\Database\Repository\PhotosRepository;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 
-#[ORM\Entity(repositoryClass: PhotosRepository::class)]
-#[ORM\Table(name: 'photos', options: ["comment" => "Specimen photos"])]
+#[Entity(repositoryClass: PhotosRepository::class)]
+#[Table(name: 'photos', options: ['comment' => 'Specimen photos'])]
 class Photos
 {
 
@@ -20,42 +24,43 @@ class Photos
     use TLastEditAt;
     use TOriginalFileAt;
 
-    #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of Archive Master TIF file"])]
+    #[Column(unique: true, nullable: true, options: ['comment' => 'Filename of Archive Master TIF file'])]
     protected ?string $archiveFilename;
 
-    #[ORM\Column(nullable: true, options: ["comment" => "Filename that was provided during curator upload, could make sense or completely missing semantical content"])]
+    #[Column(nullable: true, options: ['comment' => 'Filename that was provided during curator upload, could make sense or completely missing semantical content'])]
     protected string $originalFilename;
 
-    #[ORM\Column(unique: true, nullable: true, options: ["comment" => "Filename of JP2 file"])]
+    #[Column(unique: true, nullable: true, options: ['comment' => 'Filename of JP2 file'])]
     protected ?string $jp2Filename;
 
-    #[ORM\ManyToOne(targetEntity: "Herbaria", inversedBy: "photos")]
-    #[ORM\JoinColumn(name: "herbarium_id", referencedColumnName: "id", options: ["comment" => "Herbarium storing and managing the specimen data"])]
+    #[ManyToOne(targetEntity: Herbaria::class, inversedBy: 'photos')]
+    #[JoinColumn(name: 'herbarium_id', referencedColumnName: 'id', options: ['comment' => 'Herbarium storing and managing the specimen data'])]
     protected Herbaria $herbarium;
 
-    #[ORM\ManyToOne(targetEntity: "PhotosStatus")]
-    #[ORM\JoinColumn(name: "status_id", referencedColumnName: "id", nullable: false, options: ["comment" => "Status of the photo"])]
+    #[ManyToOne(targetEntity: PhotosStatus::class)]
+    #[JoinColumn(name: 'status_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'Status of the photo'])]
     protected PhotosStatus $status;
 
-    #[ORM\Column(type: Types::STRING, nullable: true, options: ["comment" => "Herbarium internal unique id of specimen in form without herbarium acronym"])]
+    #[Column(type: Types::STRING, nullable: true, options: ['comment' => 'Herbarium internal unique id of specimen in form without herbarium acronym'])]
     protected ?string $specimenId;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true, options: ["comment" => "Width of image with pixels"])]
+    #[Column(type: Types::INTEGER, nullable: true, options: ['comment' => 'Width of image with pixels'])]
     protected ?int $width;
-    #[ORM\Column(type: Types::INTEGER, nullable: true, options: ["comment" => "Height of image in pixels"])]
+
+    #[Column(type: Types::INTEGER, nullable: true, options: ['comment' => 'Height of image in pixels'])]
     protected ?int $height;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true, options: ["comment" => "Filesize of Archive Master TIFF file in bytes"])]
+    #[Column(type: Types::BIGINT, nullable: true, options: ['comment' => 'Filesize of Archive Master TIFF file in bytes'])]
     protected ?int $archiveFileSize;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true, options: ["comment" => "Filesize of converted JP2 file in bytes"])]
+    #[Column(type: Types::BIGINT, nullable: true, options: ['comment' => 'Filesize of converted JP2 file in bytes'])]
     protected ?int $JP2FileSize;
 
-    #[ORM\Column(type: Types::TEXT, length: 60000, nullable: true, options: ["comment" => "Result of migration"])]
+    #[Column(type: Types::TEXT, length: 60000, nullable: true, options: ['comment' => 'Result of migration'])]
     protected ?string $message;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true, options: ["comment" => "Thumbnail during import phase"])]
-    protected $thumbnail;
+    #[Column(type: Types::BLOB, nullable: true, options: ['comment' => 'Thumbnail during import phase'])]
+    protected mixed $thumbnail;
 
     public function getArchiveFilename(): ?string
     {
@@ -65,6 +70,7 @@ class Photos
     public function setArchiveFilename(string $archiveFilename): Photos
     {
         $this->archiveFilename = $archiveFilename;
+
         return $this;
     }
 
@@ -76,6 +82,7 @@ class Photos
     public function setJp2Filename(string $jp2Filename): Photos
     {
         $this->jp2Filename = $jp2Filename;
+
         return $this;
     }
 
@@ -87,6 +94,7 @@ class Photos
     public function setWidth(?int $width): Photos
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -98,6 +106,7 @@ class Photos
     public function setHeight(?int $height): Photos
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -109,17 +118,19 @@ class Photos
     public function setArchiveFileSize(?int $archiveFileSize): Photos
     {
         $this->archiveFileSize = $archiveFileSize;
+
         return $this;
     }
 
-    public function getJP2FileSize(): ?int
+    public function getJp2FileSize(): ?int
     {
         return $this->JP2FileSize;
     }
 
-    public function setJP2FileSize(?int $JP2FileSize): Photos
+    public function setJp2FileSize(?int $JP2FileSize): Photos
     {
         $this->JP2FileSize = $JP2FileSize;
+
         return $this;
     }
 
@@ -131,12 +142,13 @@ class Photos
     public function setMessage(?string $message): Photos
     {
         $this->message = $message;
+
         return $this;
     }
 
     public function getFullSpecimenId(): string
     {
-        return strtoupper($this->getHerbarium()->getAcronym()) . "_" . sprintf('%06d', $this->getSpecimenId());
+        return strtoupper($this->getHerbarium()->getAcronym()) . '_' . sprintf('%06d', $this->getSpecimenId());
     }
 
     public function getHerbarium(): Herbaria
@@ -147,6 +159,7 @@ class Photos
     public function setHerbarium(Herbaria $herbarium): Photos
     {
         $this->herbarium = $herbarium;
+
         return $this;
     }
 
@@ -157,17 +170,14 @@ class Photos
 
     public function setSpecimenId(?string $specimenId): Photos
     {
-        if ($specimenId === NULL || $specimenId == "") {
-            $this->specimenId = NULL;
-        } else {
-            $this->specimenId = ltrim($specimenId, '0');
-        }
+        $this->specimenId = $specimenId === null || $specimenId === '' ? null : ltrim($specimenId, '0');
+
         return $this;
     }
 
-    public function getJACQs_PID(): string
+    public function getJacqPid(): string
     {
-        return "https://" . strtolower($this->getHerbarium()->getAcronym()) . ".jacq.org/" . strtoupper($this->getHerbarium()->getAcronym()) . $this->getSpecimenId();
+        return 'https://' . strtolower($this->getHerbarium()->getAcronym()) . '.jacq.org/' . strtoupper($this->getHerbarium()->getAcronym()) . $this->getSpecimenId();
     }
 
     public function getStatus(): PhotosStatus
@@ -178,6 +188,7 @@ class Photos
     public function setStatus(PhotosStatus $status): Photos
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -189,17 +200,19 @@ class Photos
     public function setOriginalFilename(string $originalFilename): Photos
     {
         $this->originalFilename = $originalFilename;
+
         return $this;
     }
 
-    public function getThumbnail()
+    public function getThumbnail(): mixed
     {
         return $this->thumbnail;
     }
 
-    public function setThumbnail(?string $thumbnail): Photos
+    public function setThumbnail(mixed $thumbnail): Photos
     {
         $this->thumbnail = $thumbnail;
+
         return $this;
     }
 

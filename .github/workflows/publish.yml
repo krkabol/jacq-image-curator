@@ -4,6 +4,7 @@ on:
         tags: [ '*' ]
         branches:
             - test
+    workflow_dispatch:  # Manual run
 
 env:
     REGISTRY: ghcr.io
@@ -58,7 +59,7 @@ jobs:
                     images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             -   name: Build and push Docker image
                 id: push
-                uses: docker/build-push-action@v6.7.0
+                uses: docker/build-push-action@v6.9.0
                 with:
                     context: .
                     push: true

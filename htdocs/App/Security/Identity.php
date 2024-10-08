@@ -7,9 +7,9 @@ use Nette\Security\SimpleIdentity;
 class Identity extends SimpleIdentity
 {
 
-	public function getFullname(): string
-	{
-		return sprintf('%s %s', $this->data['name'] ?? '', $this->data['surname'] ?? '');
-	}
+    public function getFullname(): string
+    {
+        return sprintf('%s %s', $this->data['name'] ?? '', $this->data['surname'] ?? '');
+    }
 
 }

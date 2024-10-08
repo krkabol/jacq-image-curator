@@ -2,7 +2,7 @@
 <h2>Detail of specimen</h2>
 <p>Herbarium: {$images[0]->getHerbarium()->getAcronym()}</p>
 <p>Specimen: {$id}</p>
-<p>Specimen Persistent ID (=link to JACQ): <a href="{$images[0]->getJACQs_PID()}">{$images[0]->getJACQs_PID()}</a></p>
+<p>Specimen Persistent ID (=link to JACQ): <a href="{$images[0]->getJacqPid()}">{$images[0]->getJacqPid()}</a></p>
 <p>IIIF manifest: <a href="{$manifestAbsoluteLink}">{$manifestAbsoluteLink}</a></p>
 <h4>Photos</h4>
 <div class="row row-cols-1 row-cols-md-2 g-4">

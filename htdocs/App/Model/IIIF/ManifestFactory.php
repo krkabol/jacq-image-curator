@@ -1,42 +1,31 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\IIIF;
 
 use App\Model\Database\EntityManager;
-use App\Services\StorageConfiguration;
+use App\Model\Database\Repository\PhotosRepository;
+use App\Services\EntityServices\PhotoService;
+use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;
 
 class ManifestFactory
 {
 
-    protected $photosRepository;
-    protected EntityManager $entityManager;
-    protected StorageConfiguration $configuration;
-    protected LinkGenerator $linkGenerator;
+    protected PhotosRepository $photosRepository;
 
-    public function __construct(EntityManager $entityManager, StorageConfiguration $configuration, LinkGenerator $linkGenerator)
+    public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $configuration, protected readonly LinkGenerator $linkGenerator, protected readonly PhotoService $photoService)
     {
-        $this->entityManager = $entityManager;
         $this->photosRepository = $this->entityManager->getPhotosRepository();
-        $this->configuration = $configuration;
-        $this->linkGenerator = $linkGenerator;
-
     }
 
-    public function prototype_v2($specimenId, $herbariumAcronym, $selfReferencingURL): IiifManifest_v2
+    public function prototypeV2(int $specimenId, string $herbariumAcronym, string $selfReferencingURL): IiifManifest
     {
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneBy(['acronym' => $herbariumAcronym]);
-        return (new IiifManifest_v2($this->photosRepository, $this->configuration, $this->linkGenerator))
+
+        return (new IiifManifest($this->photosRepository, $this->configuration, $this->linkGenerator, $this->photoService))
             ->setSpecimenId($specimenId)
             ->setHerbarium($herbarium)
-            ->setSelfReferencingURL($selfReferencingURL);
-    }
-
-    public function prototype_v3(): IiifManifest_v3
-    {
-        return new IiifManifest_v3();
+            ->setSelfReferencingUrl($selfReferencingURL);
     }
 
 }

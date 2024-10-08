@@ -8,7 +8,6 @@ parameters:
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif
-        newBucket: herbarium-test
 
 services:
     cache.storage: Nette\Caching\Storages\DevNullStorage

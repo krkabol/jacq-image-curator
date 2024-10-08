@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Security;
 
@@ -11,7 +11,7 @@ use Nette\Security\SimpleIdentity;
 final class UserAuthenticator implements Authenticator
 {
 
-    const DEFAULT_PASSWORD = 'Trogoderma2024';
+    public const string DEFAULT_PASSWORD = 'Trogoderma2024';
 
     public function __construct(private EntityManager $entityManager, private Passwords $passwords)
     {
@@ -19,7 +19,6 @@ final class UserAuthenticator implements Authenticator
 
     public function authenticate(string $username, string $password): SimpleIdentity
     {
-
         $row = $this->entityManager->getUserRepository()->findOneByUsername($username);
         if (!$row) {
             throw new AuthenticationException('User not found.');
@@ -32,18 +31,19 @@ final class UserAuthenticator implements Authenticator
         return new SimpleIdentity(
             $row->getId(),
             $row->getRole()->getName(),
-            ['name' => $row->getFullname(), 'herbarium'=>$row->getHerbarium()->getId()],
+            ['name' => $row->getFullname(), 'herbarium' => $row->getHerbarium()->getId()],
         );
     }
 
     /**
      * Computes default password hash.
      */
-    public function calculateHash($password = '')
+    public function calculateHash(string $password = ''): string
     {
-        if ('' == $password) {
+        if ($password === '') {
             return $this->calculateHash(self::DEFAULT_PASSWORD);
         }
+
         return $this->passwords->hash($password);
     }
 

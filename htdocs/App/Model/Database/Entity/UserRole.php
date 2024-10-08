@@ -1,18 +1,27 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Model\Database\Entity;
 
 use App\Model\Database\Entity\Attributes\TId;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
 
-#[ORM\Entity()]
-#[ORM\Table(name: 'usersrole', options: ["comment" => "List of available roles for users"])]
+#[Entity()]
+#[Table(name: 'usersrole', options: ['comment' => 'List of available roles for users'])]
 class UserRole
 {
+
     use TId;
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "name of the role"])]
+
+    public const int SUPER_ADMIN = 1;
+    public const int ADMIN = 2;
+    public const int USER = 3;
+
+    #[Column(unique: true, nullable: false, options: ['comment' => 'name of the role'])]
     protected string $name;
-    #[ORM\Column(unique: true, nullable: false, options: ["comment" => "short description"])]
+
+    #[Column(unique: true, nullable: false, options: ['comment' => 'short description'])]
     protected string $description;
 
     public function getName(): string
@@ -24,6 +33,5 @@ class UserRole
     {
         return $this->description;
     }
-
 
 }

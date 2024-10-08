@@ -7,4 +7,5 @@ parameters:
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
-        uploadedBucket: new
+
+# //TODO https://forum.nette.org/en/36020-nette-v3-redirect-http-to-https  + https://doc.nette.org/en/http/configuration#toc-http-proxy

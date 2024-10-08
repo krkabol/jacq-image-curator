@@ -1,4 +1,15 @@
-#	docker exec -it --user www-data jacq-curator /bin/bash
+#	docker exec -it --user www-data app-jacq /bin/bash
+
+code_management:
+	vendor/bin/phpcs --standard=ruleset.xml App # analyze with codesniffer https://github.com/slevomat/coding-standard
+	vendor/bin/phpcbf --standard=ruleset.xml App # autofix with codesniffer
+	vendor/bin/phpstan analyse --level 3 App # analyze errors with PHPStan
+	vendor/bin/phpstan analyse --level 3 --configuration phpstan.neon App --generate-baseline # https://phpstan.org/user-guide/baseline
+
+tests:
+	vendor/bin/tester -s -p php --colors 1 -C tests
+	vendor/bin/tester -s -p php --colors 1 -C tests --coverage tests/coverage.html --coverage-src App  # HTML report
+	vendor/bin/tester -s -p php --colors 1 -C tests --coverage coverage.xml --coverage-src App # Clover XML report
 
 build:
  	NETTE_DEBUG=1 bin/console migrations:generate #  generate empty migration class
@@ -13,12 +24,6 @@ build:
 #	NETTE_DEBUG=1 bin/console orm:schema-tool:update --dump-sql --complete
 
 	NETTE_DEBUG=1 bin/console orm:generate-proxies # keep proxies in VCS
-
-
-# analysis of old data
-data_migration:
-	NETTE_DEBUG=1 bin/console app:readBucketToDb
-	NETTE_DEBUG=1 bin/console app:updateRecords & disown ## as it is time consuming
 
 data_processing:
 	NETTE_DEBUG=1 bin/console curator:importImage

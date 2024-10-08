@@ -2,21 +2,19 @@ services:
     - App\Core\RouterFactory::createRouter
     - App\Security\UserAuthenticator
     - App\Services\S3Service
-    - App\Services\TestService
     - App\Services\ImageService
     - App\Services\ReportService
     - App\Services\WebDir(%wwwDir%)
     - App\Services\TempDir(%tempDir%)
-    - App\Services\StorageConfiguration(%storage%)
+    - App\Services\RepositoryConfiguration(%storage%)
     - App\Services\AppConfiguration(@container::getParameters())
-    - App\Services\CuratorService
-    - App\Model\PhotoOfSpecimenFactory
+    - App\Services\EntityServices\HerbariumService
+    - App\Services\EntityServices\PhotoService
+    - App\Facades\CuratorFacade
+    - App\Model\SpecimenFactory
     - App\Model\ImportStages\StageFactory
-    - App\Model\MigrationStages\StageFactory
     - App\Model\IIIF\ManifestFactory
 
-    - {factory: App\Console\ReadBucketToDatabase, tags: {console.command: app:readBucketToDb}}
-    - {factory: App\Console\UpdateRecords, tags: {console.command: app:updateRecords}}
     - {factory: App\Console\ProceedCuratorImage, tags: {console.command: curator:importImage}}
     - {factory: App\Console\Test, tags: {console.command: curator:test}}
 

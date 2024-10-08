@@ -1,19 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\FileManagement;
 
 use Aws\Api\DateTimeResult;
-use Aws\Result;
 
 readonly class FileInsideCuratorBucket
 {
-    const int MIN_FILESIZE = 5242880;
-    const int MAX_FILESIZE = 398458880;
 
-    const string EXTENSION = 'tif';
-    const string MIME_TYPE = 'image/tiff';
+    public const int MIN_FILESIZE = 5242880;
+    public const int MAX_FILESIZE = 398458880;
+
+    public const string EXTENSION = 'tif';
+    public const string MIME_TYPE = 'image/tiff';
 
     public function __construct(public readonly string $name, public readonly int $size, public readonly DateTimeResult $timestamp, public readonly bool $alreadyWaiting, public readonly bool $hasControlError, public readonly ?int $rowId, public readonly ?string $controlMsg)
     {
@@ -24,13 +22,12 @@ readonly class FileInsideCuratorBucket
         return $this->timestamp->format('j. F Y');
     }
 
-
-    public function isSizeOK(): bool
+    public function isSizeOk(): bool
     {
         return $this->size >= self::MIN_FILESIZE && $this->size <= self::MAX_FILESIZE;
     }
 
-    public function isTypeOK(): bool
+    public function isTypeOk(): bool
     {
         return pathinfo($this->name, PATHINFO_EXTENSION) === self::EXTENSION;
     }
@@ -52,7 +49,7 @@ readonly class FileInsideCuratorBucket
 
     public function isEligibleToBeImported(): bool
     {
-        return ($this->isSizeOK() && $this->isTypeOK() && !$this->isAlreadyWaiting()&& !$this->hasControlError());
+        return $this->isSizeOk() && $this->isTypeOk() && !$this->isAlreadyWaiting() && !$this->hasControlError();
     }
 
 }
