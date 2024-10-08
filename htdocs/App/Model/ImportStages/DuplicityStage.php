@@ -20,7 +20,7 @@ readonly class DuplicityStage implements StageInterface
         if ($duplicity !== null) {
             $link = $this->linkGenerator->link(':Front:Repository:specimen', [$duplicity->getFullSpecimenId()], null, 'link');
 
-            throw new DuplicityStageException('suspicious similarity with file ' . $duplicity->getArchiveFilename() . ' already imported to the specimen <a href="' . $link . '">' . $payload->getFullSpecimenId() . '</a>');
+            throw new DuplicityStageException('suspicious similarity with file ' . $duplicity->getArchiveFilename() . ' already imported to the specimen <a href="' . $link . '" target="duplicity">' . $payload->getFullSpecimenId() . '</a>');
         }
 
         return $payload;

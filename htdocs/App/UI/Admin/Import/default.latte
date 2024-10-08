@@ -1,5 +1,5 @@
 {block content}
-<div class="container">
+<div class="container" id="autorefresh">
 
     <h2>Files in the "new" bucket</h2>
     <div class="row">
@@ -81,7 +81,7 @@
     </div>
     {if count($orphanedItems)>0}
     <div class="row">
-        <h3>Orphaned</h3>
+        <h3>Currently being processed</h3>
         <p>Files with unfinished status in but without files present in the curator bucket.</p>
         <div class="col">
             <table class="table table-striped table-hover table-sm">
