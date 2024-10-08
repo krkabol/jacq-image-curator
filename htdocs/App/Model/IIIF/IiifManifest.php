@@ -5,6 +5,9 @@ namespace App\Model\IIIF;
 use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Repository\PhotosRepository;
+use App\Model\Specimen;
+use App\Model\SpecimenFactory;
+use App\Services\EntityServices\PhotoService;
 use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;
 
@@ -16,6 +19,7 @@ class IiifManifest
     protected mixed $completed;
 
     protected int $specimenId;
+    protected Specimen $specimen;
 
     protected Herbaria $herbarium;
 
@@ -26,16 +30,21 @@ class IiifManifest
      * https://iiif.jacq.org/b/?manifest=https://services.jacq.org/jacq-services/rest/iiif/manifest/1205047
      * TODO rewrite and use https://github.com/yale-web-technologies/IIIF-Manifest-Generator
      */
-    public function __construct(protected readonly PhotosRepository $photosRepository, protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected readonly PhotosRepository $photosRepository, protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly LinkGenerator $linkGenerator, protected readonly PhotoService $photoService)
     {
         $filePath = '../App/Model/IIIF/v2.json';
         $this->default = json_decode(file_get_contents($filePath), true);
     }
 
+    public function setSpecimen(Specimen $specimen): IiifManifest
+    {
+        $this->specimen = $specimen;
+        return $this;
+    }
+
     public function setSpecimenId(int $specimenId): IiifManifest
     {
         $this->specimenId = $specimenId;
-
         return $this;
     }
 
@@ -85,9 +94,14 @@ class IiifManifest
         return $this;
     }
 
-    protected function getFirstImage(): Photos
+    protected function getFirstImage(): ?Photos
     {
-        return $this->photosRepository->findOneBy(['specimenId' => $this->specimenId, 'herbarium' => $this->herbarium]);
+        $photos = $this->photoService->getPublicPhotosOfSpecimen($this->specimen);
+        if (count($photos) !== 0) {
+            return $photos[0];
+        }
+        return null;
+
     }
 
     /**
@@ -109,7 +123,7 @@ class IiifManifest
      */
     protected function getImages(): array
     {
-        return $this->photosRepository->findBy(['specimenId' => $this->specimenId, 'herbarium' => $this->herbarium]);
+        return $this->photoService->getPublicPhotosOfSpecimen($this->specimen);
     }
 
     protected function mapCanvasObject(Photos $photo): mixed

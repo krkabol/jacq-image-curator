@@ -33,6 +33,7 @@ final class IiifPresenter extends UnsecuredPresenter
             $this->error('Specimen has no public images', 404);
         }
         $model = $this->manifestFactory->prototypeV2($specimen->specimenId, $specimen->herbarium->getAcronym(), $absoluteLink);
+        $model->setSpecimen($specimen);
         $manifest = $model->getCompleted();
         $this->sendJson($manifest);
 

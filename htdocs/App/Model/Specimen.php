@@ -15,7 +15,7 @@ class Specimen
     public readonly int $specimenId;
 
     public function __construct(protected readonly string $specimenFullId, protected readonly HerbariumService $herbariumService, protected readonly PhotoService $photoService, protected readonly CuratorFacade $curatorService)
-    {
+    { //TODO refactor
         if ($specimenFullId == '') {
             throw new SpecimenIdException('Specimen id cannot be empty');
         }

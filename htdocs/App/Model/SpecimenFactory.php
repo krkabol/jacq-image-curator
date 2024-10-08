@@ -15,7 +15,7 @@ class SpecimenFactory
     }
 
     public function create(string $fullSpecimenId): Specimen
-    {
+    {//TODO refactor
         return new Specimen($fullSpecimenId, $this->herbariumService, $this->photoService, $this->curatorService);
     }
 

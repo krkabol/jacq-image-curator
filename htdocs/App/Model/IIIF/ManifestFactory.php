@@ -4,6 +4,7 @@ namespace App\Model\IIIF;
 
 use App\Model\Database\EntityManager;
 use App\Model\Database\Repository\PhotosRepository;
+use App\Services\EntityServices\PhotoService;
 use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;
 
@@ -12,7 +13,7 @@ class ManifestFactory
 
     protected PhotosRepository $photosRepository;
 
-    public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $configuration, protected readonly LinkGenerator $linkGenerator)
+    public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $configuration, protected readonly LinkGenerator $linkGenerator, protected readonly PhotoService $photoService)
     {
         $this->photosRepository = $this->entityManager->getPhotosRepository();
     }
@@ -21,7 +22,7 @@ class ManifestFactory
     {
         $herbarium = $this->entityManager->getHerbariaRepository()->findOneBy(['acronym' => $herbariumAcronym]);
 
-        return (new IiifManifest($this->photosRepository, $this->configuration, $this->linkGenerator))
+        return (new IiifManifest($this->photosRepository, $this->configuration, $this->linkGenerator, $this->photoService))
             ->setSpecimenId($specimenId)
             ->setHerbarium($herbarium)
             ->setSelfReferencingUrl($selfReferencingURL);
