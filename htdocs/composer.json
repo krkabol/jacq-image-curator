@@ -4,6 +4,12 @@
 	"keywords": ["jacq"],
 	"type": "project",
 	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/krkabol/iiif-manifest-generator"
+    }
+  ],
 	"require": {
 		"php": ">= 8.3",
     "ext-imagick": "*",
@@ -30,7 +36,8 @@
     "nettrine/orm": "^0.8",
     "nettrine/dbal": "^v0.8.2",
     "nettrine/cache": "^0.3",
-    "nettrine/migrations": "^v0.9"
+    "nettrine/migrations": "^v0.9",
+    "yale-web-technologies/iiif-manifest-generator": "dev-develop"
   },
 	"require-dev": {
 		"nette/tester": "^2.5",

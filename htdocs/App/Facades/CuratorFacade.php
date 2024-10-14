@@ -55,6 +55,14 @@ readonly class CuratorFacade
     /**
      * @return FileInsideCuratorBucket[]
      */
+    protected function getEligibleCuratorBucketFiles(): array
+    {
+        return array_filter($this->getAllCuratorBucketFiles(), fn($item) => $item->isEligibleToBeImported() === true);
+    }
+
+    /**
+     * @return FileInsideCuratorBucket[]
+     */
     public function getAllCuratorBucketFiles(): array
     {
         $files = [];
@@ -128,7 +136,6 @@ readonly class CuratorFacade
         return $this;
     }
 
-
     public function reimportPhoto(Photos $photo, ?string $manualSpecimenId = null): CuratorFacade
     {
         if ($this->herbariumService->getCurrentUserHerbarium() === $photo->getHerbarium()) {
@@ -145,23 +152,14 @@ readonly class CuratorFacade
         throw new AuthenticationException('Not allowed to reimport photo.');
     }
 
-    /**
-     * @return FileInsideCuratorBucket[]
-     */
-    protected function getEligibleCuratorBucketFiles(): array
-    {
-        return array_filter($this->getAllCuratorBucketFiles(), fn($item) => $item->isEligibleToBeImported() === true);
-    }
-
     public function getHerbariumFromId(string $specimenId): Herbaria
     {
         $acronym = strtoupper($this->splitId($specimenId)[$this->repositoryConfiguration->getRegexHerbariumPartName()]);
-        return $this->herbariumService->findOneWithAcronym($acronym);
-    }
-
-    public function getSpecimenIdFromId(string $specimenId): int
-    {
-        return (int)$this->splitId($specimenId)[$this->repositoryConfiguration->getRegexSpecimenPartName()];
+        $herbarium = $this->herbariumService->findOneWithAcronym($acronym);
+        if ($herbarium === NULL) {
+            throw new SpecimenIdException("Unknown herbarium");
+        }
+        return $herbarium;
     }
 
     /**
@@ -175,6 +173,11 @@ readonly class CuratorFacade
         } else {
             throw new SpecimenIdException('invalid name format: ' . $specimenId);
         }
+    }
+
+    public function getSpecimenIdFromId(string $specimenId): int
+    {
+        return (int)$this->splitId($specimenId)[$this->repositoryConfiguration->getRegexSpecimenPartName()];
     }
 
 }
