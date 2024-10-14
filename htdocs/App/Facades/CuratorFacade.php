@@ -3,6 +3,7 @@
 namespace App\Facades;
 
 use App\Exceptions\SpecimenIdException;
+use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
@@ -152,9 +153,10 @@ readonly class CuratorFacade
         return array_filter($this->getAllCuratorBucketFiles(), fn($item) => $item->isEligibleToBeImported() === true);
     }
 
-    public function getHerbariumAcronymFromId(string $specimenId): string
+    public function getHerbariumFromId(string $specimenId): Herbaria
     {
-        return strtoupper($this->splitId($specimenId)[$this->repositoryConfiguration->getRegexHerbariumPartName()]);
+        $acronym = strtoupper($this->splitId($specimenId)[$this->repositoryConfiguration->getRegexHerbariumPartName()]);
+        return $this->herbariumService->findOneWithAcronym($acronym);
     }
 
     public function getSpecimenIdFromId(string $specimenId): int

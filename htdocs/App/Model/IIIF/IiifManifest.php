@@ -6,7 +6,6 @@ use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Repository\PhotosRepository;
 use App\Model\Specimen;
-use App\Model\SpecimenFactory;
 use App\Services\EntityServices\PhotoService;
 use App\Services\RepositoryConfiguration;
 use Nette\Application\LinkGenerator;

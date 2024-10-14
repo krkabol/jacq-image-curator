@@ -22,7 +22,7 @@ class PhotoService extends BaseEntityService
 
     public function getPublicPhotosOfSpecimen(Specimen $specimen): array
     {
-        return $this->repository->findBy(['specimenId' => $specimen->specimenId, 'herbarium' => $specimen->herbarium, 'status' => PhotosStatus::PASSED_PUBLIC]);
+        return $this->repository->findBy(['specimenId' => $specimen->getSpecimenId(), 'herbarium' => $specimen->getHerbarium(), 'status' => PhotosStatus::PASSED_PUBLIC]);
     }
 
     public function getPhotoReference(int $id): Photos
@@ -30,7 +30,7 @@ class PhotoService extends BaseEntityService
         return $this->entityManager->getReference($this->entityName, $id);
     }
 
-    public function getPublicPhoto(int $id): Photos
+    public function getPublicPhoto(int $id): ?Photos
     {
         return $this->repository->findOneBy(['id' => $id, 'status' => PhotosStatus::PASSED_PUBLIC]);
     }

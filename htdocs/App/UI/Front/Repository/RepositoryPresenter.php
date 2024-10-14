@@ -21,7 +21,7 @@ final class RepositoryPresenter extends UnsecuredPresenter
     /** @inject */ public RepositoryConfiguration $repositoryConfiguration;
 
     public function renderArchiveImage(int $id): void
-    { //TODO refactor to facade
+    {
         $photo = $this->photoService->getPublicPhoto($id);
         if ($photo === null) {
             $this->error('The requested photo does not exists.');
