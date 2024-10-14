@@ -14,16 +14,15 @@ class ThumbnailStage implements StageInterface
 
     protected Photos $item;
 
-    public function __construct(protected readonly RepositoryConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly ImageService $imageService)
     {
     }
 
     protected function createThumbnail(Imagick $imagick): void
     {
-//TODO compression as config
-        $imagick = $this->imageService->resizeImage($imagick, 1800);
+        $imagick = $this->imageService->resizeImage($imagick, $this->repositoryConfiguration->getPreviewSize());
         $imagick->setImageFormat('jpg');
-        $imagick->setImageCompressionQuality(80);
+        $imagick->setImageCompressionQuality($this->repositoryConfiguration->getPreviewQuality());
         $this->item->setThumbnail($imagick->getImagesBlob());
         $imagick->destroy();
         unset($imagick);
@@ -33,7 +32,7 @@ class ThumbnailStage implements StageInterface
     {
         try {
             $this->item = $payload;
-            $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+            $imagick = $this->imageService->createImagick($this->repositoryConfiguration->getImportTempPath($this->item));
             $this->createThumbnail($imagick);
 
             return $this->item;

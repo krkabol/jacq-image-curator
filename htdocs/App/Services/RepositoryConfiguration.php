@@ -78,6 +78,15 @@ final readonly class RepositoryConfiguration
         return $this->getKey('thumbImageWidth');
     }
 
+    public function getPreviewSize(): int
+    {
+        return $this->getKey('previewImageSize');
+    }
+
+    public function getPreviewQuality(): int
+    {
+        return $this->getKey('previewQuality');
+    }
 
     public function getImageServerUrlThumbnail($jp2ObjectName): string
     {

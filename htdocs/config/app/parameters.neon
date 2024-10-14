@@ -18,3 +18,5 @@ parameters:
         imageServerBaseUrl: https://herbarium-iiif.dyn.cloud.e-infra.cz/iiif/3/
         zbarImageHeight: 3000  #px size of image used for zbar barcode recognition
         thumbImageWidth: 400  #px size of image used for manifest thumbnail
+        previewImageSize: 1800 #px size of preview shown to curator on pipeline error
+        previewQuality: 80 #JPEG compression of preview shown to curator on pipeline error
