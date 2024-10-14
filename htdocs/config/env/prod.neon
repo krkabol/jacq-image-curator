@@ -7,5 +7,6 @@ parameters:
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
-
-# //TODO https://forum.nette.org/en/36020-nette-v3-redirect-http-to-https  + https://doc.nette.org/en/http/configuration#toc-http-proxy
+http:
+    proxy:
+        - curator-app-svc

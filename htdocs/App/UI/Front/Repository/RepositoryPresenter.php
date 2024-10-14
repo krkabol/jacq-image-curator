@@ -68,4 +68,10 @@ final class RepositoryPresenter extends UnsecuredPresenter
         $this->template->manifestAbsoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
     }
 
+    public function renderTest()
+    {
+        $this->sendJson($this->link('//Iiif:manifest', 555));
+
+    }
+
 }
