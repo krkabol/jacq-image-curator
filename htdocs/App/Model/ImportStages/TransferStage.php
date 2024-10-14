@@ -1,11 +1,12 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
 use App\Model\ImportStages\Exceptions\TransferStageException;
-use App\Services\S3Service;
+use App\Services\AppConfiguration;
 use App\Services\RepositoryConfiguration;
+use App\Services\S3Service;
 use League\Pipeline\StageInterface;
 
 class TransferStage implements StageInterface
@@ -13,15 +14,15 @@ class TransferStage implements StageInterface
 
     protected Photos $item;
 
-    public function __construct(protected readonly S3Service $s3Service, protected readonly RepositoryConfiguration $storageConfiguration)
+    public function __construct(protected readonly S3Service $s3Service, protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly AppConfiguration $appConfiguration)
     {
     }
 
     protected function uploadJp2toRepository(): void
     {
         try {
-            $this->s3Service->putJP2IfNotExists($this->storageConfiguration->getImageServerBucket(), $this->storageConfiguration->createS3Jp2Name($this->item), $this->storageConfiguration->getImportTempJp2Path($this->item));
-            $this->item->setJP2Filename($this->storageConfiguration->createS3Jp2Name($this->item));
+            $this->s3Service->putJP2IfNotExists($this->repositoryConfiguration->getImageServerBucket(), $this->repositoryConfiguration->createS3Jp2Name($this->item), $this->repositoryConfiguration->getImportTempJp2Path($this->item));
+            $this->item->setJP2Filename($this->repositoryConfiguration->createS3Jp2Name($this->item));
         } catch (\Throwable $exception) {
             throw new TransferStageException('jp2 upload error (' . $exception->getMessage() . ')');
         }
@@ -30,8 +31,8 @@ class TransferStage implements StageInterface
     protected function uploadTiftoRepository(): void
     {
         try {
-            $this->s3Service->putTiffIfNotExists($this->storageConfiguration->getArchiveBucket(), $this->storageConfiguration->createS3TifName($this->item), $this->storageConfiguration->getImportTempPath($this->item));
-            $this->item->setArchiveFilename($this->storageConfiguration->createS3TifName($this->item));
+            $this->s3Service->putTiffIfNotExists($this->repositoryConfiguration->getArchiveBucket(), $this->repositoryConfiguration->createS3TifName($this->item), $this->repositoryConfiguration->getImportTempPath($this->item));
+            $this->item->setArchiveFilename($this->repositoryConfiguration->createS3TifName($this->item));
         } catch (\Throwable $exception) {
             throw new TransferStageException('tiff upload error (' . $exception->getMessage() . ')');
         }
@@ -51,8 +52,9 @@ class TransferStage implements StageInterface
         $this->item = $payload;
         $this->uploadJp2toRepository();
         $this->uploadTiftoRepository();
-
-        $this->deleteTifFromCuratorBucket();
+        if ($this->appConfiguration->isProduction()) {
+            $this->deleteTifFromCuratorBucket();
+        }
         return $payload;
     }
 

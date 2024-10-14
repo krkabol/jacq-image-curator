@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Services;
 
@@ -18,6 +18,14 @@ final readonly class AppConfiguration
         }
 
         return $this->config['environment'];
+    }
+
+    public function isProduction(): bool
+    {
+        if ($this->getPlatform() === "production") {
+            return true;
+        }
+        return false;
     }
 
 }
