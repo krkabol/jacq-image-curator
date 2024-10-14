@@ -19,7 +19,7 @@ abstract class BasePresenter extends Presenter
 
     protected function beforeRender(): void
     {
-        if ($this->appConfiguration->getPlatform() !== null) {
+        if ($this->appConfiguration->getPlatform() !== 'production') {
             $this->template->platform = $this->appConfiguration->getPlatform();
         }
 
