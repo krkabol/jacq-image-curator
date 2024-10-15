@@ -6,6 +6,7 @@ use App\Model\Database\EntityManager;
 use App\Model\Database\Repository\PhotosRepository;
 use App\Services\EntityServices\PhotoService;
 use App\Services\RepositoryConfiguration;
+use IIIF\PresentationAPI\Resources\Manifest;
 use Nette\Application\LinkGenerator;
 
 class ManifestFactory
@@ -26,6 +27,11 @@ class ManifestFactory
             ->setSpecimenId($specimenId)
             ->setHerbarium($herbarium)
             ->setSelfReferencingUrl($selfReferencingURL);
+    }
+
+    public function createManifest(): Manifest
+    {
+        return new Manifest(true);
     }
 
 }
