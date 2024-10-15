@@ -9,6 +9,8 @@ use App\Model\SpecimenFactory;
 use App\Services\EntityServices\PhotoService;
 use App\UI\Base\UnsecuredPresenter;
 use IIIF\PresentationAPI\Parameters\ViewingDirection;
+use IIIF\PresentationAPI\Resources\Canvas;
+use IIIF\PresentationAPI\Resources\Sequence;
 
 final class IiifPresenter extends UnsecuredPresenter
 {
@@ -47,13 +49,24 @@ final class IiifPresenter extends UnsecuredPresenter
 
     public function actionManifestNew(string $id): void
     {
-        $specimen = $this->getSpecimen($id);
+        $id=$this->link("//this");
+//        $specimen = $this->getSpecimen($id);
+        $sequence =  new Sequence();
+        $canvas = new Canvas();
+        $sequence->addCanvas($canvas);
+        $canvas->setID("http://example.org/iiif/book1/canvas/p1");
+        $canvas->addLabel("p. 1");
+        $canvas->setWidth(500);
+        $canvas->setHeight(500);
+
+        $sequence->setID($id."#sequence-1")->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT);
         $manifest = $this->manifestFactory->createManifest();
             $manifest->addContext("http://iiif.io/api/presentation/2/context.json")
             ->addContext("http://www.w3.org/ns/anno.jsonld")
-            ->setID("654")
+            ->setID($this->link("//this"))
             ->addLabel("dd")
-            ->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT);
+            ->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT)
+            ->addSequence($sequence);
         $this->sendJson($manifest->toArray());
     }
 
