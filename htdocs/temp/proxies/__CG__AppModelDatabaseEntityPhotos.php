@@ -226,28 +226,6 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getHerbarium(): \App\Model\Database\Entity\Herbaria
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHerbarium', []);
-
-        return parent::getHerbarium();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setHerbarium(\App\Model\Database\Entity\Herbaria $herbarium): \App\Model\Database\Entity\Photos
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHerbarium', [$herbarium]);
-
-        return parent::setHerbarium($herbarium);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getWidth(): ?int
     {
 
@@ -292,28 +270,6 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getSpecimenId(): ?string
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSpecimenId', []);
-
-        return parent::getSpecimenId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setSpecimenId(?string $specimenId): \App\Model\Database\Entity\Photos
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSpecimenId', [$specimenId]);
-
-        return parent::setSpecimenId($specimenId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getArchiveFileSize(): ?int
     {
 
@@ -336,23 +292,23 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getJP2FileSize(): ?int
+    public function getJp2FileSize(): ?int
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJP2FileSize', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJp2FileSize', []);
 
-        return parent::getJP2FileSize();
+        return parent::getJp2FileSize();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setJP2FileSize(?int $JP2FileSize): \App\Model\Database\Entity\Photos
+    public function setJp2FileSize(?int $JP2FileSize): \App\Model\Database\Entity\Photos
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJP2FileSize', [$JP2FileSize]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJp2FileSize', [$JP2FileSize]);
 
-        return parent::setJP2FileSize($JP2FileSize);
+        return parent::setJp2FileSize($JP2FileSize);
     }
 
     /**
@@ -391,12 +347,56 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getJACQs_PID(): string
+    public function getHerbarium(): \App\Model\Database\Entity\Herbaria
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJACQs_PID', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHerbarium', []);
 
-        return parent::getJACQs_PID();
+        return parent::getHerbarium();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHerbarium(\App\Model\Database\Entity\Herbaria $herbarium): \App\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHerbarium', [$herbarium]);
+
+        return parent::setHerbarium($herbarium);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSpecimenId(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSpecimenId', []);
+
+        return parent::getSpecimenId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSpecimenId(?string $specimenId): \App\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSpecimenId', [$specimenId]);
+
+        return parent::setSpecimenId($specimenId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getJacqPid(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJacqPid', []);
+
+        return parent::getJacqPid();
     }
 
     /**
@@ -446,7 +446,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getThumbnail()
+    public function getThumbnail(): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getThumbnail', []);
@@ -457,7 +457,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function setThumbnail(?string $thumbnail): \App\Model\Database\Entity\Photos
+    public function setThumbnail(mixed $thumbnail): \App\Model\Database\Entity\Photos
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setThumbnail', [$thumbnail]);
@@ -483,7 +483,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTimeImmutable
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedAt', []);
@@ -494,7 +494,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function setCreatedAt()
+    public function setCreatedAt(): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreatedAt', []);
@@ -516,7 +516,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function setLastEditAt()
+    public function setLastEditAt(): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastEditAt', []);
@@ -527,7 +527,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getOriginalFileAt()
+    public function getOriginalFileAt(): ?\DateTimeImmutable
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOriginalFileAt', []);
@@ -538,7 +538,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function setOriginalFileAt($timestamp)
+    public function setOriginalFileAt(?\DateTimeImmutable $timestamp): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOriginalFileAt', [$timestamp]);

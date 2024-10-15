@@ -226,50 +226,6 @@ class User extends \App\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function getName(): string
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
-
-        return parent::getName();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setName(string $name): \App\Model\Database\Entity\User
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
-
-        return parent::setName($name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSurname(): string
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSurname', []);
-
-        return parent::getSurname();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setSurname(string $surname): \App\Model\Database\Entity\User
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSurname', [$surname]);
-
-        return parent::setSurname($surname);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getEmail(): string
     {
 
@@ -391,6 +347,50 @@ class User extends \App\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
+    public function getName(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
+
+        return parent::getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setName(string $name): \App\Model\Database\Entity\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
+
+        return parent::setName($name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSurname(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSurname', []);
+
+        return parent::getSurname();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSurname(string $surname): \App\Model\Database\Entity\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSurname', [$surname]);
+
+        return parent::setSurname($surname);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId(): int
     {
         if ($this->__isInitialized__ === false) {
@@ -406,7 +406,7 @@ class User extends \App\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTimeImmutable
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedAt', []);
@@ -417,7 +417,7 @@ class User extends \App\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function setCreatedAt()
+    public function setCreatedAt(): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreatedAt', []);
@@ -439,7 +439,7 @@ class User extends \App\Model\Database\Entity\User implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function setLastEditAt()
+    public function setLastEditAt(): mixed
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastEditAt', []);

@@ -34,7 +34,7 @@ class Photos
     protected ?string $jp2Filename;
 
     #[ManyToOne(targetEntity: Herbaria::class, inversedBy: 'photos')]
-    #[JoinColumn(name: 'herbarium_id', referencedColumnName: 'id', options: ['comment' => 'Herbarium storing and managing the specimen data'])]
+    #[JoinColumn(name: 'herbarium_id', referencedColumnName: 'id', nullable: false, options: ['comment' => 'Herbarium storing and managing the specimen data'])]
     protected Herbaria $herbarium;
 
     #[ManyToOne(targetEntity: PhotosStatus::class)]
