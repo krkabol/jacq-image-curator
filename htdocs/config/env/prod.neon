@@ -9,4 +9,4 @@ parameters:
         jp2Bucket: iiif
 http:
     proxy:
-        - curator-app-svc
+        - 10.42.0.0/16
