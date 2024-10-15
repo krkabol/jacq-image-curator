@@ -64,14 +64,7 @@ final class RepositoryPresenter extends UnsecuredPresenter
         $this->template->id = $specimenFullId;
         $this->template->images = $this->photoService->getPublicPhotosOfSpecimen($specimen);
 
-        $relativeLink = $this->link('Iiif:manifest', $specimenFullId);
-        $this->template->manifestAbsoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
-    }
-
-    public function renderTest()
-    {
-        $this->sendJson($this->link('//Iiif:manifest', 555));
-
+        $this->template->manifestAbsoluteLink = $this->link('//Iiif:manifest', $specimenFullId);
     }
 
 }

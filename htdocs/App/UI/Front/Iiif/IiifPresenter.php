@@ -22,11 +22,9 @@ final class IiifPresenter extends UnsecuredPresenter
 
     public function actionManifest(string $id): void
     {
-        $relativeLink = $this->link('this');
-        $absoluteLink = $this->getAbsoluteHttpsBasePath() . ltrim($relativeLink, '/');
         $specimen = $this->getSpecimen($id);
 
-        $model = $this->manifestFactory->prototypeV2($specimen->getSpecimenId(), $specimen->getHerbarium()->getAcronym(), $absoluteLink);
+        $model = $this->manifestFactory->prototypeV2($specimen->getSpecimenId(), $specimen->getHerbarium()->getAcronym(), $this->link('//this'));
         $model->setSpecimen($specimen);
         $manifest = $model->getCompleted();
         $this->sendJson($manifest);

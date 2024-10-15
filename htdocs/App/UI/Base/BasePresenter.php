@@ -26,15 +26,4 @@ abstract class BasePresenter extends Presenter
         parent::beforeRender();
     }
 
-    /**
-     * we are running http behind the proxy
-     */
-    protected function getAbsoluteHttpsBasePath(): string
-    {
-        //# //TODO https://forum.nette.org/en/36020-nette-v3-redirect-http-to-https  + https://doc.nette.org/en/http/configuration#toc-http-proxy
-        $baseUrl = $this->getHttpRequest()->getUrl()->getBaseUrl();
-
-        return preg_replace('/^http:/', 'https:', $baseUrl);
-    }
-
 }
