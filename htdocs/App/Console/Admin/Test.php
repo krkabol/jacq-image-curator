@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Console;
+namespace App\Console\Admin;
 
 use App\Facades\CuratorFacade;
 use App\Model\Database\EntityManager;

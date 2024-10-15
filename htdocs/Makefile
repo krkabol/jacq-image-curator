@@ -27,3 +27,8 @@ build:
 
 data_processing:
 	NETTE_DEBUG=1 bin/console curator:importImage
+
+admin:
+	NETTE_DEBUG=1 bin/console admin:downloadArchive
+	NETTE_DEBUG=1 bin/console admin:bucketParity
+
