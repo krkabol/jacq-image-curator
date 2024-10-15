@@ -65,11 +65,11 @@ class PhotoService extends BaseEntityService
      */
     public function findLastImported(): array
     {
-        return $this->repository->findBy(['herbarium' => $this->user->getIdentity()->herbarium, 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::PRIVATE]], ['lastEdit' => Criteria::DESC], 30);
+        return $this->repository->findBy(['herbarium' => $this->user->getIdentity()->herbarium, 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]], ['lastEdit' => Criteria::DESC], 30);
     }
 
     public function findPotentialDuplicate(Photos $photo): ?Photos
     {
-        return $this->repository->findOneBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::PRIVATE]]);
+        return $this->repository->findOneBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]]);
     }
 }
