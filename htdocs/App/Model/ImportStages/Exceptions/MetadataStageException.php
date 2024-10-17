@@ -2,7 +2,7 @@
 
 namespace App\Model\ImportStages\Exceptions;
 
-class DimensionsStageException extends ImportStageException
+class MetadataStageException extends ImportStageException
 {
 
 }

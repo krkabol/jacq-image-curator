@@ -3,13 +3,13 @@
 namespace App\Model\ImportStages;
 
 use App\Model\Database\Entity\Photos;
-use App\Model\ImportStages\Exceptions\DimensionsStageException;
+use App\Model\ImportStages\Exceptions\MetadataStageException;
 use App\Services\ImageService;
 use App\Services\RepositoryConfiguration;
 use Imagick;
 use League\Pipeline\StageInterface;
 
-class DimensionsStage implements StageInterface
+class MetadataStage implements StageInterface
 {
 
     protected Photos $item;
@@ -35,9 +35,13 @@ class DimensionsStage implements StageInterface
             $imagick->destroy();
             unset($imagick);
 
+            $exifData = exif_read_data($this->storageConfiguration->getImportTempPath($this->item));
+            if ($exifData !== false) {
+                $this->item->setExif($exifData);
+            }
             return $this->item;
         } catch (\Throwable $e) {
-            throw new DimensionsStageException('problem with dimensions: ' . $e->getMessage());
+            throw new MetadataStageException('problem with metadata detection: ' . $e->getMessage());
         }
     }
 

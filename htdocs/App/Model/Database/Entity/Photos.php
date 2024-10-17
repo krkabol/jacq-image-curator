@@ -63,7 +63,7 @@ class Photos
     protected mixed $thumbnail;
 
     #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'raw EXIF data extracted from Archive Master file'])]
-    protected mixed $exif;
+    protected ?array $exif;
 
     public function getArchiveFilename(): ?string
     {
@@ -219,12 +219,12 @@ class Photos
         return $this;
     }
 
-    public function getExif(): mixed
+    public function getExif(): ?array
     {
         return $this->exif;
     }
 
-    public function setExif(mixed $exif): Photos
+    public function setExif(array $exif): Photos
     {
         $this->exif = $exif;
         return $this;

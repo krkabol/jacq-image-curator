@@ -28,9 +28,9 @@ readonly class StageFactory
         return new BarcodeStage($this->repositoryConfiguration, $this->imageService);
     }
 
-    public function createDimensionsStage(): DimensionsStage
+    public function createDimensionsStage(): MetadataStage
     {
-        return new DimensionsStage($this->repositoryConfiguration, $this->imageService);
+        return new MetadataStage($this->repositoryConfiguration, $this->imageService);
     }
 
     public function createThumbnailStage(): ThumbnailStage
