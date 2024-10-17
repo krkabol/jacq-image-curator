@@ -5,9 +5,15 @@ parameters:
     environment: development
     database:
         host: curator-db
+        user: jacq
+        password: jacq
     storage:
         archiveBucket: test-archive
         jp2Bucket: test-iiif
 
 services:
     cache.storage: Nette\Caching\Storages\DevNullStorage
+
+aws:
+    endpoint: http://minio:9000
+    use_path_style_endpoint: true
