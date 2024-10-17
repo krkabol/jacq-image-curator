@@ -56,9 +56,9 @@
 	"config": {
     "platform": {
       "php": "8.3",
-      "ext-imagick": true,
-      "ext-intl": true,
-      "ext-exif": true
+      "ext-imagick": "3",
+      "ext-intl": "3",
+      "ext-exif": "3"
     },
 		"allow-plugins": {
 			"symfony/thanks": true,
