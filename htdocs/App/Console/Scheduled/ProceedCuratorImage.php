@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Console;
+namespace App\Console\Scheduled;
 
 use App\Facades\CuratorFacade;
 use App\Model\Database\Entity\Photos;
