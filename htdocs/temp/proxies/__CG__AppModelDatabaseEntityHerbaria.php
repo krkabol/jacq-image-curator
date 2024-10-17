@@ -67,10 +67,10 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'acronym', 'bucket', 'photos', 'users', 'id'];
+            return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'photos', 'users', 'id'];
         }
 
-        return ['__isInitialized__', 'acronym', 'bucket', 'photos', 'users', 'id'];
+        return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'photos', 'users', 'id'];
     }
 
     /**
@@ -210,6 +210,28 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBucket', []);
 
         return parent::getBucket();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLogo(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLogo', []);
+
+        return parent::getLogo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLogo(string $logo): \App\Model\Database\Entity\Herbaria
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLogo', [$logo]);
+
+        return parent::setLogo($logo);
     }
 
     /**

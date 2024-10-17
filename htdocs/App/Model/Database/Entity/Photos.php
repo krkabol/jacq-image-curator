@@ -62,6 +62,9 @@ class Photos
     #[Column(type: Types::BLOB, nullable: true, options: ['comment' => 'Thumbnail during import phase'])]
     protected mixed $thumbnail;
 
+    #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'raw EXIF data extracted from Archive Master file'])]
+    protected mixed $exif;
+
     public function getArchiveFilename(): ?string
     {
         return $this->archiveFilename;
@@ -213,6 +216,17 @@ class Photos
     {
         $this->thumbnail = $thumbnail;
 
+        return $this;
+    }
+
+    public function getExif(): mixed
+    {
+        return $this->exif;
+    }
+
+    public function setExif(mixed $exif): Photos
+    {
+        $this->exif = $exif;
         return $this;
     }
 

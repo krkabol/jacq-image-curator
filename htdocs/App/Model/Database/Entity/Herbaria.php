@@ -4,6 +4,7 @@ namespace App\Model\Database\Entity;
 
 use App\Model\Database\Entity\Attributes\TId;
 use App\Model\Database\Repository\HerbariaRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
@@ -22,6 +23,9 @@ class Herbaria
 
     #[Column(unique: true, nullable: false, options: ['comment' => 'S3 bucket where are stored new images before imported to the repository'])]
     protected string $bucket;
+
+    #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'logo URL'])]
+    protected string $logo;
 
     /**
      * @var PersistentCollection<int, Photos>
@@ -50,6 +54,17 @@ class Herbaria
     public function getBucket(): string
     {
         return $this->bucket;
+    }
+
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): Herbaria
+    {
+        $this->logo = $logo;
+        return $this;
     }
 
 }

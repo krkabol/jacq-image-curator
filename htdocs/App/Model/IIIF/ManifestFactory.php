@@ -53,10 +53,14 @@ class ManifestFactory
             ->setID($selfReferencingLink)
             ->addLabel("herbarium specimen")
             ->addDescription("A preserved herbarium specimen")
-            ->addLogo((new Logo())->setID("https://cas.cuni.cz/cas/images/UK-logo.png")) //TODO add herbarium table column
             ->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT)
             ->addThumbnail($this->createThumbnail())
             ->addSequence($this->createSequence());
+
+        if ($specimen->getHerbarium()->getLogo() != NULL){
+            $manifest->addLogo((new Logo())->setID($specimen->getHerbarium()->getLogo()));
+        }
+
         return $manifest;
     }
 
