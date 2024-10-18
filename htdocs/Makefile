@@ -31,4 +31,6 @@ data_processing:
 admin:
 	NETTE_DEBUG=1 bin/console admin:downloadArchive
 	NETTE_DEBUG=1 bin/console admin:bucketParity
+	NETTE_DEBUG=1 bin/console admin:harvestExif
+
 
