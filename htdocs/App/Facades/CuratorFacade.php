@@ -180,4 +180,10 @@ readonly class CuratorFacade
         return (int)$this->splitId($specimenId)[$this->repositoryConfiguration->getRegexSpecimenPartName()];
     }
 
+    public function getArchiveFile(Photos $photo, string $destination): CuratorFacade
+    {
+        $this->s3Service->getObject($this->repositoryConfiguration->getArchiveBucket(), $photo->getArchiveFilename(), $destination);
+        return $this;
+    }
+
 }
