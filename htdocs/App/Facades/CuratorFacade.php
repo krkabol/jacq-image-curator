@@ -86,7 +86,7 @@ readonly class CuratorFacade
         return (new Pipeline())
             ->pipe($this->stageFactory->createDownloadStage())
             ->pipe($this->stageFactory->createThumbnailStage())
-            ->pipe($this->stageFactory->createDimensionsStage())
+            ->pipe($this->stageFactory->createMetadataStage())
             ->pipe($this->stageFactory->createBarcodeStage())
             ->pipe($this->stageFactory->createDuplicityStage())
             ->pipe($this->stageFactory->createConvertStage())
