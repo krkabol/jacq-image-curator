@@ -15,7 +15,6 @@
     "ext-imagick": "*",
     "ext-intl": "*",
     "ext-exif": "*",
-    "ext-iconv": "*",
 		"nette/application": "^3.2.3",
 		"nette/bootstrap": "^3.2",
 		"nette/caching": "^3.2",
