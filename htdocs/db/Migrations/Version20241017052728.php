@@ -21,11 +21,14 @@ final class Version20241017052728 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN herbaria.logo IS \'logo URL\'');
         $this->addSql('ALTER TABLE photos ADD exif JSONB DEFAULT NULL');
         $this->addSql('COMMENT ON COLUMN photos.exif IS \'raw EXIF data extracted from Archive Master file\'');
+        $this->addSql('ALTER TABLE photos ADD identify JSONB DEFAULT NULL');
+        $this->addSql('COMMENT ON COLUMN photos.exif IS \'Imagick -verbose identify metadata output from the Archive Master file\'');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE photos DROP exif');
+        $this->addSql('ALTER TABLE photos DROP identify');
         $this->addSql('ALTER TABLE herbaria DROP logo');
     }
 }

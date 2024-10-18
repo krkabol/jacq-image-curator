@@ -67,10 +67,10 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'exif', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
+            return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'exif', 'identify', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
         }
 
-        return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'exif', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
+        return ['__isInitialized__', 'archiveFilename', 'originalFilename', 'jp2Filename', 'herbarium', 'status', 'specimenId', 'width', 'height', 'archiveFileSize', 'JP2FileSize', 'message', 'thumbnail', 'exif', 'identify', 'id', 'createdAt', 'lastEdit', 'originalFileTimestamp'];
     }
 
     /**
@@ -468,7 +468,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function getExif(): mixed
+    public function getExif(): ?array
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getExif', []);
@@ -479,12 +479,34 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     /**
      * {@inheritDoc}
      */
-    public function setExif(mixed $exif): \App\Model\Database\Entity\Photos
+    public function setExif(array $exif): \App\Model\Database\Entity\Photos
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExif', [$exif]);
 
         return parent::setExif($exif);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentify(): ?array
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdentify', []);
+
+        return parent::getIdentify();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdentify(?array $identify): \App\Model\Database\Entity\Photos
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdentify', [$identify]);
+
+        return parent::setIdentify($identify);
     }
 
     /**

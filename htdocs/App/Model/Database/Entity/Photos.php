@@ -65,6 +65,9 @@ class Photos
     #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'raw EXIF data extracted from Archive Master file'])]
     protected ?array $exif;
 
+    #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'Imagick -verbose identify metadata output from the Archive Master file'])]
+    protected ?array $identify;
+
     public function getArchiveFilename(): ?string
     {
         return $this->archiveFilename;
@@ -224,9 +227,20 @@ class Photos
         return $this->exif;
     }
 
-    public function setExif(array $exif): Photos
+    public function setExif(?array $exif): Photos
     {
         $this->exif = $exif;
+        return $this;
+    }
+
+    public function getIdentify(): ?array
+    {
+        return $this->identify;
+    }
+
+    public function setIdentify(?array $identify): Photos
+    {
+        $this->identify = $identify;
         return $this;
     }
 
