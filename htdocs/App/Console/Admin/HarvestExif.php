@@ -25,7 +25,7 @@ class HarvestExif extends Command
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Model\Database\Entity\Photos', 'p');
-        $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id IN (?) AND identify is null ORDER BY id asc LIMIT 10', $rsm);
+        $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id IN (?) AND identify is null ORDER BY id asc', $rsm);
         $query->setParameter(1, PhotosStatus::PASSED);
         return $query->execute();
     }
