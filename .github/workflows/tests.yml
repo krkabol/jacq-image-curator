@@ -35,6 +35,10 @@ jobs:
                 working-directory: ./htdocs
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+            -   name: Create config file
+                working-directory: ./htdocs
+                run: cp ./config/local.neon.template ./config/local.neon
+
             -   name: Run tests
                 working-directory: ./htdocs
                 run: vendor/bin/tester -s -p php --colors 1 -C tests --coverage coverage.xml --coverage-src App
