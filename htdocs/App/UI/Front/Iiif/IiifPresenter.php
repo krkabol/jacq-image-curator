@@ -12,22 +12,15 @@ use App\UI\Base\UnsecuredPresenter;
 final class IiifPresenter extends UnsecuredPresenter
 {
 
-    /** @inject */
-    public SpecimenFactory $specimenFactory;
-    /** @inject */
-    public ManifestFactory $manifestFactory;
-    /** @inject */
-    public PhotoService $photoService;
+    /** @inject */    public SpecimenFactory $specimenFactory;
+    /** @inject */    public ManifestFactory $manifestFactory;
+    /** @inject */    public PhotoService $photoService;
 
     public function actionManifest(string $id): void
     {
-        $this->forward(":manifestNew", $id); //TODO - works? - than use the new
-//        $specimen = $this->getSpecimen($id);
-//
-//        $model = $this->manifestFactory->prototypeV2($specimen->getSpecimenId(), $specimen->getHerbarium()->getAcronym(), $this->link('//this'));
-//        $model->setSpecimen($specimen);
-//        $manifest = $model->getCompleted();
-//        $this->sendJson($manifest);
+        $specimen = $this->getSpecimen($id);
+        $manifest = $this->manifestFactory->createManifest($specimen, $this->link("//this"));
+        $this->sendJson($manifest->toArray());
 
     }
 
@@ -43,13 +36,6 @@ final class IiifPresenter extends UnsecuredPresenter
             $this->error('Specimen has no public images', 404);
         }
         return $specimen;
-    }
-
-    public function actionManifestNew(string $id): void
-    {
-        $specimen = $this->getSpecimen($id);
-        $manifest = $this->manifestFactory->createManifest($specimen, $this->link("//this"));
-        $this->sendJson($manifest->toArray());
     }
 
 }

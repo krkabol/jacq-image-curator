@@ -33,16 +33,6 @@ class ManifestFactory
         $this->photosRepository = $this->entityManager->getPhotosRepository();
     }
 
-    public function prototypeV2(int $specimenId, string $herbariumAcronym, string $selfReferencingURL): IiifManifest
-    {
-        $herbarium = $this->entityManager->getHerbariaRepository()->findOneBy(['acronym' => $herbariumAcronym]);
-
-        return (new IiifManifest($this->photosRepository, $this->repositoryConfiguration, $this->linkGenerator, $this->photoService))
-            ->setSpecimenId($specimenId)
-            ->setHerbarium($herbarium)
-            ->setSelfReferencingUrl($selfReferencingURL);
-    }
-
     public function createManifest(Specimen $specimen, string $selfReferencingLink): Manifest
     {
         $this->specimen = $specimen;
