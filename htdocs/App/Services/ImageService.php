@@ -79,7 +79,7 @@ class ImageService
                 $output[$newKey] = $this->convertArrayEncoding($value, $to_encoding, $from_encoding);
             } elseif (is_string($value)) {
                 //https://stackoverflow.com/questions/17499955/understanding-what-u0000-is-in-php-json-and-getting-rid-of-it
-                $output[$newKey] = str_replace(chr(0), "", mb_convert_encoding($value, $to_encoding, $from_encoding));
+                $output[$newKey] =  mb_convert_encoding($value, self::ENCODING, mb_detect_encoding($value));
 
             } else {
                 $output[$newKey] = $value;
@@ -203,17 +203,23 @@ class ImageService
     {
         $identify = $imagick->identifyImage(true);
         $identify['rawOutput'] = $this->parseIdentify($identify['rawOutput']);
-        $encoding = mb_detect_encoding($this->recursiveArrayToString($identify));
-        return $this->convertArrayEncoding($identify, self::ENCODING, $encoding);
+        return $identify;
 
     }
 
     public function readExif(string $path): array
     {
-        $exifData = exif_read_data($path);
+//        ini_set('exif.encode_unicode', 'UTF-8');
+//        ini_set('exif.decode_unicode_motorola', 'UTF-8');
+//        ini_set('exif.decode_unicode_intel', 'UTF-8');
+//        ini_set('exif.decode_jis', 'UTF-8');
+//        ini_set('exif.decode_jis_intel', 'UTF-8');
+//        ini_set('exif.decode_jis_motorola', 'UTF-8');
+        $exifData = exif_read_data($path, NULL, true);
         if ($exifData !== false) {
             $encoding = mb_detect_encoding($this->recursiveArrayToString($exifData));
-            return $this->convertArrayEncoding($exifData, self::ENCODING, $encoding);
+            return $exifData;
+//            return mb_convert_encoding($exifData, self::ENCODING, $encoding);
 
         }
         return [];
