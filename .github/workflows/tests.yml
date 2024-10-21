@@ -7,10 +7,10 @@ jobs:
         name: Run tests and collect coverage
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
+            -   name: Checkout
+                uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
 
             #install PHP dependencies
             -   name: Setup PHP
@@ -35,10 +35,11 @@ jobs:
                 working-directory: ./htdocs
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-            - name: Run tests
-              run: vendor/bin/tester -s -p php --colors 1 -C tests --coverage coverage.xml --coverage-src App
+            -   name: Run tests
+                working-directory: ./htdocs
+                run: vendor/bin/tester -s -p php --colors 1 -C tests --coverage coverage.xml --coverage-src App
 
-            - name: Upload results to Codecov
-              uses: codecov/codecov-action@v4
-              with:
-                  token: ${{ secrets.CODECOV_TOKEN }}
+            -   name: Upload results to Codecov
+                uses: codecov/codecov-action@v4
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
