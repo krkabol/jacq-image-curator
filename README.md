@@ -1,6 +1,6 @@
 [![Build Status](https://github.com/krkabol/jacq-image-curator/actions/workflows/publish.yml/badge.svg)](https://github.com/krkabol/jacq-image-curator/actions?query=workflow%3ABuild+branch%3Amain)
 [![GitHub All Releases](https://img.shields.io/github/downloads/krkabol/jacq-image-curator/total)](https://github.com/krkabol/jacq-image-curator/releases)
-[![codecov](https://codecov.io/gh/krkabol/jacq-image-curator/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/my-user/my-project)
+[![codecov](https://codecov.io/gh/krkabol/jacq-image-curator/branch/main/graph/badge.svg?token=YOUR_TOKEN)](https://codecov.io/gh/krkabol/jacq-image-curator)
 
 [//]: # (![PHPStan]&#40;https://img.shields.io/badge/style-level%207-brightgreen.svg?&label=phpstan&#41;)
 
