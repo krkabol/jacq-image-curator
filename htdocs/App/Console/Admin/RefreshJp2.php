@@ -68,6 +68,7 @@ class RefreshJp2 extends Command
             unlink($this->tempFile());
 
             $this->s3Service->deleteObject($this->repositoryConfiguration->getImageServerBucket(), $this->repositoryConfiguration->createS3Jp2Name($photo));
+            sleep(5);
             $this->s3Service->putJP2IfNotExists($this->repositoryConfiguration->getImageServerBucket(), $this->repositoryConfiguration->createS3Jp2Name($photo), $this->tempFile2());
             unlink($this->tempFile2());
         }
