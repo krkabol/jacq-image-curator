@@ -2,11 +2,21 @@ includes:
 	- base.neon
 
 parameters:
+    environment: 'production'
     database:
         host: jacq-pgsql-cluster-rw
+        password: %env.DB_PASSWORD%
     storage:
         archiveBucket: archive
         jp2Bucket: iiif
+
+aws:
+    endpoint: https://s3.cl4.du.cesnet.cz
+    use_path_style_endpoint: false
+    credentials:
+        key: %env.S3_ACCESS_KEY%
+        secret: %env.S3_SECRET_KEY%
+
 http:
     proxy:
         - 10.42.0.0/16
