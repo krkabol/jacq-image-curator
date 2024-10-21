@@ -22,6 +22,7 @@ abstract class BasePresenter extends Presenter
         if ($this->appConfiguration->getPlatform() !== 'production') {
             $this->template->platform = $this->appConfiguration->getPlatform();
         }
+        $this->template->version = $this->appConfiguration->getVersion();
 
         parent::beforeRender();
     }

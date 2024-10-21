@@ -4,9 +4,8 @@ namespace App\Services;
 
 final readonly class AppConfiguration
 {
-    /**
-     * @param array $config
-     */
+
+    public const string VERSION_VARIABLE = 'GIT_TAG';
     public function __construct(private array $config)
     {
     }
@@ -26,6 +25,14 @@ final readonly class AppConfiguration
             return true;
         }
         return false;
+    }
+
+    public function getVersion(): string
+    {
+        if (getenv(self::VERSION_VARIABLE) !== false) {
+            return getenv(self::VERSION_VARIABLE);
+        }
+        return "unknown version";
     }
 
 }
