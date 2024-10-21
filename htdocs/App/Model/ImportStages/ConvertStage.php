@@ -3,6 +3,7 @@
 namespace App\Model\ImportStages;
 
 use App\Model\ImportStages\Exceptions\ConvertStageException;
+use App\Services\ImageService;
 use App\Services\S3Service;
 use App\Services\RepositoryConfiguration;
 use Imagick;
@@ -11,14 +12,14 @@ use League\Pipeline\StageInterface;
 readonly class ConvertStage implements StageInterface
 {
 
-    public function __construct(protected S3Service $s3Service, protected RepositoryConfiguration $storageConfiguration)
+    public function __construct(protected S3Service $s3Service, protected RepositoryConfiguration $storageConfiguration, protected ImageService $imageService)
     {
     }
 
     public function __invoke(mixed $payload): mixed
     {
         try {
-            $imagick = new Imagick($this->storageConfiguration->getImportTempPath($payload));
+            $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($payload));
             $imagick->setImageFormat('jp2');
             $imagick->setImageCompressionQuality($this->storageConfiguration->getJp2Quality());
             $imagick->writeImage($this->storageConfiguration->getImportTempJp2Path($payload));

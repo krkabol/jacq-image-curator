@@ -40,7 +40,7 @@ readonly class StageFactory
 
     public function createConvertStage(): ConvertStage
     {
-        return new ConvertStage($this->s3Service, $this->repositoryConfiguration);
+        return new ConvertStage($this->s3Service, $this->repositoryConfiguration, $this->imageService);
     }
 
     public function createDuplicityStage(): DuplicityStage
