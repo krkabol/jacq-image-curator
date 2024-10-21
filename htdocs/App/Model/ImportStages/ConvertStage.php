@@ -12,20 +12,20 @@ use League\Pipeline\StageInterface;
 readonly class ConvertStage implements StageInterface
 {
 
-    public function __construct(protected S3Service $s3Service, protected RepositoryConfiguration $storageConfiguration, protected ImageService $imageService)
+    public function __construct(protected S3Service $s3Service, protected RepositoryConfiguration $repositoryConfiguration, protected ImageService $imageService)
     {
     }
 
     public function __invoke(mixed $payload): mixed
     {
         try {
-            $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($payload));
+            $imagick = $this->imageService->createImagick($this->repositoryConfiguration->getImportTempPath($payload));
             $imagick->setImageFormat('jp2');
-            $imagick->setImageCompressionQuality($this->storageConfiguration->getJp2Quality());
-            $imagick->writeImage($this->storageConfiguration->getImportTempJp2Path($payload));
+            $imagick->setImageCompressionQuality($this->repositoryConfiguration->getJp2Quality());
+            $imagick->writeImage($this->repositoryConfiguration->getImportTempJp2Path($payload));
             $imagick->destroy();
             unset($imagick);
-            $payload->setJp2FileSize(filesize($this->storageConfiguration->getImportTempJp2Path($payload)));
+            $payload->setJp2FileSize(filesize($this->repositoryConfiguration->getImportTempJp2Path($payload)));
         } catch (\Throwable $exception) {
             throw new ConvertStageException('unable convert to JP2 (' . $exception->getMessage() . '): ' . $payload->getId());
         }

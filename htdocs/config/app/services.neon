@@ -20,6 +20,7 @@ services:
     - {factory: App\Console\Admin\BatchDownload, tags: {console.command: admin:downloadArchive}}
     - {factory: App\Console\Admin\BucketParity, tags: {console.command: admin:bucketParity}}
     - {factory: App\Console\Admin\HarvestExif, tags: {console.command: admin:harvestExif}}
+    - {factory: App\Console\Admin\RefreshJp2, tags: {console.command: admin:refreshJp2}}
 
     - GuzzleHttp\Client
 
