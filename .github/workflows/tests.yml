@@ -1,7 +1,10 @@
-name: Run tests and upload coverage
+name: Run tests
 
 on:
-    push
+    push:
+        branches:
+            - main
+    workflow_dispatch:  # Manual run
 jobs:
     test:
         name: Run tests and collect coverage
