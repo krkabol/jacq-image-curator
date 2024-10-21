@@ -49,12 +49,11 @@ class HarvestExif extends Command
             $this->curatorService->getArchiveFile($photo, $this->tempFile());
 
             $imagick = $this->imageService->createImagick($this->tempFile());
-//            $photo->setIdentify($this->imageService->readIdentify($imagick));
+            $photo->setIdentify($this->imageService->readIdentify($imagick));
+            $photo->setExif($this->imageService->readExif($imagick));
             $imagick->destroy();
             unset($imagick);
-            $exif = $this->imageService->readExif($this->tempFile());
-            var_dump($exif["IFD0"]["ICC_Profile"]);
-//            $photo->setExif($exif);
+
             $photo->setLastEditAt();
             $this->entityManager->flush();
             unlink($this->tempFile());

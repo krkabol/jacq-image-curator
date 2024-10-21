@@ -69,40 +69,6 @@ class ImageService
         return $imagick;
     }
 
-    protected function convertArrayEncoding(array $input, string $to_encoding, string $from_encoding): mixed
-    {
-        $output = [];
-
-        foreach ($input as $key => $value) {
-            $newKey = is_string($key) ? mb_convert_encoding($key, $to_encoding, $from_encoding) : $key;
-            if (is_array($value)) {
-                $output[$newKey] = $this->convertArrayEncoding($value, $to_encoding, $from_encoding);
-            } elseif (is_string($value)) {
-                //https://stackoverflow.com/questions/17499955/understanding-what-u0000-is-in-php-json-and-getting-rid-of-it
-                $output[$newKey] =  mb_convert_encoding($value, self::ENCODING, mb_detect_encoding($value));
-
-            } else {
-                $output[$newKey] = $value;
-            }
-        }
-        return $output;
-    }
-
-    protected function recursiveArrayToString(array $array): string
-    {
-        $result = '';
-
-        foreach ($array as $value) {
-            if (is_array($value)) {
-                $result .= $this->recursiveArrayToString($value);
-            } elseif (is_string($value)) {
-                $result .= $value;
-            }
-        }
-
-        return $result;
-    }
-
     /**
      * from https://www.php.net/manual/en/imagick.identifyimage.php
      * $identify = $this->parseIdentify($identify['rawOutput']);
@@ -207,21 +173,8 @@ class ImageService
 
     }
 
-    public function readExif(string $path): array
+    public function readExif(Imagick $imagick): array
     {
-//        ini_set('exif.encode_unicode', 'UTF-8');
-//        ini_set('exif.decode_unicode_motorola', 'UTF-8');
-//        ini_set('exif.decode_unicode_intel', 'UTF-8');
-//        ini_set('exif.decode_jis', 'UTF-8');
-//        ini_set('exif.decode_jis_intel', 'UTF-8');
-//        ini_set('exif.decode_jis_motorola', 'UTF-8');
-        $exifData = exif_read_data($path, NULL, true);
-        if ($exifData !== false) {
-            $encoding = mb_detect_encoding($this->recursiveArrayToString($exifData));
-            return $exifData;
-//            return mb_convert_encoding($exifData, self::ENCODING, $encoding);
-
-        }
-        return [];
+        return $imagick->getImageProperties();
     }
 }
