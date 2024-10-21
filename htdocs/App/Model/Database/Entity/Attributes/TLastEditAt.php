@@ -18,7 +18,7 @@ trait TLastEditAt
         return $this->lastEdit;
     }
 
-    #[PreUpdate()]
+    #[PreUpdate]
     public function setLastEditAt(): mixed
     {
         $this->lastEdit = new DateTime();
