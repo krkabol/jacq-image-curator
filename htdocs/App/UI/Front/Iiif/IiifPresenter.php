@@ -21,12 +21,13 @@ final class IiifPresenter extends UnsecuredPresenter
 
     public function actionManifest(string $id): void
     {
-        $specimen = $this->getSpecimen($id);
-
-        $model = $this->manifestFactory->prototypeV2($specimen->getSpecimenId(), $specimen->getHerbarium()->getAcronym(), $this->link('//this'));
-        $model->setSpecimen($specimen);
-        $manifest = $model->getCompleted();
-        $this->sendJson($manifest);
+        $this->forward(":manifestNew", $id); //TODO - works? - than use the new
+//        $specimen = $this->getSpecimen($id);
+//
+//        $model = $this->manifestFactory->prototypeV2($specimen->getSpecimenId(), $specimen->getHerbarium()->getAcronym(), $this->link('//this'));
+//        $model->setSpecimen($specimen);
+//        $manifest = $model->getCompleted();
+//        $this->sendJson($manifest);
 
     }
 
