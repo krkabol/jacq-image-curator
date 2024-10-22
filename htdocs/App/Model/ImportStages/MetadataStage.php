@@ -15,7 +15,7 @@ class MetadataStage implements StageInterface
 
     protected Photos $item;
 
-    public function __construct(protected readonly RepositoryConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly ImageService $imageService)
     {
     }
 
@@ -31,7 +31,7 @@ class MetadataStage implements StageInterface
     {
         try {
             $this->item = $payload;
-            $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+            $imagick = $this->imageService->createImagick($this->repositoryConfiguration->getImportTempPath($this->item));
             $this->readDimensions($imagick);
             $this->item->setIdentify($this->imageService->readIdentify($imagick));
             $this->item->setExif($this->imageService->readExif($imagick));

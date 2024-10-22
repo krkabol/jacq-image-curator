@@ -18,17 +18,17 @@ class BarcodeStage implements StageInterface
     /** @var string [] */
     protected array $barcodes;
 
-    public function __construct(protected readonly RepositoryConfiguration $storageConfiguration, protected readonly ImageService $imageService)
+    public function __construct(protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly ImageService $imageService)
     {
     }
 
     protected function createContrastedImage(Imagick $imagick): void
     {
-        $imagick = $this->imageService->resizeImage($imagick, $this->storageConfiguration->getZbarImageSize());
+        $imagick = $this->imageService->resizeImage($imagick, $this->repositoryConfiguration->getZbarImageSize());
         $imagick->modulateImage(100, 0, 100);
         // adaptive threshold had worse results than unmodified image        * $imagick->adaptiveThresholdImage(150, 150, 1);
         $imagick->setImageFormat('png');
-        $imagick->writeImage($this->storageConfiguration->getImportTempZbarPath($this->item));
+        $imagick->writeImage($this->repositoryConfiguration->getImportTempZbarPath($this->item));
         $imagick->destroy();
         unset($imagick);
     }
@@ -42,7 +42,7 @@ class BarcodeStage implements StageInterface
     {
         $output = [];
         $returnVar = 0;
-        $info = exec('zbarimg --quiet --raw ' . escapeshellarg($this->storageConfiguration->getImportTempZbarPath($this->item)), $output, $returnVar);
+        $info = exec('zbarimg --quiet --raw ' . escapeshellarg($this->repositoryConfiguration->getImportTempZbarPath($this->item)), $output, $returnVar);
 
         switch ($returnVar) {
             case 1:
@@ -60,7 +60,7 @@ class BarcodeStage implements StageInterface
         $isValid = false;
         foreach ($this->barcodes as $code) {
             $parts = [];
-            if (preg_match($this->storageConfiguration->getBarcodeRegex(), $code, $parts)) {
+            if (preg_match($this->repositoryConfiguration->getBarcodeRegex(), $code, $parts)) {
                 if ($this->item->getHerbarium()->getAcronym() === strtoupper($parts['herbarium']) && $parts['specimenId'] !== '') {
                     $isValid = true;
                     $this->item->setSpecimenId($parts['specimenId']);
@@ -81,7 +81,7 @@ class BarcodeStage implements StageInterface
              * skip detection when manually inserted id
              */
             if ($this->item->getSpecimenId() === null) {
-                $imagick = $this->imageService->createImagick($this->storageConfiguration->getImportTempPath($this->item));
+                $imagick = $this->imageService->createImagick($this->repositoryConfiguration->getImportTempPath($this->item));
                 $this->createContrastedImage($imagick);
                 $this->detectCodes();
                 $this->harvestCodes();
