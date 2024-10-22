@@ -26,13 +26,13 @@ class Herbaria
     protected string $bucket;
 
     #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'logo URL'])]
-    protected string $logo;
+    protected ?string $logo;
 
     #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'full name of the herbarium'])]
-    protected string $fullname;
+    protected ?string $fullname;
 
     #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'address of the institution/herbarium'])]
-    protected string $address;
+    protected ?string $address;
 
     /** @var PersistentCollection<int, Photos> */
     #[OneToMany(mappedBy: 'herbarium', targetEntity: Photos::class)]
@@ -64,7 +64,7 @@ class Herbaria
         return $this->bucket;
     }
 
-    public function getLogo(): string
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
@@ -76,7 +76,7 @@ class Herbaria
         return $this;
     }
 
-    public function getFullname(): string
+    public function getFullname(): ?string
     {
         return $this->fullname;
     }
@@ -87,7 +87,7 @@ class Herbaria
         return $this;
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }

@@ -61,7 +61,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
@@ -74,7 +74,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -178,7 +178,7 @@ class Photos extends \App\Model\Database\Entity\Photos implements \Doctrine\ORM\
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */

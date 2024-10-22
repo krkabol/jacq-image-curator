@@ -61,7 +61,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
@@ -74,7 +74,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -178,7 +178,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
@@ -215,7 +215,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
     /**
      * {@inheritDoc}
      */
-    public function getLogo(): string
+    public function getLogo(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLogo', []);
@@ -237,7 +237,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
     /**
      * {@inheritDoc}
      */
-    public function getFullname(): string
+    public function getFullname(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullname', []);
@@ -259,7 +259,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
     /**
      * {@inheritDoc}
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAddress', []);
