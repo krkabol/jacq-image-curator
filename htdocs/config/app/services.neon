@@ -3,7 +3,6 @@ services:
     - App\Security\UserAuthenticator
     - App\Services\S3Service
     - App\Services\ImageService
-    - App\Services\ReportService
     - App\Services\WebDir(%wwwDir%)
     - App\Services\TempDir(%tempDir%)
     - App\Services\RepositoryConfiguration(%storage%)
