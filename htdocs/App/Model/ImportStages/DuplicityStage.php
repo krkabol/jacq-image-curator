@@ -15,7 +15,7 @@ readonly class DuplicityStage implements StageInterface
 {
     protected Photos $item;
 
-    public function __construct(protected PhotoService $photoService, protected LinkGenerator $linkGenerator, protected ImageService $imageService, protected readonly RepositoryConfiguration $repositoryConfiguration, protected S3Service $s3Service)
+    public function __construct(protected PhotoService $photoService, protected LinkGenerator $linkGenerator, protected ImageService $imageService, protected  RepositoryConfiguration $repositoryConfiguration, protected S3Service $s3Service)
     {
     }
 

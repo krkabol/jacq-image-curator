@@ -65,8 +65,8 @@ class HarvestExif extends Command
                 $this->entityManager->flush();
                 unlink($this->tempFile());
             }
-        } catch (\Throwable $throwable) {
-            $output->writeln("\n Error: " . $throwable->getMessage());
+        } catch (\Exception $exception) {
+            $output->writeln("\n Error: " . $exception->getMessage());
         }
 
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
