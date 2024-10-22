@@ -6,8 +6,8 @@ use App\Model\Database\EntityManager;
 use App\Services\AppConfiguration;
 use App\Services\EntityServices\PhotoService;
 use App\Services\ImageService;
-use App\Services\S3Service;
 use App\Services\RepositoryConfiguration;
+use App\Services\S3Service;
 use App\Services\TempDir;
 use Nette\Application\LinkGenerator;
 

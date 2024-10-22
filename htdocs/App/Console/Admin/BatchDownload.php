@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Console\Admin;
 
@@ -35,6 +35,7 @@ class BatchDownload extends Command
         $rsm->addRootEntityFromClassMetadata('App\Model\Database\Entity\Photos', 'p');
         $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id = ? ORDER BY id asc', $rsm);
         $query->setParameter(1, PhotosStatus::HIDDEN);
+
         return $query->execute();
     }
 
@@ -48,9 +49,9 @@ class BatchDownload extends Command
     {
         $startTime = microtime(true);
         $photos = $this->getPhotos();
-        $output->writeln(count($photos) . " files will be downloaded.");
+        $output->writeln(count($photos) . ' files will be downloaded.');
         foreach ($photos as $photo) {
-            $this->s3Service->getObject($this->repositoryConfiguration->getArchiveBucket(), $photo->getArchiveFilename(), $this->tempDir->getPath("downloaded") . DIRECTORY_SEPARATOR . $photo->getArchiveFilename());
+            $this->s3Service->getObject($this->repositoryConfiguration->getArchiveBucket(), $photo->getArchiveFilename(), $this->tempDir->getPath('downloaded') . DIRECTORY_SEPARATOR . $photo->getArchiveFilename());
         }
 
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));

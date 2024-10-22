@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Console\Admin;
 
 use App\Facades\CuratorFacade;
+use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use App\Services\ImageService;
@@ -15,19 +16,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 class HarvestExif extends Command
 {
 
-    protected const string TEMPNAME = DIRECTORY_SEPARATOR . "exif.tif";
+    protected const string TEMPNAME = DIRECTORY_SEPARATOR . 'exif.tif';
 
     public function __construct(protected readonly EntityManager $entityManager, protected readonly CuratorFacade $curatorService, protected readonly TempDir $tempDir, protected readonly ImageService $imageService, ?string $name = null)
     {
         parent::__construct($name);
     }
 
+    /**
+     * @return Photos[]
+     */
     public function getListOfPhotos(): ?array
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('App\Model\Database\Entity\Photos', 'p');
         $query = $this->entityManager->createNativeQuery('SELECT p.* FROM photos p WHERE status_id IN (?) AND identify is null ORDER BY id asc LIMIT 1000', $rsm);
         $query->setParameter(1, PhotosStatus::PASSED);
+
         return $query->execute();
     }
 
@@ -65,6 +70,7 @@ class HarvestExif extends Command
         }
 
         $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
+
         return Command::SUCCESS;
     }
 

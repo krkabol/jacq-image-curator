@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -15,9 +15,10 @@ class SpecimenFactory
 
     public function create(string $fullSpecimenId): Specimen
     {
-        if ($fullSpecimenId == '') {
+        if ($fullSpecimenId === '') {
             throw new SpecimenIdException('Specimen id cannot be empty');
         }
+
         $specimen = new Specimen($fullSpecimenId);
         $specimen->setHerbarium($this->curatorFacade->getHerbariumFromId($fullSpecimenId));
 

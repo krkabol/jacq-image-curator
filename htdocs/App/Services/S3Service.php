@@ -29,7 +29,7 @@ readonly class S3Service
                 'ContentType' => 'image/tiff']);
         }
 
-        throw new S3Exception("Tif file {$key} already exists");
+        throw new S3Exception(sprintf('Tif file %s already exists', $key));
     }
 
     public function getObjectSize(string $bucket, string $key): int
@@ -42,7 +42,7 @@ readonly class S3Service
         return $result['ContentLength'];
     }
 
-    public function headObject($bucket, $key): Result
+    public function headObject(string $bucket, string $key): Result
     {
         return $this->s3->headObject([
             'Bucket' => $bucket,
@@ -72,7 +72,7 @@ readonly class S3Service
         ]);
     }
 
-    public function putJP2IfNotExists(string $bucket, string $key, string $path): Result
+    public function putJp2IfNotExists(string $bucket, string $key, string $path): Result
     {
         if (!$this->s3->doesObjectExist($bucket, $key)) {
             return $this->s3->putObject([
@@ -82,7 +82,7 @@ readonly class S3Service
                 'ContentType' => 'image/jp2']);
         }
 
-        throw new S3Exception("JP2 file {$key} already exists");
+        throw new S3Exception(sprintf('JP2 file %s already exists', $key));
     }
 
     public function getObject(string $bucket, string $key, string $path): Result
@@ -93,6 +93,9 @@ readonly class S3Service
             'SaveAs' => $path]);
     }
 
+    /**
+     * @return string[]
+     */
     public function listObjectsNamesOnly(string $bucket): array
     {
         $objects = [];
@@ -109,18 +112,17 @@ readonly class S3Service
 
     public function listObjects(string $bucket): \Iterator
     {
-
         return $this->s3->getIterator('ListObjects', [
             'Bucket' => $bucket,
             // "Prefix" => 'some_folder/'
         ]);
     }
 
-    public function getStreamOfObject($bucket, $key): mixed
+    public function getStreamOfObject(string $bucket, string $key): mixed
     {
         $this->s3->registerStreamWrapper();
 
-        return fopen("s3://{$bucket}/{$key}", 'r');
+        return fopen(sprintf('s3://%s/%s', $bucket, $key), 'r');
     }
 
 }

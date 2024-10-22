@@ -4,9 +4,8 @@ namespace App\Model\ImportStages;
 
 use App\Model\ImportStages\Exceptions\ConvertStageException;
 use App\Services\ImageService;
-use App\Services\S3Service;
 use App\Services\RepositoryConfiguration;
-use Imagick;
+use App\Services\S3Service;
 use League\Pipeline\StageInterface;
 
 readonly class ConvertStage implements StageInterface

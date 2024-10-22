@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -8,6 +8,7 @@ class Specimen
 {
 
     protected Herbaria $herbarium;
+
     protected int $specimenId;
 
     public function __construct(protected readonly string $specimenFullId)
@@ -22,12 +23,14 @@ class Specimen
     public function setHerbarium(Herbaria $herbarium): Specimen
     {
         $this->herbarium = $herbarium;
+
         return $this;
     }
 
     public function setSpecimenId(int $specimenId): Specimen
     {
         $this->specimenId = $specimenId;
+
         return $this;
     }
 
@@ -35,6 +38,5 @@ class Specimen
     {
         return $this->specimenId;
     }
-
 
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services\EntityServices;
 
@@ -9,17 +9,17 @@ use Doctrine\Common\Collections\Criteria;
 
 class PhotoService extends BaseEntityService
 {
+
     protected string $entityName = Photos::class;
 
     public function specimenHasPublicPhotos(Specimen $specimen): bool
     {
-        if (count($this->getPublicPhotosOfSpecimen($specimen)) > 0) {
-            return true;
-        }
-        return false;
-
+        return count($this->getPublicPhotosOfSpecimen($specimen)) > 0;
     }
 
+    /**
+     * @return Photos[]
+     */
     public function getPublicPhotosOfSpecimen(Specimen $specimen): array
     {
         return $this->repository->findBy(['specimenId' => $specimen->getSpecimenId(), 'herbarium' => $specimen->getHerbarium(), 'status' => PhotosStatus::PASSED_PUBLIC]);
@@ -55,9 +55,9 @@ class PhotoService extends BaseEntityService
         return $this->repository->findOneBy(['id' => $id, 'herbarium' => $this->user->getIdentity()->herbarium, 'status' => $this->getControlErrorStatus()]);
     }
 
-    public function findUnprocessedPhotoByOriginalFilename($filename): ?Photos
+    public function findUnprocessedPhotoByOriginalFilename(string $filename): ?Photos
     {
-        return $this->repository->findOneBy(['status' => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], 'herbarium' =>  $this->user->getIdentity()->herbarium, 'originalFilename' => $filename]);
+        return $this->repository->findOneBy(['status' => [PhotosStatus::WAITING, PhotosStatus::CONTROL_ERROR], 'herbarium' => $this->user->getIdentity()->herbarium, 'originalFilename' => $filename]);
     }
 
     /**
@@ -72,4 +72,5 @@ class PhotoService extends BaseEntityService
     {
         return $this->repository->findOneBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]]);
     }
+
 }

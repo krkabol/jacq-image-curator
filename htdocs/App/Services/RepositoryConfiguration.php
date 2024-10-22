@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -11,6 +11,9 @@ final readonly class RepositoryConfiguration
     public const string TEMP_FILE = 'default';
     public const string TEMP_ZBAR_FILE = 'default_zbar';
 
+    /**
+     * @param mixed[] $config
+     */
     public function __construct(protected array $config, protected TempDir $tempDir)
     {
     }
@@ -28,16 +31,6 @@ final readonly class RepositoryConfiguration
     public function getJp2Quality(): int
     {
         return $this->getKey('jp2Quality', 'Compression for image server files not set.');
-
-    }
-
-    protected function getKey(string $key, string $msg = "")
-    {
-        if (!isset($this->config[$key])) {
-            $text = $msg == "" ? "Configuration parameter " . strtoupper($key) . " not set!" : $msg;
-            throw new ConfigurationException($text);
-        }
-        return $this->config[$key];
     }
 
     /**
@@ -63,7 +56,7 @@ final readonly class RepositoryConfiguration
         return $this->getKey('regexHerbariumPartName');
     }
 
-    public function getImageServerInfoURL(string $jp2ObjectName): string
+    public function getImageServerInfoUrl(string $jp2ObjectName): string
     {
         return $this->getImageServerBaseUrl() . $jp2ObjectName;
     }
@@ -88,7 +81,7 @@ final readonly class RepositoryConfiguration
         return $this->getKey('previewQuality');
     }
 
-    public function getImageServerUrlThumbnail($jp2ObjectName): string
+    public function getImageServerUrlThumbnail(string $jp2ObjectName): string
     {
         return $this->getImageServerBaseUrl() . $jp2ObjectName . '/full/' . $this->getThumbnailSize() . ',/0/default.jpg';
     }
@@ -123,10 +116,20 @@ final readonly class RepositoryConfiguration
         return $photo->getFullSpecimenId() . '_' . $photo->getId() . '.tif';
     }
 
+    protected function getKey(string $key, string $msg = ''): mixed
+    {
+        if (!isset($this->config[$key])) {
+            $text = $msg === '' ? 'Configuration parameter ' . strtoupper($key) . ' not set!' : $msg;
+
+            throw new ConfigurationException($text);
+        }
+
+        return $this->config[$key];
+    }
+
     protected function getImageServerBaseUrl(): string
     {
         return $this->getKey('imageServerBaseUrl');
     }
-
 
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\IIIF;
 
@@ -25,7 +25,9 @@ class ManifestFactory
 {
 
     protected PhotosRepository $photosRepository;
+
     protected Specimen $specimen;
+
     protected string $selfReferencingLink;
 
     public function __construct(protected readonly EntityManager $entityManager, protected readonly RepositoryConfiguration $repositoryConfiguration, protected readonly LinkGenerator $linkGenerator, protected readonly PhotoService $photoService)
@@ -39,15 +41,15 @@ class ManifestFactory
         $this->selfReferencingLink = $selfReferencingLink;
         $manifest = new Manifest(true);
         $manifest
-            ->addContext("http://www.w3.org/ns/anno.jsonld")
+            ->addContext('http://www.w3.org/ns/anno.jsonld')
             ->setID($selfReferencingLink)
-            ->addLabel("herbarium specimen")
-            ->addDescription("A preserved herbarium specimen")
+            ->addLabel('herbarium specimen')
+            ->addDescription('A preserved herbarium specimen')
             ->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT)
             ->addThumbnail($this->createThumbnail())
             ->addSequence($this->createSequence());
 
-        if ($specimen->getHerbarium()->getLogo() != NULL){
+        if ($specimen->getHerbarium()->getLogo() !== null) {
             $manifest->addLogo((new Logo())->setID($specimen->getHerbarium()->getLogo()));
         }
 
@@ -65,12 +67,13 @@ class ManifestFactory
         return $thumbnail;
     }
 
-    protected function createService(Photos $photo)
+    protected function createService(Photos $photo): Service
     {
         $service = new Service();
         $service
-            ->setID($this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()))
-            ->setProfile("http://iiif.io/api/image/2/level2.json");
+            ->setID($this->repositoryConfiguration->getImageServerInfoUrl($photo->getJp2Filename()))
+            ->setProfile('http://iiif.io/api/image/2/level2.json');
+
         return $service;
     }
 
@@ -80,8 +83,8 @@ class ManifestFactory
         if (count($photos) !== 0) {
             return $photos[0];
         }
-        return null;
 
+        return null;
     }
 
     protected function createSequence(): Sequence
@@ -89,13 +92,14 @@ class ManifestFactory
         $sequence = new Sequence();
 
         $sequence
-            ->setID($this->selfReferencingLink . "#sequence-1")
+            ->setID($this->selfReferencingLink . '#sequence-1')
             ->setViewingDirection(ViewingDirection::LEFT_TO_RIGHT)
-            ->addLabel("Current order");
+            ->addLabel('Current order');
 
         foreach ($this->getImages() as $image) {
             $sequence->addCanvas($this->createCanvas($image));
         }
+
         return $sequence;
     }
 
@@ -111,14 +115,15 @@ class ManifestFactory
     {
         $canvas = new Canvas();
         $metadata = new Metadata();
-        $metadata->addLabelValue("Archive Master file (TIFF)", "<a href='" . $this->linkGenerator->link('Front:Repository:archiveImage', [$photo->getId()]) . "'>download original</a>");
+        $metadata->addLabelValue('Archive Master file (TIFF)', "<a href='" . $this->linkGenerator->link('Front:Repository:archiveImage', [$photo->getId()]) . "'>download original</a>");
         $canvas
-            ->setID($this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#canvas')
+            ->setID($this->repositoryConfiguration->getImageServerInfoUrl($photo->getJp2Filename()) . '#canvas')
             ->addLabel($photo->getJp2Filename())
             ->setWidth($photo->getWidth())
             ->setHeight($photo->getHeight())
             ->setMetadata($metadata)
             ->addImage($this->createAnnotation($photo));
+
         return $canvas;
     }
 
@@ -126,18 +131,19 @@ class ManifestFactory
     {
         $content = new Content();
         $content
-            ->setID($this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()))
+            ->setID($this->repositoryConfiguration->getImageServerInfoUrl($photo->getJp2Filename()))
             ->setType(DCType::IMAGE)
-            ->setFormat("image/jp2")
+            ->setFormat('image/jp2')
             ->setWidth($photo->getWidth())
             ->setHeight($photo->getHeight())
             ->addService($this->createService($photo));
 
         $annotation = new Annotation();
         $annotation
-            ->setID($this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#image')
-            ->setOn($this->repositoryConfiguration->getImageServerInfoURL($photo->getJp2Filename()) . '#canvas')
+            ->setID($this->repositoryConfiguration->getImageServerInfoUrl($photo->getJp2Filename()) . '#image')
+            ->setOn($this->repositoryConfiguration->getImageServerInfoUrl($photo->getJp2Filename()) . '#canvas')
             ->setContent($content);
+
         return $annotation;
     }
 

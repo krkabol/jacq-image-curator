@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -7,7 +7,7 @@ use Imagick;
 class ImageService
 {
 
-    public const string ENCODING = "UTF-8";
+    public const string ENCODING = 'UTF-8';
 
     public function __construct(protected readonly S3Service $S3Service, protected readonly RepositoryConfiguration $storageConfiguration)
     {
@@ -70,6 +70,27 @@ class ImageService
     }
 
     /**
+     * @return mixed[]
+     */
+    public function readIdentify(Imagick $imagick): array
+    {
+        $identify = $imagick->identifyImage(true);
+        $identify['rawOutput'] = $this->parseIdentify($identify['rawOutput']);
+
+        return $identify;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function readExif(Imagick $imagick): array
+    {
+        return $imagick->getImageProperties();
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.PHP.DisallowReference
+     *
      * from https://www.php.net/manual/en/imagick.identifyimage.php
      * $identify = $this->parseIdentify($identify['rawOutput']);
      */
@@ -87,7 +108,9 @@ class ImageService
         foreach ($lines as $line) {
             $trimLine = trim($line);
 
-            if (empty($trimLine)) continue;
+            if (empty($trimLine))
+
+            continue;
 
             if ($raw) {
                 preg_match('/^[0-9]+:\s/', $trimLine, $match);
@@ -117,9 +140,9 @@ class ImageService
 
             $_key = ucwords($parts[0]);
             $_key = str_replace(' ', '', $_key);
-            $_val = isset($parts[1]) ? $parts[1] : [];
+            $_val = $parts[1] ?? [];
 
-            if ($_key == 'Image') {
+            if ($_key === 'Image') {
                 if (!empty($output)) {
                     $outputs[] = $output['Image'];
                     $output = [];
@@ -138,7 +161,7 @@ class ImageService
                 $_key = rtrim($_key, ':');
                 $keys[] = $_key;
 
-                if ($_key == 'Histogram' || $_key == 'Colormap') {
+                if ($_key === 'Histogram' || $_key === 'Colormap') {
                     $raw = $_key;
                 }
             }
@@ -157,7 +180,6 @@ class ImageService
             if (!is_array($_val)) {
                 $arr[$_key] = $_val;
             }
-
         }
 
         $outputs[] = $output['Image'];
@@ -165,16 +187,4 @@ class ImageService
         return count($outputs) > 1 ? $outputs : $outputs[0];
     }
 
-    public function readIdentify(Imagick $imagick): array
-    {
-        $identify = $imagick->identifyImage(true);
-        $identify['rawOutput'] = $this->parseIdentify($identify['rawOutput']);
-        return $identify;
-
-    }
-
-    public function readExif(Imagick $imagick): array
-    {
-        return $imagick->getImageProperties();
-    }
 }

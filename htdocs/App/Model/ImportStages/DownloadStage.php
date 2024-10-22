@@ -3,8 +3,8 @@
 namespace App\Model\ImportStages;
 
 use App\Model\ImportStages\Exceptions\DownloadStageException;
-use App\Services\S3Service;
 use App\Services\RepositoryConfiguration;
+use App\Services\S3Service;
 use League\Pipeline\StageInterface;
 
 readonly class DownloadStage implements StageInterface

@@ -20,7 +20,7 @@ final class HomePresenter extends SecuredPresenter
         $this->template->statuses = $this->curatorService->getAllStatuses();
     }
 
-      public function renderOverview(): void
+    public function renderOverview(): void
     {
         $files = $this->curatorService->getLatestImports();
         $this->template->files = $files;

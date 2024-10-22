@@ -14,7 +14,8 @@ final class ImportPresenter extends SecuredPresenter
 
     /** @inject */
     public CuratorFacade $curatorFacade;
-    /** @inject  */
+
+    /** @inject */
     public PhotoService $photoService;
 
     public ?Photos $photo;
@@ -56,7 +57,7 @@ final class ImportPresenter extends SecuredPresenter
         $this->photo = $photo;
     }
 
-      public function actionPrimaryImport(): void
+    public function actionPrimaryImport(): void
     {
         try {
             $this->curatorFacade->registerNewFiles();
@@ -75,6 +76,7 @@ final class ImportPresenter extends SecuredPresenter
             if ($photo === null) {
                 $this->error('Photo not found');
             }
+
             $this->curatorFacade->reimportPhoto($photo);
             $this->flashMessage('File successfully marked to be re-processed', 'success');
         } catch (\Throwable $exception) {
@@ -87,7 +89,7 @@ final class ImportPresenter extends SecuredPresenter
     public function actionDelete(int $id): void
     {
         try {
-            $photo = $this->photoService->getPhotoWithError( $id);
+            $photo = $this->photoService->getPhotoWithError($id);
             if ($photo === null) {
                 $this->error('Photo not found');
             }

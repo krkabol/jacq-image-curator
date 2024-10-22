@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Facades;
 
@@ -49,15 +49,8 @@ readonly class CuratorFacade
         }
 
         $this->entityManager->flush();
-        return $this;
-    }
 
-    /**
-     * @return FileInsideCuratorBucket[]
-     */
-    protected function getEligibleCuratorBucketFiles(): array
-    {
-        return array_filter($this->getAllCuratorBucketFiles(), fn($item) => $item->isEligibleToBeImported() === true);
+        return $this;
     }
 
     /**
@@ -69,12 +62,13 @@ readonly class CuratorFacade
         foreach ($this->s3Service->listObjects($this->herbariumService->getCurrentUserHerbarium()->getBucket()) as $filename) {
             $entity = $this->photoService->findUnprocessedPhotoByOriginalFilename($filename['Key']);
             if ($entity === null) {
-                $file = new FileInsideCuratorBucket($filename['Key'], (int)$filename['Size'], $filename['LastModified'], false, false, null, null);
+                $file = new FileInsideCuratorBucket($filename['Key'], (int) $filename['Size'], $filename['LastModified'], false, false, null, null);
             } else {
                 $alreadyWaiting = $entity->getStatus()->getId() === PhotosStatus::WAITING;
                 $hasControlError = $entity->getStatus()->getId() === PhotosStatus::CONTROL_ERROR;
-                $file = new FileInsideCuratorBucket($filename['Key'], (int)$filename['Size'], $filename['LastModified'], $alreadyWaiting, $hasControlError, $entity->getId(), $entity->getMessage());
+                $file = new FileInsideCuratorBucket($filename['Key'], (int) $filename['Size'], $filename['LastModified'], $alreadyWaiting, $hasControlError, $entity->getId(), $entity->getMessage());
             }
+
             $files[] = $file;
         }
 
@@ -133,6 +127,7 @@ readonly class CuratorFacade
     public function deleteJustFile(string $filename): CuratorFacade
     {
         $this->s3Service->deleteObject($this->herbariumService->getCurrentUserHerbarium()->getBucket(), $filename);
+
         return $this;
     }
 
@@ -156,16 +151,37 @@ readonly class CuratorFacade
     {
         $acronym = strtoupper($this->splitId($specimenId)[$this->repositoryConfiguration->getRegexHerbariumPartName()]);
         $herbarium = $this->herbariumService->findOneWithAcronym($acronym);
-        if ($herbarium === NULL) {
-            throw new SpecimenIdException("Unknown herbarium");
+        if ($herbarium === null) {
+            throw new SpecimenIdException('Unknown herbarium');
         }
+
         return $herbarium;
+    }
+
+    public function getSpecimenIdFromId(string $specimenId): int
+    {
+        return (int) $this->splitId($specimenId)[$this->repositoryConfiguration->getRegexSpecimenPartName()];
+    }
+
+    public function getArchiveFile(Photos $photo, string $destination): CuratorFacade
+    {
+        $this->s3Service->getObject($this->repositoryConfiguration->getArchiveBucket(), $photo->getArchiveFilename(), $destination);
+
+        return $this;
+    }
+
+    /**
+     * @return FileInsideCuratorBucket[]
+     */
+    protected function getEligibleCuratorBucketFiles(): array
+    {
+        return array_filter($this->getAllCuratorBucketFiles(), fn ($item) => $item->isEligibleToBeImported() === true);
     }
 
     /**
      * @return string[]
      */
-    protected function splitId($specimenId): array
+    protected function splitId(string $specimenId): array
     {
         $parts = [];
         if (preg_match($this->repositoryConfiguration->getSpecimenNameRegex(), $specimenId, $parts)) {
@@ -173,17 +189,6 @@ readonly class CuratorFacade
         } else {
             throw new SpecimenIdException('invalid name format: ' . $specimenId);
         }
-    }
-
-    public function getSpecimenIdFromId(string $specimenId): int
-    {
-        return (int)$this->splitId($specimenId)[$this->repositoryConfiguration->getRegexSpecimenPartName()];
-    }
-
-    public function getArchiveFile(Photos $photo, string $destination): CuratorFacade
-    {
-        $this->s3Service->getObject($this->repositoryConfiguration->getArchiveBucket(), $photo->getArchiveFilename(), $destination);
-        return $this;
     }
 
 }

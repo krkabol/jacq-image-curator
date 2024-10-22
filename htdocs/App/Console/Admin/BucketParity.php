@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Console\Admin;
 
@@ -7,9 +7,6 @@ use App\Model\Database\Entity\PhotosStatus;
 use App\Model\Database\EntityManager;
 use App\Services\RepositoryConfiguration;
 use App\Services\S3Service;
-use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,24 +27,35 @@ class BucketParity extends Command
      */
     public function getArchiveFilesDb(): array
     {
-        $sql = 'SELECT archive_filename FROM photos p WHERE status_id IN (' . implode(",", PhotosStatus::PASSED) . ') ORDER BY archive_filename asc';
+        $sql = 'SELECT archive_filename FROM photos p WHERE status_id IN (' . implode(',', PhotosStatus::PASSED) . ') ORDER BY archive_filename asc';
         $smtp = $this->entityManager->getConnection()->prepare($sql);
+
         return $smtp->executeQuery()->fetchFirstColumn();
     }
 
+    /**
+     * @return string[]
+     */
     public function getJp2FilesDb(): array
     {
-        $sql = 'SELECT jp2filename FROM photos p WHERE status_id IN (' . implode(",", PhotosStatus::PASSED) . ') ORDER BY jp2filename asc';
+        $sql = 'SELECT jp2filename FROM photos p WHERE status_id IN (' . implode(',', PhotosStatus::PASSED) . ') ORDER BY jp2filename asc';
         $smtp = $this->entityManager->getConnection()->prepare($sql);
+
         return $smtp->executeQuery()->fetchFirstColumn();
     }
 
-    public function getArchiveFilesS3()
+    /**
+     * @return string[]
+     */
+    public function getArchiveFilesS3(): array
     {
         return $this->s3Service->listObjectsNamesOnly($this->repositoryConfiguration->getArchiveBucket());
     }
 
-    public function getJp2FilesS3()
+    /**
+     * @return string[]
+     */
+    public function getJp2FilesS3(): array
     {
         return $this->s3Service->listObjectsNamesOnly($this->repositoryConfiguration->getImageServerBucket());
     }

@@ -3,7 +3,6 @@
 namespace App\UI\Front\Sign;
 
 use App\UI\Base\BasePresenter;
-use App\UI\Base\Form\FormFactory;
 use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\UI\Form;
 use Nette\Security\AuthenticationException;

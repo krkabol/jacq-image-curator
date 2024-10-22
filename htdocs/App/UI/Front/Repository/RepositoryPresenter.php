@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\UI\Front\Repository;
 
@@ -16,8 +16,11 @@ final class RepositoryPresenter extends UnsecuredPresenter
 {
 
     /** @inject */ public S3Service $s3Service;
+
     /** @inject */ public SpecimenFactory $specimenFactory;
+
     /** @inject */ public PhotoService $photoService;
+
     /** @inject */ public RepositoryConfiguration $repositoryConfiguration;
 
     public function renderArchiveImage(int $id): void
@@ -26,9 +29,10 @@ final class RepositoryPresenter extends UnsecuredPresenter
         if ($photo === null) {
             $this->error('The requested photo does not exists.');
         }
+
         $bucket = $this->repositoryConfiguration->getArchiveBucket();
-        $filename =  $photo->getArchiveFilename();
-        if ($this->s3Service->objectExists($bucket,$filename)) {
+        $filename = $photo->getArchiveFilename();
+        if ($this->s3Service->objectExists($bucket, $filename)) {
             $head = $this->s3Service->headObject($bucket, $filename);
             $stream = $this->s3Service->getStreamOfObject($bucket, $filename);
 
@@ -41,19 +45,18 @@ final class RepositoryPresenter extends UnsecuredPresenter
 
             $response = new CallbackResponse($callback);
             $this->sendResponse($response);
-        }
-        else {
+        } else {
             $this->error('The requested image does not exists.');
         }
-
     }
 
     public function renderSpecimen(?string $specimenFullId): void
     {
         try {
-            if($specimenFullId === null) {
+            if ($specimenFullId === null) {
                 throw new SpecimenIdException();
             }
+
             $specimen = $this->specimenFactory->create($specimenFullId);
         } catch (SpecimenIdException $exception) {
             $this->flashMessage($exception->getMessage(), 'error');

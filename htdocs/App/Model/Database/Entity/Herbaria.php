@@ -27,15 +27,11 @@ class Herbaria
     #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'logo URL'])]
     protected string $logo;
 
-    /**
-     * @var PersistentCollection<int, Photos>
-     */
+    /** @var PersistentCollection<int, Photos> */
     #[OneToMany(mappedBy: 'herbarium', targetEntity: Photos::class)]
     protected PersistentCollection $photos;
 
-    /**
-     * @var PersistentCollection<int, User>
-     */
+    /** @var PersistentCollection<int, User> */
     #[OneToMany(mappedBy: 'herbarium', targetEntity: User::class)]
     protected PersistentCollection $users;
 
@@ -64,6 +60,7 @@ class Herbaria
     public function setLogo(string $logo): Herbaria
     {
         $this->logo = $logo;
+
         return $this;
     }
 

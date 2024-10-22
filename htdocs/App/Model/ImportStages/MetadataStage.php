@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model\ImportStages;
 
@@ -19,6 +19,14 @@ class MetadataStage implements StageInterface
     {
     }
 
+    protected function readDimensions(Imagick $imagick): Imagick
+    {
+        $this->item->setWidth($imagick->getImageWidth());
+        $this->item->setHeight($imagick->getImageHeight());
+
+        return $imagick;
+    }
+
     public function __invoke(mixed $payload): mixed
     {
         try {
@@ -34,14 +42,6 @@ class MetadataStage implements StageInterface
         } catch (Throwable $e) {
             throw new MetadataStageException('problem with metadata detection: ' . $e->getMessage());
         }
-    }
-
-    protected function readDimensions(Imagick $imagick): Imagick
-    {
-        $this->item->setWidth($imagick->getImageWidth());
-        $this->item->setHeight($imagick->getImageHeight());
-
-        return $imagick;
     }
 
 }

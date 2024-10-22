@@ -62,9 +62,11 @@ class Photos
     #[Column(type: Types::BLOB, nullable: true, options: ['comment' => 'Thumbnail during import phase'])]
     protected mixed $thumbnail;
 
+    /** @var ?mixed */
     #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'raw EXIF data extracted from Archive Master file'])]
     protected ?array $exif;
 
+    /** @var ?mixed */
     #[Column(type: Types::JSON, nullable: true, options: ['jsonb' => true, 'comment' => 'Imagick -verbose identify metadata output from the Archive Master file'])]
     protected ?array $identify;
 
@@ -222,6 +224,9 @@ class Photos
         return $this;
     }
 
+    /**
+     * @return ?mixed[]
+     */
     public function getExif(): ?array
     {
         return $this->exif;
@@ -230,9 +235,13 @@ class Photos
     public function setExif(?array $exif): Photos
     {
         $this->exif = $exif;
+
         return $this;
     }
 
+    /**
+     * @return ?mixed[]
+     */
     public function getIdentify(): ?array
     {
         return $this->identify;
@@ -241,6 +250,7 @@ class Photos
     public function setIdentify(?array $identify): Photos
     {
         $this->identify = $identify;
+
         return $this;
     }
 

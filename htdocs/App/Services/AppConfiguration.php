@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -6,6 +6,10 @@ final readonly class AppConfiguration
 {
 
     public const string VERSION_VARIABLE = 'GIT_TAG';
+
+    /**
+     * @param mixed[] $config
+     */
     public function __construct(private array $config)
     {
     }
@@ -21,10 +25,7 @@ final readonly class AppConfiguration
 
     public function isProduction(): bool
     {
-        if ($this->getPlatform() === "production") {
-            return true;
-        }
-        return false;
+        return $this->getPlatform() === 'production';
     }
 
     public function getVersion(): string
@@ -32,7 +33,8 @@ final readonly class AppConfiguration
         if (getenv(self::VERSION_VARIABLE) !== false) {
             return getenv(self::VERSION_VARIABLE);
         }
-        return "unknown version";
+
+        return 'unknown version';
     }
 
 }
