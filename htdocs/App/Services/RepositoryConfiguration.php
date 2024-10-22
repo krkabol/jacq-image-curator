@@ -10,6 +10,7 @@ final readonly class RepositoryConfiguration
 
     public const string TEMP_FILE = 'default';
     public const string TEMP_ZBAR_FILE = 'default_zbar';
+    public const string TEMP_DUPLICATE_FILE = 'duplicate';
 
     /**
      * @param mixed[] $config
@@ -104,6 +105,11 @@ final readonly class RepositoryConfiguration
     public function getImportTempZbarPath(Photos $photo): string
     {
         return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . '.png');
+    }
+
+    public function getImportTempDuplicatePath(Photos $photo): string
+    {
+        return $this->tempDir->getPath(self::TEMP_DUPLICATE_FILE . '.'.pathinfo($photo->getArchiveFilename(), PATHINFO_EXTENSION));
     }
 
     public function createS3Jp2Name(Photos $photo): string

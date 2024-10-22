@@ -45,7 +45,7 @@ readonly class StageFactory
 
     public function createDuplicityStage(): DuplicityStage
     {
-        return new DuplicityStage($this->photoService, $this->linkGenerator);
+        return new DuplicityStage($this->photoService, $this->linkGenerator, $this->imageService, $this->repositoryConfiguration, $this->s3Service);
     }
 
     public function createTransferStage(): TransferStage

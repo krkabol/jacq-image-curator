@@ -68,9 +68,12 @@ class PhotoService extends BaseEntityService
         return $this->repository->findBy(['herbarium' => $this->user->getIdentity()->herbarium, 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]], ['lastEdit' => Criteria::DESC], 30);
     }
 
-    public function findPotentialDuplicate(Photos $photo): ?Photos
+    /**
+     * @return Photos[]
+     */
+    public function findPotentialDuplicates(Photos $photo): array
     {
-        return $this->repository->findOneBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]]);
+        return $this->repository->findBy(['herbarium' => $photo->getHerbarium(), 'specimenId' => $photo->getSpecimenId(), 'archiveFileSize' => $photo->getArchiveFileSize(), 'status' => [PhotosStatus::CONTROL_OK, PhotosStatus::PUBLIC, PhotosStatus::HIDDEN]]);
     }
 
 }
