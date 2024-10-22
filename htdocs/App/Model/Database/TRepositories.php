@@ -2,6 +2,7 @@
 
 namespace App\Model\Database;
 
+use App\Model\Database\Entity\Contact;
 use App\Model\Database\Entity\Herbaria;
 use App\Model\Database\Entity\Photos;
 use App\Model\Database\Entity\PhotosStatus;
@@ -35,6 +36,11 @@ trait TRepositories
     public function getPhotosStatusRepository(): EntityRepository
     {
         return $this->getRepository(PhotosStatus::class);
+    }
+
+    public function getContactRepository(): EntityRepository
+    {
+        return $this->getRepository(Contact::class);
     }
 
 }

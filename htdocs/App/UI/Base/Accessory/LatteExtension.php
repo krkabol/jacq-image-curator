@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\UI\Base\Accessory;
 
@@ -13,7 +13,7 @@ final class LatteExtension extends Extension
      */
     public function getFilters(): array
     {
-        return ['status' => [$this, 'status']];
+        return ['status' => [$this, 'status'], 'email' => [$this, 'email']];
     }
 
     /**
@@ -36,6 +36,23 @@ final class LatteExtension extends Extension
         }
 
         return $el;
+    }
+
+    public function email(string $email): Html
+    {
+       $link = Html::el('a')
+            ->href('mailto:'.$email)
+            ->setText($email);
+
+        $icon = Html::el('i')
+            ->class('fa fa-envelope')
+            ->aria('hidden', 'true');
+        $span = Html::el('span')
+            ->addHtml($link)
+            ->addHtml(' ')
+            ->addHtml($icon);
+
+        return $span;
     }
 
 }

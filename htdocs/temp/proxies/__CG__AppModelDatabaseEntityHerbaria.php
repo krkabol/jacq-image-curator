@@ -61,20 +61,20 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
 
 
     /**
-     * 
+     *
      * @return array
      */
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'photos', 'users', 'id'];
+            return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'fullname', 'address', 'photos', 'users', 'contacts', 'id'];
         }
 
-        return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'photos', 'users', 'id'];
+        return ['__isInitialized__', 'acronym', 'bucket', 'logo', 'fullname', 'address', 'photos', 'users', 'contacts', 'id'];
     }
 
     /**
-     * 
+     *
      */
     public function __wakeup()
     {
@@ -178,7 +178,7 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
         return self::$lazyPropertiesDefaults;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -232,6 +232,72 @@ class Herbaria extends \App\Model\Database\Entity\Herbaria implements \Doctrine\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLogo', [$logo]);
 
         return parent::setLogo($logo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFullname(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFullname', []);
+
+        return parent::getFullname();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFullname(string $fullname): \App\Model\Database\Entity\Herbaria
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFullname', [$fullname]);
+
+        return parent::setFullname($fullname);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAddress(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAddress', []);
+
+        return parent::getAddress();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAddress(string $address): \App\Model\Database\Entity\Herbaria
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAddress', [$address]);
+
+        return parent::setAddress($address);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContacts(): \Doctrine\ORM\PersistentCollection
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContacts', []);
+
+        return parent::getContacts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContacts(\Doctrine\ORM\PersistentCollection $contacts): \App\Model\Database\Entity\Herbaria
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContacts', [$contacts]);
+
+        return parent::setContacts($contacts);
     }
 
     /**

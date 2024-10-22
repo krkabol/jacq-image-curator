@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\PersistentCollection;
 
@@ -27,6 +28,12 @@ class Herbaria
     #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'logo URL'])]
     protected string $logo;
 
+    #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'full name of the herbarium'])]
+    protected string $fullname;
+
+    #[Column(type: Types::TEXT, length: 5000, unique: false, nullable: true, options: ['comment' => 'address of the institution/herbarium'])]
+    protected string $address;
+
     /** @var PersistentCollection<int, Photos> */
     #[OneToMany(mappedBy: 'herbarium', targetEntity: Photos::class)]
     protected PersistentCollection $photos;
@@ -34,6 +41,11 @@ class Herbaria
     /** @var PersistentCollection<int, User> */
     #[OneToMany(mappedBy: 'herbarium', targetEntity: User::class)]
     protected PersistentCollection $users;
+
+    /** @var PersistentCollection<int, Contact> */
+    #[OneToMany(mappedBy: 'herbarium', targetEntity: Contact::class)]
+    #[OrderBy(["surname" => "ASC"])]
+    protected PersistentCollection $contacts;
 
     public function getAcronym(): string
     {
@@ -61,6 +73,39 @@ class Herbaria
     {
         $this->logo = $logo;
 
+        return $this;
+    }
+
+    public function getFullname(): string
+    {
+        return $this->fullname;
+    }
+
+    public function setFullname(string $fullname): Herbaria
+    {
+        $this->fullname = $fullname;
+        return $this;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): Herbaria
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    public function getContacts(): PersistentCollection
+    {
+        return $this->contacts;
+    }
+
+    public function setContacts(PersistentCollection $contacts): Herbaria
+    {
+        $this->contacts = $contacts;
         return $this;
     }
 

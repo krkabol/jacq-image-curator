@@ -19,4 +19,22 @@ abstract class BaseEntityService
         $this->repository = $this->entityManager->getRepository($this->entityName);
     }
 
+    /**
+     * @return \App\Model\Database\T[]|array|object[]
+     */
+    public function findAll(): array
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
+     * @param array $criteria
+     * @param array $orderBy
+     * @return object|\App\Model\Database\T|null
+     */
+    public function findOneBy(array $criteria, array $orderBy = []): ?object
+    {
+        return $this->repository->findOneBy($criteria, $orderBy);
+    }
+
 }
