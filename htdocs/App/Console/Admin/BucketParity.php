@@ -23,7 +23,7 @@ class BucketParity extends Command
     }
 
     /**
-     * @return Photos[]
+     * @return string[]
      */
     public function getArchiveFilesDb(): array
     {

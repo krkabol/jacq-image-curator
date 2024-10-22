@@ -75,7 +75,9 @@ class ImageService
     public function readIdentify(Imagick $imagick): array
     {
         $identify = $imagick->identifyImage(true);
-        $identify['rawOutput'] = $this->parseIdentify($identify['rawOutput']);
+        if(isset($identify['rawOutput'])){
+            $identify['rawOutput'] = $this->parseIdentify($identify['rawOutput']);
+        }
 
         return $identify;
     }

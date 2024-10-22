@@ -25,7 +25,7 @@ final class ImportPresenter extends SecuredPresenter
         $this->template->title = 'New Files';
         $files = $this->curatorFacade->getAllCuratorBucketFiles();
         $this->template->files = $files;
-        $this->template->orphanedItems = $this->curatorFacade->getOrphanedItems($this->herbarium);
+        $this->template->orphanedItems = $this->curatorFacade->getOrphanedItems();
         $this->template->eligible = count(array_filter($files, fn ($item) => $item->isEligibleToBeImported() === true));
         $this->template->erroneous = count(array_filter($files, fn ($item) => $item->hasControlError() === true));
         $this->template->waiting = count(array_filter($files, fn ($item) => $item->isAlreadyWaiting() === true));

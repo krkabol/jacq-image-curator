@@ -27,11 +27,11 @@ final class LatteExtension extends Extension
     public function status(mixed $status): Html
     {
         $el = Html::el('b');
-        if ((bool) $status === true) {
-            $el->style['color'] = 'green';
+        if ((bool)$status === true) {
+            $el->style('color', 'green');
             $el->setText('✓');
         } else {
-            $el->style['color'] = 'red';
+            $el->style('color', 'red');
             $el->setText('𐄂');
         }
 

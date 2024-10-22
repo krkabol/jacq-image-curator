@@ -9,7 +9,7 @@ use App\Services\RepositoryConfiguration;
 use App\Services\S3Service;
 use App\UI\Base\UnsecuredPresenter;
 use Nette\Application\Responses\CallbackResponse;
-use Nette\Http\Request;
+use Nette\Http\IRequest;
 use Nette\Http\Response;
 
 final class RepositoryPresenter extends UnsecuredPresenter
@@ -36,7 +36,7 @@ final class RepositoryPresenter extends UnsecuredPresenter
             $head = $this->s3Service->headObject($bucket, $filename);
             $stream = $this->s3Service->getStreamOfObject($bucket, $filename);
 
-            $callback = function (Request $httpRequest, Response $httpResponse) use ($filename, $head, $stream): void {
+            $callback = function (IRequest $httpRequest, Response $httpResponse) use ($filename, $head, $stream): void {
                 $httpResponse->setHeader('Content-Type', $head['ContentType']);
                 $httpResponse->setHeader('Content-Disposition', 'inline; filename' . $filename);
                 fpassthru($stream);
