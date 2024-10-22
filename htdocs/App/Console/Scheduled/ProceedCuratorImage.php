@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Console\Scheduled;
 
@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProceedCuratorImage extends Command
 {
+
+    public const int LIMIT = 10;
 
     /**
      * Running as a CronJob - process images from curatorBucket to the repository waiting room
@@ -45,12 +47,12 @@ class ProceedCuratorImage extends Command
     protected function configure(): void
     {
         $this->setName('curator:importImage');
-        $this->setDescription('take an image from curator bucket and prepare necessary files');
+        $this->setDescription(sprintf('take %c image(s) from curator bucket and proceed import', self::LIMIT));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function proceedPhoto(OutputInterface $output): int
     {
-        $startTime = microtime(true);
+
         $this->entityManager->getConnection()->beginTransaction(); //we are locking the selected row
         $photo = $this->getPhoto();
         if ($photo === null) {
@@ -58,14 +60,11 @@ class ProceedCuratorImage extends Command
 
             return Command::SUCCESS;
         }
-
         try {
             $output->write("\n filename: s3://" . $photo->getHerbarium()->getBucket() . '/' . $photo->getOriginalFilename() . "\n");
             $photo->setLastEditAt();
             $photo->setMessage(null);
             $this->curatorService->importNewFiles()->process($photo);
-
-//            $output->write("\n Specimen fullID: ".$photo->getFullSpecimenId());
             $photo->setThumbnail(null);
             $photo->setStatus($this->entityManager->getReference(PhotosStatus::class, PhotosStatus::CONTROL_OK));
         } catch (ImportStageException $e) {
@@ -77,13 +76,23 @@ class ProceedCuratorImage extends Command
             $output->write("\n ERROR: " . $e->getMessage() . "\n");
 
             return Command::FAILURE;
-        } finally {
-            $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
         }
-
         $this->entityManager->flush();
         $this->entityManager->getConnection()->commit();
 
+        return Command::SUCCESS;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $startTime = microtime(true);
+        for ($i = 0; $i < self::LIMIT; $i++) {
+            $individualTaskResult = $this->proceedPhoto($output);
+            if ($individualTaskResult === Command::FAILURE) {
+                return Command::FAILURE;
+            }
+        }
+        $output->writeln(sprintf("\n Execution time: %.2f sec", (microtime(true) - $startTime)));
         return Command::SUCCESS;
     }
 
