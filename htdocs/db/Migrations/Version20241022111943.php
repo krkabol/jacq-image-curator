@@ -29,7 +29,7 @@ final class Version20241022111943 extends AbstractMigration
         $this->addSql("INSERT INTO front.contact VALUES (DEFAULT, 1, 'Patrik', 'Mráz', 'head of herbarium', 'mrazpat@natur.cuni.cz')");
         $this->addSql("INSERT INTO front.contact VALUES (DEFAULT, 1, 'Zdeněk', 'Vaněček', 'specimen digitalization', 'vanecekz@natur.cuni.cz ')");
         $this->addSql("INSERT INTO front.contact VALUES (DEFAULT, 1, 'Petr', 'Novotný', 'IT development', 'novotp@natur.cuni.cz')");
-        $this->addSql("UPDATE herbaria SET fullname = 'PřF UK Praha', address = 'Benátská 2, Prague' WHERE id = 1)");
+        $this->addSql("UPDATE herbaria SET fullname = 'PřF UK Praha', address = 'Benátská 2, Prague' WHERE id = 1");
 
     }
 
