@@ -1,32 +1,17 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$entityManager\\.$#"
-			count: 1
-			path: App/Console/ReadBucketToDatabase.php
-
-		-
-			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$name\\.$#"
-			count: 1
-			path: App/Console/ReadBucketToDatabase.php
-
-		-
-			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$s3Service\\.$#"
-			count: 1
-			path: App/Console/ReadBucketToDatabase.php
-
-		-
-			message: "#^Constructor of class App\\\\Console\\\\ReadBucketToDatabase has an unused parameter \\$storageConfiguration\\.$#"
-			count: 1
-			path: App/Console/ReadBucketToDatabase.php
-
-		-
 			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getHerbariaRepository\\(\\) should return App\\\\Model\\\\Database\\\\Repository\\\\HerbariaRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
 			count: 1
 			path: App/Model/Database/EntityManager.php
 
 		-
 			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getPhotosRepository\\(\\) should return App\\\\Model\\\\Database\\\\Repository\\\\PhotosRepository but returns Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Model\\\\Database\\\\T\\>\\.$#"
+			count: 1
+			path: App/Model/Database/EntityManager.php
+
+		-
+			message: "#^Method App\\\\Model\\\\Database\\\\EntityManager\\:\\:getPhotosStatusRepository\\(\\) return type with generic class Doctrine\\\\ORM\\\\EntityRepository does not specify its types\\: T$#"
 			count: 1
 			path: App/Model/Database/EntityManager.php
 
@@ -51,26 +36,76 @@ parameters:
 			path: App/Model/Database/Repository/AbstractRepository.php
 
 		-
+			message: "#^Method App\\\\Model\\\\FileManagement\\\\File\\:\\:__construct\\(\\) has parameter \\$info with no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Model/FileManagement/File.php
+
+		-
 			message: "#^Call to an undefined method App\\\\Model\\\\Database\\\\Repository\\\\UserRepository\\:\\:findOneByUsername\\(\\)\\.$#"
 			count: 1
 			path: App/Security/UserAuthenticator.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			message: "#^Property App\\\\Services\\\\EntityServices\\\\BaseEntityService\\:\\:\\$repository with generic interface Doctrine\\\\Persistence\\\\ObjectRepository does not specify its types\\: T$#"
 			count: 1
-			path: App/Services/S3Service.php
-
-		-
-			message: "#^Cannot assign offset 'color' to string\\.$#"
-			count: 2
-			path: App/UI/Base/Accessory/LatteExtension.php
+			path: App/Services/EntityServices/BaseEntityService.php
 
 		-
 			message: "#^Access to an undefined property Nette\\\\Security\\\\IIdentity\\:\\:\\$herbarium\\.$#"
 			count: 1
+			path: App/Services/EntityServices/HerbariumService.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\:\\:findOneWithAcronym\\(\\)\\.$#"
+			count: 1
+			path: App/Services/EntityServices/HerbariumService.php
+
+		-
+			message: "#^Access to an undefined property Nette\\\\Security\\\\IIdentity\\:\\:\\$herbarium\\.$#"
+			count: 3
+			path: App/Services/EntityServices/PhotoService.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between 1 and 1 is always false\\.$#"
+			count: 1
+			path: App/Services/ImageService.php
+
+		-
+			message: "#^Offset 'rawOutput' on array\\{imageName\\: string, mimetype\\: string, format\\: string, units\\: string, colorSpace\\: string, type\\: string, compression\\: string, fileSize\\: string, \\.\\.\\.\\} in isset\\(\\) does not exist\\.$#"
+			count: 1
+			path: App/Services/ImageService.php
+
+		-
+			message: "#^Method App\\\\Services\\\\S3Service\\:\\:deleteObject\\(\\) return type has no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Method App\\\\Services\\\\S3Service\\:\\:getObject\\(\\) return type has no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Method App\\\\Services\\\\S3Service\\:\\:headObject\\(\\) return type has no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Method App\\\\Services\\\\S3Service\\:\\:putJp2IfNotExists\\(\\) return type has no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Method App\\\\Services\\\\S3Service\\:\\:putTiffIfNotExists\\(\\) return type has no value type specified in iterable type Aws\\\\Result\\.$#"
+			count: 1
+			path: App/Services/S3Service.php
+
+		-
+			message: "#^Method App\\\\UI\\\\Base\\\\SecuredPresenter\\:\\:checkRequirements\\(\\) has parameter \\$element with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
 			path: App/UI/Base/SecuredPresenter.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of class Nette\\\\Application\\\\Responses\\\\CallbackResponse constructor expects callable\\(Nette\\\\Http\\\\IRequest, Nette\\\\Http\\\\Response\\)\\: void, Closure\\(Nette\\\\Http\\\\Request, Nette\\\\Http\\\\Response\\)\\: void given\\.$#"
+			message: "#^Property App\\\\UI\\\\Front\\\\Sign\\\\SignPresenter\\:\\:\\$backlink has no type specified\\.$#"
 			count: 1
-			path: App/UI/Front/Repository/RepositoryPresenter.php
+			path: App/UI/Front/Sign/SignPresenter.php
