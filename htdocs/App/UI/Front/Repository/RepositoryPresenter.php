@@ -51,6 +51,9 @@ final class RepositoryPresenter extends UnsecuredPresenter
     public function renderSpecimen(?string $specimenFullId): void
     {
         try {
+            if($specimenFullId === null) {
+                throw new SpecimenIdException();
+            }
             $specimen = $this->specimenFactory->create($specimenFullId);
         } catch (SpecimenIdException $exception) {
             $this->flashMessage($exception->getMessage(), 'error');

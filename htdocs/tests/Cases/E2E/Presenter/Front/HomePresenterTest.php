@@ -22,4 +22,37 @@ test('Front:Home',function (): void {
 	$response->send((new RequestFactory())->fromGlobals(), new Response());
 	$content = ob_get_clean();
     Assert::contains("JACQ image service", $content);
+    Assert::contains("NRP KA 3.3", $content);
+
+});
+
+test('Front:Home:contact',function (): void {
+    $container = Bootstrap::boot()->createContainer();
+
+    $presenter = $container->getByName($container->findByType(HomePresenter::class)[0]);
+    assert($presenter instanceof HomePresenter);
+
+    ob_start();
+    $response = $presenter->run(new Request('Front:Home', 'default', ["action"=>"contact"]));
+
+    $response->send((new RequestFactory())->fromGlobals(), new Response());
+    $content = ob_get_clean();
+    Assert::contains("vanecekz@natur.cuni.cz", $content);
+    Assert::contains("NRP KA 3.3", $content);
+
+});
+
+test('Front:Home:about',function (): void {
+    $container = Bootstrap::boot()->createContainer();
+
+    $presenter = $container->getByName($container->findByType(HomePresenter::class)[0]);
+    assert($presenter instanceof HomePresenter);
+
+    ob_start();
+    $response = $presenter->run(new Request('Front:Home', 'default', ["action"=>"about"]));
+
+    $response->send((new RequestFactory())->fromGlobals(), new Response());
+    $content = ob_get_clean();
+    Assert::contains("How to join", $content);
+    Assert::contains("NRP KA 3.3", $content);
 });

@@ -1,3 +1,6 @@
 extensions:
     contributte.console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
     contributte.console.extra: Contributte\Console\Extra\DI\ConsoleBridgesExtension(%consoleMode%)
+
+contributte.console:
+	url: http://localhost
