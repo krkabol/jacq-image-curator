@@ -97,12 +97,12 @@ final readonly class RepositoryConfiguration
         return $this->tempDir->getPath(self::TEMP_FILE . '.' . pathinfo($photo->getOriginalFilename(), PATHINFO_EXTENSION));
     }
 
-    public function getImportTempJp2Path(Photos $photo): string
+    public function getImportTempJp2Path(): string
     {
         return $this->tempDir->getPath(self::TEMP_FILE . '.jp2');
     }
 
-    public function getImportTempZbarPath(Photos $photo): string
+    public function getImportTempZbarPath(): string
     {
         return $this->tempDir->getPath(self::TEMP_ZBAR_FILE . '.png');
     }
