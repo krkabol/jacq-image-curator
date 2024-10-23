@@ -7,7 +7,7 @@ use Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-test('Front:Home', function (): void {
+test('WebDir Service', function (): void {
     $basePath = '/srv/www';
     $service = new WebDir($basePath);
     Assert::same($basePath . DIRECTORY_SEPARATOR, $service->getPath());
