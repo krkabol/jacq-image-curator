@@ -1,5 +1,6 @@
 {layout '../Base/@layout.latte'}
     {block main}
+<header>
 <nav class="navbar navbar-expand-lg navbar-light bg-success-subtle mb-2 py-1">
     <div class="container-fluid">
         <a class="navbar-brand" n:href="Home:"><img src="{$basePath}/logo/jacq.png" class="m-0"
@@ -37,13 +38,15 @@
     </div>
 </nav>
 
-<div class="container">
-
+</header>
+    <main class="content">
     <div class="container-fluid">
         <div class="col-sm-12">
             <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
         </div>
-        {include content}
     </div>
-</div>
+        <div class="container">
+        {include content}
+        </div>
+    </main>
     {/block}
